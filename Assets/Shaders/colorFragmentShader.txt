@@ -1,0 +1,14 @@
+#version 330 core
+
+in vec3 ObjectPos;
+in vec3 Normal;
+
+out vec4 col;
+
+uniform ivec2 viewport;
+
+void main() {
+
+	col = vec4(ObjectPos + 0.5, 1.0);
+
+}

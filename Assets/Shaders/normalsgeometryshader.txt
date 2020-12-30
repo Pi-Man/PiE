@@ -1,0 +1,93 @@
+#version 330 core
+layout (triangles) in;
+layout (line_strip, max_vertices = 6) out;
+
+in Data {
+	vec4 ObjectPos;
+	vec3 Normal;
+	vec2 uv;
+	vec3 Color;
+} data_in[];
+
+out vec3 ObjectPos;
+out vec3 Normal;
+out vec2 uv;
+
+uniform mat4 worldMatrix;
+uniform mat4 transformation;
+
+//void clip(vec4 pos1, vec4 pos2, vec4 pos3) {
+//
+//	if (pos1.z < 0) {
+//		if (pos2.z >= 0) {
+//			float k = pos1.z/(pos1.z / pos2.z);
+//
+//			gl_Position = vec4((pos1.xy * (1 - k) + pos2.xy * k) * 1000000, 1.0f);
+//			PosColor = color_in[0] * (1 - k) + color_in[1] * k;
+//			EmitVertex();
+//
+//			gl_Position = vec4(pos2.xy/pos2.z;
+//			PosColor = color_in[1];
+//			EmitVertex();
+//			
+//			if (pos3.z < 0) {
+//				
+//			}
+//		}
+//	}
+//}
+
+void main() {
+
+	//Normal = cross((worldMatrix * color_in[1].ObjectPos).xyz - (worldMatrix * color_in[2].ObjectPos).xyz, (worldMatrix * color_in[0].ObjectPos).xyz - (worldMatrix * color_in[1].ObjectPos).xyz);
+
+	gl_Position = gl_in[0].gl_Position;
+	ObjectPos = data_in[0].ObjectPos.xyz;
+	Normal = data_in[0].Normal;
+	uv = data_in[0].uv;
+	EmitVertex();
+	gl_Position = transformation * (data_in[0].ObjectPos + vec4(data_in[0].Normal, 0) * 0.001);
+	ObjectPos = data_in[0].ObjectPos.xyz;
+	Normal = data_in[0].Normal;
+	uv = data_in[0].uv;
+	EmitVertex();
+	EndPrimitive();
+
+	gl_Position = gl_in[1].gl_Position;
+	ObjectPos = data_in[1].ObjectPos.xyz;
+	Normal = data_in[1].Normal;
+	uv = data_in[1].uv;
+	EmitVertex();
+	gl_Position = transformation * (data_in[1].ObjectPos + vec4(data_in[1].Normal, 0) * 0.001);
+	ObjectPos = data_in[1].ObjectPos.xyz;
+	Normal = data_in[1].Normal;
+	uv = data_in[1].uv;
+	EmitVertex();
+	EndPrimitive();
+
+	gl_Position = gl_in[2].gl_Position;
+	ObjectPos = data_in[2].ObjectPos.xyz;
+	Normal = data_in[2].Normal;
+	uv = data_in[2].uv;
+	EmitVertex();
+	gl_Position = transformation * (data_in[2].ObjectPos + vec4(data_in[2].Normal, 0) * 0.001);
+	ObjectPos = data_in[2].ObjectPos.xyz;
+	Normal = data_in[2].Normal;
+	uv = data_in[2].uv;
+	EmitVertex();
+	EndPrimitive();
+
+	//gl_Position = gl_in[0].gl_Position;
+	//ObjectPos = color_in[0].ObjectPos.xyz;
+	//EmitVertex();
+
+	//gl_Position = gl_in[1].gl_Position;
+	//ObjectPos = color_in[1].ObjectPos.xyz;
+	//EmitVertex();
+
+	//gl_Position = gl_in[2].gl_Position;
+	//ObjectPos = color_in[2].ObjectPos.xyz;
+	//EmitVertex();
+
+	EndPrimitive();
+}
