@@ -1,0 +1,15 @@
+﻿  main.cpp
+c:\users\peter\source\repos\3d render test\pie\templateproject\templateproject\pie\include\directionallight.h(12): warning C4305: 'initializing': truncation from 'double' to '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+c:\users\peter\source\repos\3d render test\pie\templateproject\templateproject\pie\include\directionallight.h(23): warning C4305: 'initializing': truncation from 'double' to '_Ty'
+          with
+          [
+              _Ty=float
+          ]
+  Generating code
+  All 968 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  TemplateProject.vcxproj -> C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\x64\Release\TemplateProject.exe
