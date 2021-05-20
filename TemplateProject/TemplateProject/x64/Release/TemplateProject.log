@@ -10,6 +10,8 @@ c:\users\peter\source\repos\3d render test\pie\templateproject\templateproject\p
               _Ty=float
           ]
   Generating code
-  All 968 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  0 of 1007 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   TemplateProject.vcxproj -> C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\x64\Release\TemplateProject.exe

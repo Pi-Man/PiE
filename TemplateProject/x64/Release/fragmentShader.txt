@@ -8,7 +8,6 @@ in vec3 Color;
 out vec4 col;
 
 uniform sampler2D main_tex;
-uniform float time;
 
 vec2 square(vec2 z) {
 	vec2 z2;
@@ -18,16 +17,14 @@ vec2 square(vec2 z) {
 }
 
 #define MAX_COUNT 1000.0
-#define PI 3.1415926535
 
 void main() {
 	vec2 c = ObjectPos.xy;
 	vec2 z = vec2(0, 0);
 	float count = 0;
-	while (dot(z, z) < 16 && count < MAX_COUNT) {
+	while (dot(z, z) < 4 && count < MAX_COUNT) {
 		z = square(z) + c;
 		count++;
 	}
-	float x = 1 - exp(-count / 100.0);
-    col = vec4(sin(x*1.5*PI), sin(x*1.5*PI - PI/2), sin(x*1.5*PI - PI), 1);
+    col = vec4(1.0 - count / MAX_COUNT);
 }
