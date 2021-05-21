@@ -54,7 +54,7 @@ namespace PiE {
 	void setRenderContext(EngineContext &ctx, const RenderContext &renderContext);
 
 	// default render pipeline
-	void render(EngineContext &ctx, Camera *camera, Shader shader);
+	void render(EngineContext &ctx, Camera *camera, Shader *shader);
 
 	// start the render loop on a separate thread from the fixed update loop
 	std::thread startRenderThread(EngineContext &ctx);
@@ -98,7 +98,7 @@ namespace PiE {
 		// the camera to use to render
 		Camera *mainCamera;
 		// the default shader to use to render
-		Shader mainShader;
+		Shader *mainShader;
 
 		// the list of render objects to render
 		std::vector<RenderObject*> renderObjects;
@@ -126,7 +126,7 @@ namespace PiE {
 		};
 
 		// the function to be called to render on every render loop
-		void(*renderer)(EngineContext &ctx, Camera *camera, Shader shaderID) = render;
+		void(*renderer)(EngineContext &ctx, Camera *camera, Shader *shaderID) = render;
 		//std::function<void(EngineContext &ctx, Camera *camera, GLuint shaderID)> renderer = render;
 
 		// whether the update loop and the render loops are running

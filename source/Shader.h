@@ -23,7 +23,7 @@ public:
 
 	// the GL handle of the shader
 	GLint ID = -1;
-	std::vector<Uniform> uniforms;
+	std::vector<Uniform*> uniforms;
 
 	Shader();
 

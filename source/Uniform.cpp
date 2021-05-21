@@ -2,8 +2,8 @@
 
 #include "Uniform.h"
 
-void Uniform::init(char * name, GLuint shaderID, Uniform_Type type) {
-	this->location = glGetUniformLocation(shaderID, name);
+void Uniform::init(std::string name, GLuint shaderID, Uniform_Type type) {
+	this->location = glGetUniformLocation(shaderID, name.c_str());
 	this->type = type;
 
 	switch (type)
@@ -27,6 +27,16 @@ void Uniform::init(char * name, GLuint shaderID, Uniform_Type type) {
 		data = NULL;
 	}
 
+}
+
+template<typename T>
+inline T * Uniform::cast() {
+	return (T*)data;
+}
+
+void Uniform::destroy() {
+	free(data);
+	data = NULL;
 }
 
 #define CAST1(type, data) ((type*)data)[0]

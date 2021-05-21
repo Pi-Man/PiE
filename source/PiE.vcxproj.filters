@@ -105,6 +105,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="Uniform.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PiE.h">
@@ -183,6 +186,9 @@
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Uniform.h">
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
   </ItemGroup>

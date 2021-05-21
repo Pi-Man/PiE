@@ -77,6 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDIr)SDL\include;$(ProjectDIr)PortAudio\include;$(ProjectDIr)GLEW\include\GL;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDIr)PortAudio;$(ProjectDIr)GLEW;$(ProjectDIr)SDL;$(LibraryPath)</LibraryPath>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -120,6 +121,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -138,6 +140,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Speaker.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Uniform.cpp" />
     <ClCompile Include="UpdateLimiter.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Vec3f.cpp" />
@@ -166,6 +169,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Speaker.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Uniform.h" />
     <ClInclude Include="UpdateLimiter.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vec3f.h" />

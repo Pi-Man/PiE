@@ -125,7 +125,7 @@ namespace PiE {
 
 	}
 
-	void render(EngineContext &ctx, Camera *camera, Shader shader) {
+	void render(EngineContext &ctx, Camera *camera, Shader *shader) {
 
 		std::lock_guard<std::mutex> lock(ctx.loopMutex);
 
@@ -158,10 +158,10 @@ namespace PiE {
 
 			glVertexAttrib4f(4, 1, 1, 1, 1);
 
-			Shader _shader = shader;
+			Shader _shader = *shader;
 
 			if (renderObject->shader.ID != -1) {
-				shader = renderObject->shader;
+				_shader = renderObject->shader;
 			}
 
 			GL_ERROR(glUseProgram(_shader.ID));
@@ -172,8 +172,8 @@ namespace PiE {
 			GLint timeID = glGetUniformLocation(_shader.ID, "time");
 			glUniform1f(timeID, ms / 1000.0f);
 
-			for (Uniform& uniform : shader.uniforms) {
-				uniform.apply();
+			for (Uniform* uniform : _shader.uniforms) {
+				uniform->apply();
 			}
 
 			if (ctx.dirLights.size() > 0) {

@@ -1,6 +1,8 @@
 #ifndef _UNIFORM
 #define _UNIFORM
 
+#include <string>
+
 #include <glew.h>
 #include <SDL.h>
 
@@ -17,11 +19,14 @@ enum Uniform_Type {
 };
 
 struct Uniform {
-	GLuint location;
+	GLint location;
 	void* data;
 	Uniform_Type type;
 
-	void init(const char* name, GLuint shaderID, Uniform_Type type);
+	void init(std::string name, GLuint shaderID, Uniform_Type type);
+	template<typename T>
+	T* cast();
+	void destroy();
 	void apply();
 };
 
