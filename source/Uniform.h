@@ -21,7 +21,7 @@ struct Uniform {
 	void* data;
 	Uniform_Type type;
 
-	void init(char* name, GLuint shaderID, Uniform_Type type);
+	void init(const char* name, GLuint shaderID, Uniform_Type type);
 	void apply();
 };
 
