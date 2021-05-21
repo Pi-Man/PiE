@@ -3,11 +3,13 @@
 
 #include <cstdio>
 #include <iostream>
+#include <vector>
 
 #include <glew.h>
 #include <SDL.h>
 
 #include "Macros.h"
+#include "Uniform.h"
 
 #define GL_SERROR(a, shaderID, shader) GL_ERROR(a); {GLint success; glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success); if (!success) {char log[10000]; glGetShaderInfoLog(shaderID, 10000, nullptr, log); std::cout << "Error Compiling Shader:\n" << log << "\n" << shader << std::endl; return success;}}
 
@@ -20,7 +22,8 @@ class Shader {
 public:
 
 	// the GL handle of the shader
-	GLint ID;
+	GLint ID = -1;
+	std::vector<Uniform*> uniforms;
 
 	Shader();
 

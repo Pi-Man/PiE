@@ -6,6 +6,7 @@
 #include "VertexArrayObject.h"
 #include "RenderContext.h"
 #include "Transform.h"
+#include "Shader.h"
 
 // an object to be rendered to the screen along with the data needed to render the object
 struct RenderObject {
@@ -17,7 +18,7 @@ struct RenderObject {
 	Transform transform;
 	// the sader to render with
 	// * default: use the main shader associated with the engine context
-	Uint32 ShaderID = -1;
+	Shader shader;
 	// the render context to render with
 	RenderContext renderContext;
 };

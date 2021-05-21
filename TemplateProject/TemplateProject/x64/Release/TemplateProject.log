@@ -1,17 +1,1 @@
-﻿  main.cpp
-c:\users\peter\source\repos\3d render test\pie\templateproject\templateproject\pie\include\directionallight.h(12): warning C4305: 'initializing': truncation from 'double' to '_Ty'
-          with
-          [
-              _Ty=float
-          ]
-c:\users\peter\source\repos\3d render test\pie\templateproject\templateproject\pie\include\directionallight.h(23): warning C4305: 'initializing': truncation from 'double' to '_Ty'
-          with
-          [
-              _Ty=float
-          ]
-  Generating code
-  0 of 1007 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  TemplateProject.vcxproj -> C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\x64\Release\TemplateProject.exe
+﻿  TemplateProject.vcxproj -> C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\x64\Release\TemplateProject.exe

@@ -9,6 +9,7 @@ out vec4 col;
 
 uniform sampler2D main_tex;
 uniform float time;
+uniform vec2 z0;
 
 vec2 square(vec2 z) {
 	vec2 z2;
@@ -22,7 +23,7 @@ vec2 square(vec2 z) {
 
 void main() {
 	vec2 c = ObjectPos.xy;
-	vec2 z = vec2(0, 0);
+	vec2 z = z0;
 	float count = 0;
 	while (dot(z, z) < 16 && count < MAX_COUNT) {
 		z = square(z) + c;

@@ -3,6 +3,8 @@
 Camera5DoF *camera;
 float zoom = 1;
 
+Uniform z;
+
 void cameraControlls(PiE::EngineContext &ctx, SDL_Event event) {
 	switch (event.key.keysym.sym) {
 	case SDLK_w:
@@ -16,6 +18,23 @@ void cameraControlls(PiE::EngineContext &ctx, SDL_Event event) {
 		break;
 	case SDLK_a:
 		camera->move(-zoom / 10.0f, 0.0f, 0.0f);
+		break;
+	}
+}
+
+void uniformControlls(PiE::EngineContext &ctx, SDL_Event event) {
+	switch (event.key.keysym.sym) {
+	case SDLK_UP:
+		z.data.f[1] += 0.001f;
+		break;
+	case SDLK_DOWN:
+		z.data.f[1] -= 0.001f;
+		break;
+	case SDLK_RIGHT:
+		z.data.f[0] += 0.001f;
+		break;
+	case SDLK_LEFT:
+		z.data.f[0] -= 0.001f;
 		break;
 	}
 }
@@ -40,12 +59,15 @@ int main(int argc, char** args) {
 	Shader shader;
 
 	shader.buildShader("vertexshader.txt", "fragmentShader.txt");
+	z.init("z0", shader.ID, VEC2); // initialize uniform
+	z.data.f[0] = z.data.f[1] = 0.0f; // and set the data to be zero initially
+	shader.uniforms.push_back(&z); // add the uniform to the shader
 
-	ctx.mainShader = shader.ID;
+	ctx.mainShader = &shader;
 	//------------add in renderable objects---------------
 	RenderObject RO;
 	RO.VAO = VertexArrayObject();
-	RO.VAO.addQuadWithNormals({ // simple rect from 2,2 to -2,-2 to display mandelbrot results
+	RO.VAO.addQuadWithNormals({ // simple rect from 4,4 to -4,-4 to display mandelbrot results
 		-4, -4, 1.0,
 			1.0, 0.0, 0.0,
 		4, -4, 1.0,
@@ -58,6 +80,7 @@ int main(int argc, char** args) {
 	PiE::addMesh(ctx, RO);
 	//--------------add in event listeners----------------
 	ctx.events.insert({ SDL_EventType::SDL_KEYDOWN, cameraControlls });
+	ctx.events.insert({ SDL_EventType::SDL_KEYDOWN, uniformControlls });
 	ctx.events.insert({ SDL_EventType::SDL_MOUSEWHEEL, zoomCamera });
 	//-------------------run main loop--------------------
 	camera->move(0, 0, -1);
