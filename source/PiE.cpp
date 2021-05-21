@@ -125,7 +125,7 @@ namespace PiE {
 
 	}
 
-	void render(EngineContext &ctx, Camera *camera, GLuint shaderID) {
+	void render(EngineContext &ctx, Camera *camera, Shader shader) {
 
 		std::lock_guard<std::mutex> lock(ctx.loopMutex);
 
@@ -156,21 +156,25 @@ namespace PiE {
 				setRenderContext(ctx, renderObject->renderContext);
 			}
 
-			glVertexAttrib4d(4, 1, 1, 1, 1);
+			glVertexAttrib4f(4, 1, 1, 1, 1);
 
-			GLuint _shaderID = shaderID;
+			Shader _shader = shader;
 
-			if (renderObject->ShaderID != (Uint32)-1) {
-				_shaderID = renderObject->ShaderID;
+			if (renderObject->shader.ID != -1) {
+				shader = renderObject->shader;
 			}
 
-			GL_ERROR(glUseProgram(_shaderID));
+			GL_ERROR(glUseProgram(_shader.ID));
 
-			GLint viewportID = glGetUniformLocation(_shaderID, "viewport");
+			GLint viewportID = glGetUniformLocation(_shader.ID, "viewport");
 			GL_ERROR(glUniform2i(viewportID, w, h));
 
-			GLint timeID = glGetUniformLocation(_shaderID, "time");
+			GLint timeID = glGetUniformLocation(_shader.ID, "time");
 			glUniform1f(timeID, ms / 1000.0f);
+
+			for (Uniform& uniform : shader.uniforms) {
+				uniform.apply();
+			}
 
 			if (ctx.dirLights.size() > 0) {
 
@@ -197,9 +201,9 @@ namespace PiE {
 					colData[i * 4 + 2] = col[2];
 					colData[i * 4 + 3] = intensity;
 				}
-				GLint lightDirectionID = glGetUniformLocation(_shaderID, "lightDirection");
-				GLint dirLightColorID = glGetUniformLocation(_shaderID, "dirLightColor");
-				GLint directionLightCountID = glGetUniformLocation(_shaderID, "directionLightCount");
+				GLint lightDirectionID = glGetUniformLocation(_shader.ID, "lightDirection");
+				GLint dirLightColorID = glGetUniformLocation(_shader.ID, "dirLightColor");
+				GLint directionLightCountID = glGetUniformLocation(_shader.ID, "directionLightCount");
 				glUniform3fv(lightDirectionID, min(ctx.dirLights.size(), 4), dirData);
 				glUniform4fv(dirLightColorID, min(ctx.dirLights.size(), 4), colData);
 
@@ -232,9 +236,9 @@ namespace PiE {
 					colData[i * 4 + 2] = col[2];
 					colData[i * 4 + 3] = intensity;
 				}
-				GLint lightPositionID = glGetUniformLocation(_shaderID, "lightPosition");
-				GLint posLightColorID = glGetUniformLocation(_shaderID, "posLightColor");
-				GLint positionLightCountID = glGetUniformLocation(_shaderID, "positionLightCount");
+				GLint lightPositionID = glGetUniformLocation(_shader.ID, "lightPosition");
+				GLint posLightColorID = glGetUniformLocation(_shader.ID, "posLightColor");
+				GLint positionLightCountID = glGetUniformLocation(_shader.ID, "positionLightCount");
 				glUniform3fv(lightPositionID, min(ctx.pointLights.size(), 4), posData);
 				glUniform4fv(posLightColorID, max(ctx.pointLights.size(), 4), colData);
 
@@ -245,9 +249,9 @@ namespace PiE {
 
 			Matrix4f worldMatrix = ctx.lerp ? Matrix4f::lerp(renderObject->prevTransform, renderObject->transform, pt) : renderObject->transform;
 
-			GLint transformationID = glGetUniformLocation(_shaderID, "transformation");
+			GLint transformationID = glGetUniformLocation(_shader.ID, "transformation");
 			glUniformMatrix4fv(transformationID, 1, GL_FALSE, Matrix4f::transpose(transformation * worldMatrix));
-			GLint worldMatrixID = glGetUniformLocation(_shaderID, "worldMatrix");
+			GLint worldMatrixID = glGetUniformLocation(_shader.ID, "worldMatrix");
 			glUniformMatrix4fv(worldMatrixID, 1, GL_FALSE, Matrix4f::transpose(worldMatrix));
 
 			renderObject->VAO.render();

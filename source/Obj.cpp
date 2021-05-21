@@ -331,7 +331,7 @@ namespace OBJ {
 
 		std::map<std::string, RenderContext> matlib;
 
-		std::vector<RenderObject> renderObjects = { RenderObject{VertexArrayObject(flags), Transform(), Transform(), (Uint32)-1, RenderContext()} };
+		std::vector<RenderObject> renderObjects = { RenderObject{VertexArrayObject(flags), Transform(), Transform(), Shader(), RenderContext()} };
 		int objectID = 0;
 
 		std::vector<std::array<double, 3>> vertices;
@@ -369,7 +369,7 @@ namespace OBJ {
 			}
 			else if (line[0] == 'o' && line[1] == ' ' && vertices.size() > 0) {
 				objectID++;
-				renderObjects.push_back(RenderObject{VertexArrayObject(flags), Transform(), Transform(), (Uint32)-1, RenderContext()});
+				renderObjects.push_back(RenderObject{VertexArrayObject(flags), Transform(), Transform(), Shader(), RenderContext()});
 				memcpy(lastName, line + 2, 100);
 			}
 			else if (strncmp(line, "mtllib", 6) == 0 && line[6] == ' ' && matlib.size() == 0) {
