@@ -30,5 +30,5 @@ void main() {
 		count++;
 	}
 	float x = 1 - exp(-count / 100.0);
-    col = vec4(sin(x*1.5*PI), sin(x*1.5*PI - PI/2), sin(x*1.5*PI - PI), 1);
+    col = vec4(sin(x*5.5*PI), sin(x*5.5*PI - PI/2), sin(x*5.5*PI - PI), 1);
 }
