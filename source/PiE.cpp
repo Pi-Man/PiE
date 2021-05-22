@@ -54,12 +54,24 @@ namespace PiE {
 		return 0;
 	}
 
+	int removeMesh(EngineContext &ctx, RenderObject &renderObject) {
+		auto it = std::find(ctx.renderObjects.begin(), ctx.renderObjects.end(), &renderObject);
+		if (it != ctx.renderObjects.end()) {
+			ctx.renderObjects.erase(it);
+		}
+		else {
+			puts("Could not remove render object");
+		}
+		return 0;
+	}
+
 	int addGameObject(EngineContext & ctx, GameObject & gameObject) {
 
 		for (Component *component : gameObject.components) {
 			component->gameObject = &gameObject;
-			ctx.fixedUpdate.push_back([component](EngineContext &ctx) {component->fixedUpdate(ctx); });
-			for (std::pair<Uint32, std::function<void(EngineContext &ctx, SDL_Event)>> & event : component->events) {
+			component->fixedUpdateFunction = FixedUpdateCallback([component](EngineContext &ctx) {component->fixedUpdate(ctx); });
+			ctx.fixedUpdate.push_back(component->fixedUpdateFunction);
+			for (std::pair<Uint32, PiE::EventCallback> & event : component->events) {
 				ctx.events.insert(event);
 			}
 			component->onAdded(ctx, gameObject);
@@ -73,6 +85,53 @@ namespace PiE {
 		ctx.gameObjectTransforms.push_back(&gameObject.transform);
 
 		return 0;
+	}
+
+	bool operator== (std::pair<const Uint32, PiE::EventCallback> l, const std::pair<const Uint32, PiE::EventCallback> r) {
+		return l.first == r.first && l.second == r.second;
+	}
+
+	int removeGameObject(EngineContext &ctx, GameObject & gameObject) {
+
+		for (Component *component : gameObject.components) {
+			auto it = std::find(ctx.fixedUpdate.begin(), ctx.fixedUpdate.end(), component->fixedUpdateFunction);
+			if (it != ctx.fixedUpdate.end()) {
+				ctx.fixedUpdate.erase(it);
+			}
+			else {
+				puts("Could not remove update function");
+			}
+			for (std::pair<Uint32, PiE::EventCallback> & event : component->events) {
+				auto it2 = ctx.events.equal_range(event.first);
+				if (it2.first != ctx.events.end()) {
+					auto it3 = std::find(it2.first, it2.second, event);
+					if (it3 != it2.second) {
+						ctx.events.erase(it3);
+					}
+					else {
+						puts("could not remove event");
+					}
+				}
+				else {
+					puts("Could not remove event");
+				}
+			}
+		}
+
+		for (RenderObject *obj : gameObject.renderObjects) {
+			removeMesh(ctx, *obj);
+		}
+
+		auto it = std::find(ctx.gameObjectTransforms.begin(), ctx.gameObjectTransforms.end(), &gameObject.transform);
+		if (it != ctx.gameObjectTransforms.end()) {
+			ctx.gameObjectTransforms.erase(it);
+		}
+		else {
+			puts("could not remove transform");
+		}
+
+		return 0;
+
 	}
 
 	double getRenderPartialTick(EngineContext & ctx) {
@@ -349,12 +408,12 @@ namespace PiE {
 				while (SDL_PollEvent(&event)) {
 					auto events = ctx.events.equal_range(event.type);
 					for (auto it = events.first; it != events.second; it++) {
-						it->second(ctx, event);
+						it->second.f(ctx, event);
 					}
 				}
 
-				for (std::function<void(EngineContext&)> &f : ctx.fixedUpdate) {
-					f(ctx);
+				for (FixedUpdateCallback &f : ctx.fixedUpdate) {
+					f.f(ctx);
 				}
 			}
 		}
@@ -399,6 +458,35 @@ namespace PiE {
 		SDL_GL_MakeCurrent(ctx.mainWindow, ctx.glContext);
 
 		return 0;
+	}
+
+	size_t FixedUpdateCallback::lastIndex = 0;
+	size_t EventCallback::lastIndex = 0;
+
+	FixedUpdateCallback::FixedUpdateCallback(std::function<void(EngineContext&)> f) : f(f) {
+		index = lastIndex;
+		lastIndex++;
+	}
+
+	bool FixedUpdateCallback::operator==(FixedUpdateCallback & other) {
+		return this->index == other.index;
+	}
+
+	bool FixedUpdateCallback::operator==(const FixedUpdateCallback & other) {
+		return this->index == other.index;
+	}
+
+	EventCallback::EventCallback(std::function<void(EngineContext&, SDL_Event)> f) : f(f) {
+		index = lastIndex;
+		lastIndex++;
+	}
+
+	bool EventCallback::operator==(EventCallback & other) {
+		return this->index == other.index;
+	}
+
+	bool EventCallback::operator==(const EventCallback & other) {
+		return this->index == other.index;
 	}
 
 }

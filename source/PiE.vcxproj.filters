@@ -191,5 +191,8 @@
     <ClInclude Include="Uniform.h">
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Callbacks.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,31 +12,26 @@ void Uniform::init(std::string name, GLuint shaderID, Uniform_Type type) {
 	case VEC2I:
 	case VEC3I:
 	case VEC4I:
-		data = malloc(sizeof(GLint) * (type - I + 1));
+		data.v = malloc(sizeof(GLint) * (type - I + 1));
 		break;
 	case F:
 	case VEC2:
 	case VEC3:
 	case VEC4:
-		data = malloc(sizeof(GLfloat) * (type - F + 1));
+		data.v = malloc(sizeof(GLfloat) * (type - F + 1));
 		break;
 	case MAT4:
-		data = malloc(sizeof(GLfloat) * 16);
+		data.v = malloc(sizeof(GLfloat) * 16);
 		break;
 	default:
-		data = NULL;
+		data.v = NULL;
 	}
 
 }
 
-template<typename T>
-inline T * Uniform::cast() {
-	return (T*)data;
-}
-
 void Uniform::destroy() {
-	free(data);
-	data = NULL;
+	free(data.v);
+	data.v = NULL;
 }
 
 #define CAST1(type, data) ((type*)data)[0]
@@ -48,31 +43,31 @@ void Uniform::apply() {
 	switch (type)
 	{
 	case I:
-		glUniform1i(location, CAST1(GLint, data));
+		glUniform1i(location, data.i[0]);
 		break;
 	case VEC2I:
-		glUniform2i(location, CAST2(GLint, data));
+		glUniform2i(location, data.i[0], data.i[1]);
 		break;
 	case VEC3I:
-		glUniform3i(location, CAST3(GLint, data));
+		glUniform3i(location, data.i[0], data.i[1], data.i[2]);
 		break;
 	case VEC4I:
-		glUniform4i(location, CAST4(GLint, data));
+		glUniform4i(location, data.i[0], data.i[1], data.i[2], data.i[3]);
 		break;
 	case F:
-		glUniform1f(location, CAST1(GLfloat, data));
+		glUniform1f(location, data.f[0]);
 		break;
 	case VEC2:
-		glUniform2f(location, CAST2(GLfloat, data));
+		glUniform2f(location, data.f[0], data.f[1]);
 		break;
 	case VEC3:
-		glUniform3f(location, CAST3(GLfloat, data));
+		glUniform3f(location, data.f[0], data.f[1], data.f[2]);
 		break;
 	case VEC4:
-		glUniform4f(location, CAST4(GLfloat, data));
+		glUniform4f(location, data.f[0], data.f[1], data.f[2], data.f[3]);
 		break;
 	case MAT4:
-		glUniformMatrix4fv(location, 1, false, (GLfloat*)data);
+		glUniformMatrix4fv(location, 1, false, data.f);
 		break;
 	default:
 		break;

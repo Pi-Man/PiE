@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioFormat.h" />
+    <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Camera5DoF.h" />
     <ClInclude Include="Component.h" />

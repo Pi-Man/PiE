@@ -20,12 +20,14 @@ enum Uniform_Type {
 
 struct Uniform {
 	GLint location;
-	void* data;
+	union {
+		void* v;
+		GLfloat* f;
+		GLint* i;
+	} data;
 	Uniform_Type type;
 
 	void init(std::string name, GLuint shaderID, Uniform_Type type);
-	template<typename T>
-	T* cast();
 	void destroy();
 	void apply();
 };
