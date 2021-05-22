@@ -9,7 +9,9 @@ out vec4 col;
 
 uniform sampler2D main_tex;
 uniform float time;
+
 uniform vec2 z0;
+uniform float colorShift;
 
 vec2 square(vec2 z) {
 	vec2 z2;
@@ -29,6 +31,6 @@ void main() {
 		z = square(z) + c;
 		count++;
 	}
-	float x = 1 - exp(-count / 100.0);
+	float x = 1 - exp(-count / 100.0) + colorShift;
     col = vec4(sin(x*5.5*PI), sin(x*5.5*PI - PI/2), sin(x*5.5*PI - PI), 1);
 }

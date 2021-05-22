@@ -27,6 +27,7 @@
 #include "ObjComponent.h"
 #include "DirectionalLight.h"
 #include "PointLight.h"
+#include "Callbacks.h"
 
 namespace PiE {
 
@@ -44,8 +45,14 @@ namespace PiE {
 	// add a render object to the context
 	int addMesh(EngineContext &ctx, RenderObject &vertexArrayObject);
 
+	// remove a render object from the context
+	int removeMesh(EngineContext &ctx, RenderObject &renderObject);
+
 	// add a game object to the context
 	int addGameObject(EngineContext &ctx, GameObject &gameObject);
+
+	// remove a game object from the context
+	int removeGameObject(EngineContext &ctx, GameObject & gameObject);
 
 	// get the current time fraction between fixed updates
 	double getRenderPartialTick(const EngineContext &ctx);
@@ -110,19 +117,19 @@ namespace PiE {
 		std::vector<PointLight*> pointLights;
 
 		// a list of functions to be executed once every fixed update
-		std::vector<std::function<void(EngineContext&)>> fixedUpdate{ 
+		std::vector<FixedUpdateCallback> fixedUpdate{ FixedUpdateCallback(
 			[](EngineContext &ctx) {
 				int flags = SDL_GetWindowFlags(ctx.mainWindow);
 				if (!(flags & SDL_WINDOW_INPUT_FOCUS)) {
 					if (SDL_GetRelativeMouseMode()) SDL_SetRelativeMouseMode(SDL_FALSE);
 				}
-			}
+			})
 		};
 
 		// a list of functions to be executed at the specified event type
-		std::multimap<Uint32, std::function<void(EngineContext&, SDL_Event)>> events = { 
+		std::multimap<Uint32, EventCallback> events = { 
 			{SDL_EventType::SDL_QUIT,
-				[](EngineContext &ctx, SDL_Event event) {shutdownEngine(ctx); }}
+				EventCallback([](EngineContext &ctx, SDL_Event event) {shutdownEngine(ctx); })}
 		};
 
 		// the function to be called to render on every render loop
