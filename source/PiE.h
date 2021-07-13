@@ -2,7 +2,6 @@
 #define _PIE
 
 #include <iostream>
-#include <Windows.h>
 #include <map>
 #include <thread>
 

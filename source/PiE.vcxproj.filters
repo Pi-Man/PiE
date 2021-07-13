@@ -13,49 +13,58 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\game object">
-      <UniqueIdentifier>{163fa436-fc85-49b4-b4e8-3bab936ec149}</UniqueIdentifier>
+    <Filter Include="Source Files\testing">
+      <UniqueIdentifier>{02e6c2be-623e-42d8-b10a-beb976ae3eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\testing">
+      <UniqueIdentifier>{b09a0709-fef6-4be0-87e3-a4354759b433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lighting">
+      <UniqueIdentifier>{2c8513e9-b607-42ab-877a-f57bbd79e7bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\lighting">
-      <UniqueIdentifier>{650a3427-8f93-48bd-8589-f8ce022534c1}</UniqueIdentifier>
+      <UniqueIdentifier>{425982df-4c1d-431e-a735-cf699900d2b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\math">
-      <UniqueIdentifier>{5d292593-d753-4d0f-a5e3-11f41457ff56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\rendering">
-      <UniqueIdentifier>{25fd6ce6-aaca-4705-b891-48eae6a53a53}</UniqueIdentifier>
+    <Filter Include="Resource Files\shaders">
+      <UniqueIdentifier>{ca6c07b8-22e2-4863-a183-ff3e32e9b212}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\sound">
-      <UniqueIdentifier>{65ad9050-6543-4014-a760-02b708c15a6a}</UniqueIdentifier>
+      <UniqueIdentifier>{42c8e2b6-d2ef-4bcf-bda1-96f5de5e6cf6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\util">
-      <UniqueIdentifier>{c38674aa-1b3f-4561-be5a-f13032d9a828}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\game object">
-      <UniqueIdentifier>{ca528773-7733-4f6a-bcb4-a7bd67d557f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\math">
-      <UniqueIdentifier>{74b865ce-6696-4933-9769-8cca2bc73448}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\rendering">
-      <UniqueIdentifier>{b543a8e7-bd16-4913-be97-9c1cdfa0c38b}</UniqueIdentifier>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{37815f92-3acd-49ef-9e33-963c56b48981}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\sound">
-      <UniqueIdentifier>{74178e72-f0c3-463f-a835-da5e7676f90b}</UniqueIdentifier>
+      <UniqueIdentifier>{e1a1aeee-e78f-49f3-90b1-b225d6cb9eed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{7a191f9c-0bcd-4879-ba0b-0de936a47ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\rendering">
+      <UniqueIdentifier>{b5246dea-96f1-445d-8aa7-8b08164b5d17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rendering">
+      <UniqueIdentifier>{dcb115c4-9430-4de0-b4f7-9ee6f5e9e34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{45fb5eb4-5912-4b20-a9fb-33cc769ea3f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game object">
+      <UniqueIdentifier>{315d978d-60b5-46f5-9c0d-1d210e633457}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\util">
-      <UniqueIdentifier>{0d36bb24-8fde-404f-88f4-323d15d5fb2e}</UniqueIdentifier>
+      <UniqueIdentifier>{67f8de3d-f957-4289-acf8-5be71a3e9fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game object">
+      <UniqueIdentifier>{b22db5e8-d7cc-4814-bb75-5c184e00c372}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PiE.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Microphone.cpp">
+      <Filter>Source Files\sound</Filter>
     </ClCompile>
-    <ClCompile Include="ObjComponent.cpp">
-      <Filter>Source Files\game object</Filter>
-    </ClCompile>
-    <ClCompile Include="FourierNoiseGenerator.cpp">
-      <Filter>Source Files\math</Filter>
+    <ClCompile Include="Speaker.cpp">
+      <Filter>Source Files\sound</Filter>
     </ClCompile>
     <ClCompile Include="Matrix4f.cpp">
       <Filter>Source Files\math</Filter>
@@ -63,23 +72,8 @@
     <ClCompile Include="PerlinNoise2D.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
-    <ClCompile Include="Vec3f.cpp">
+    <ClCompile Include="FourierNoiseGenerator.cpp">
       <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera5DoF.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderContext.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexArrayObject.cpp">
-      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="GL_Texture.cpp">
       <Filter>Source Files\rendering</Filter>
@@ -87,82 +81,72 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Microphone.cpp">
-      <Filter>Source Files\sound</Filter>
+    <ClCompile Include="RenderContext.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Speaker.cpp">
-      <Filter>Source Files\sound</Filter>
+    <ClCompile Include="Camera5DoF.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="FPSCounter.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="Obj.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="UpdateLimiter.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="VertexArrayObject.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3f.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="Uniform.cpp">
+    <ClCompile Include="ObjComponent.cpp">
+      <Filter>Source Files\game object</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="PiE.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PiE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files\game object</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\game object</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjComponent.h">
-      <Filter>Header Files\game object</Filter>
-    </ClInclude>
+    <Text Include="testModel.obj">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="vertexshader.txt">
+      <Filter>Resource Files\shaders</Filter>
+    </Text>
+    <Text Include="fragmentShader.txt">
+      <Filter>Resource Files\shaders</Filter>
+    </Text>
+    <Text Include="colorFragmentShader.txt">
+      <Filter>Resource Files\shaders</Filter>
+    </Text>
+    <Text Include="groundFragmentshader.txt">
+      <Filter>Resource Files\shaders</Filter>
+    </Text>
+    <Text Include="normalsgeometryshader.txt">
+      <Filter>Resource Files\shaders</Filter>
+    </Text>
+    <Text Include="wireframegeometryshader.txt">
+      <Filter>Resource Files\shaders</Filter>
+    </Text>
+    <Text Include="test3.obj">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="DirectionalLight.h">
       <Filter>Header Files\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="PointLight.h">
-      <Filter>Header Files\lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="FourierNoiseGenerator.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix4f.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec3f.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="PerlinNoise2D.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera5DoF.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="GL_Texture.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderContext.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderObject.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexArrayObject.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="Speaker.h">
       <Filter>Header Files\sound</Filter>
@@ -170,29 +154,84 @@
     <ClInclude Include="Microphone.h">
       <Filter>Header Files\sound</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix4f.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinNoise2D.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="FourierNoiseGenerator.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_Texture.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContext.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
     <ClInclude Include="AudioFormat.h">
       <Filter>Header Files\sound</Filter>
     </ClInclude>
-    <ClInclude Include="FPSCounter.h">
-      <Filter>Header Files\rendering</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\game object</Filter>
     </ClInclude>
     <ClInclude Include="Macros.h">
-      <Filter>Header Files\rendering</Filter>
+      <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="obj.h">
+    <ClInclude Include="VertexArrayObject.h">
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="UpdateLimiter.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCounter.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\game object</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera5DoF.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3f.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="obj.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Uniform.h">
-      <Filter>Header Files\rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Callbacks.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="ObjComponent.h">
+      <Filter>Header Files\game object</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="PiE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="katana.mtl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
