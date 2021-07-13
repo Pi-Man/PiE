@@ -1,5 +1,5 @@
 # PiE
-A game engine I started working on.
+A simple lightweight Game Engine built on SDL2 GLEW and (soon) OpenAL (curently using Port Audio instead)
 
 Written in C++
 
@@ -54,6 +54,12 @@ add the .lib files to the linker input additional dependencies setting
 set the linker subsystem to Console (this is required by SDL)
 
 note: if you still are unable to build a project, make sure your build settings are correct and that you set the settings for the correct build configuration
+
+# Using VS Template Project
+
+swap branch to Template Project and clone
+
+find the .sln file and open
 
 # Building in VS
 included is a VS project in "source" that you should be able to just open wtih VS
