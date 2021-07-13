@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\SDL\include;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PortAudio\include;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PiE\include;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\GLEW\include\GL;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\SDL;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PortAudio;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PiE;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\GLEW;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\TemplateProject\SDL\include;$(SolutionDir)\TemplateProject\PortAudio\include;$(SolutionDir)\TemplateProject\PiE\include;$(SolutionDir)\TemplateProject\GLEW\include\GL;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\TemplateProject\SDL;$(SolutionDir)\TemplateProject\PortAudio;$(SolutionDir)\TemplateProject\PiE;$(SolutionDir)\TemplateProject\GLEW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\SDL\include;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PortAudio\include;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PiE\include;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\GLEW\include\GL;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\SDL;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PortAudio;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\PiE;C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\TemplateProject\GLEW;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\TemplateProject\SDL\include;$(SolutionDir)\TemplateProject\PortAudio\include;$(SolutionDir)\TemplateProject\PiE\include;$(SolutionDir)\TemplateProject\GLEW\include\GL;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\TemplateProject\SDL;$(SolutionDir)\TemplateProject\PortAudio;$(SolutionDir)\TemplateProject\PiE;$(SolutionDir)\TemplateProject\GLEW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
