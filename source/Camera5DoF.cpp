@@ -1,5 +1,8 @@
 #include "Camera5DoF.h"
 
+static bool _posDirty = true;
+static Vec3f _pos;
+
 Camera5DoF::Camera5DoF(SDL_Window * window) : Camera(window) {}
 
 void Camera5DoF::move(float x, float y, float z) {
@@ -12,7 +15,7 @@ void Camera5DoF::move(float x, float y, float z) {
 
 void Camera5DoF::rotate(float yaw, float pitch, float _) {
 	std::lock_guard<std::mutex> lock(mutex);
-	viewMatrix.rotateYd(-yaw);
+	viewMatrix.rotateD<2, 0>(-yaw);
 	this->pitch += pitch;
 	if (this->pitch > 89.9) {
 		this->pitch = 89.9;
@@ -22,15 +25,15 @@ void Camera5DoF::rotate(float yaw, float pitch, float _) {
 	}
 }
 
-Matrix4f Camera5DoF::getViewMatrix() {
-	std::lock_guard<std::mutex> lock(mutex);
+const Matrix4f Camera5DoF::getViewMatrix() const {
+	//std::lock_guard<std::mutex> lock(mutex);
 	Matrix4f temp = viewMatrix;
-	temp.rotateXd(-pitch);
+	temp.rotateD<1, 2>(-pitch);
 	return temp;
 }
 
-Vec3f Camera5DoF::getPos() {
-	std::lock_guard<std::mutex> lock(mutex);
+const Vec3f Camera5DoF::getPos() const {
+	//std::lock_guard<std::mutex> lock(mutex);
 	if (_posDirty) {
 		Matrix4f inverse = Matrix4f::invert(viewMatrix);
 		_pos = Vec3f ({inverse[3], inverse[7], inverse[11]});

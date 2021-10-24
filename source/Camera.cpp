@@ -2,8 +2,8 @@
 
 Camera::Camera(SDL_Window * window) : window(window) {}
 
-Matrix4f Camera::getProjectionMatrix() {
-	std::lock_guard<std::mutex> lock(mutex);
+const Matrix4f Camera::getProjectionMatrix() const {
+	//std::lock_guard<std::mutex> lock(mutex);
 
 	float f = farPlane;
 	float n = nearPlane;
@@ -34,13 +34,13 @@ Matrix4f Camera::getProjectionMatrix() {
 	return temp;
 }
 
-Matrix4f Camera::getPrevViewMatrix() {
-	std::lock_guard<std::mutex> lock(mutex);
+const Matrix4f Camera::getPrevViewMatrix() const {
+	//std::lock_guard<std::mutex> lock(mutex);
 	return prevViewMatrix;
 }
 
-Matrix4f Camera::getPrevProjectionMatrix() {
-	std::lock_guard<std::mutex> lock(mutex);
+const Matrix4f Camera::getPrevProjectionMatrix() const {
+	//std::lock_guard<std::mutex> lock(mutex);
 	return prevProjMatrix;
 }
 

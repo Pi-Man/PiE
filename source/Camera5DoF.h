@@ -15,9 +15,9 @@ public:
 	void move(float x, float y, float z) override;
 	void rotate(float yaw, float pitch = 0, float _ = 0) override;
 
-	Matrix4f getViewMatrix() override;
+	const Matrix4f getViewMatrix() const override;
 
-	Vec3f getPos() override;
+	const Vec3f getPos() const override;
 };
 
 #endif

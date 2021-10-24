@@ -49,6 +49,7 @@ GL_Texture2D::GL_Texture2D(size_t width, size_t height, GLint filter) : width(wi
 
 GL_Texture2D::~GL_Texture2D() {
 	free(data);
+	glDeleteTextures(1, &ID);
 }
 
 unsigned int * GL_Texture2D::getData() const {

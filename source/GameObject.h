@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Matrix4f.h"
+#include "Matrix.h"
 #include "Component.h"
 #include "VertexArrayObject.h"
 #include "RenderObject.h"

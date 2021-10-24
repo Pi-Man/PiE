@@ -1,8 +1,6 @@
 #ifndef _UPDATE_LIMITER
 #define _UPDATE_LIMITER
 
-#include <windows.h>
-
 #include "FPSCounter.h"
 
 // limits the update rate of an update loop

@@ -9,7 +9,7 @@
 struct RenderContext {
 
 	// whether or not to use the depth buffer
-	bool depthBuffer = true;
+	bool depthEnable = true;
 	// what side of the face to cull
 	int cullFace = GL_BACK;
 	// whether or not to use face culling

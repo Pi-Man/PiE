@@ -1,7 +1,7 @@
 #ifndef _DIRECTIONAL_LIGHT
 #define _DIRECTIONAL_LIGHT
 
-#include "Vec3f.h"
+#include "Vec.h"
 
 // directional light info used to populate shader uniforms
 // * lights are sorted by intensity

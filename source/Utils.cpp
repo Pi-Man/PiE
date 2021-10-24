@@ -1,9 +1,11 @@
 #include "Utils.h"
 
-Vec3f Utils::moveTowards(Vec3f from, Vec3f to, float distance) {
+template<typename T, int N>
+Vec<T, N> Utils::moveTowards(Vec<T, N> from, Vec<T, N> to, T distance) {
 	Vec3f d = to - from;
-	if (d() < distance) return to;
-	return from + d / d() * distance;
+	T mag = d();
+	if (mag < distance) return to;
+	return from + d / mag * distance;
 }
 
 double Utils::lerp(double a, double b, double k) {

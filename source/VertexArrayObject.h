@@ -5,7 +5,7 @@
 #include <vector>
 #include <array>
 
-#include "Vec3f.h"
+#include "Vec.h"
 
 enum VAO_Flags {
 	VAO_NORMALS = 1 << 0,   // enable normals
@@ -14,7 +14,7 @@ enum VAO_Flags {
 };
 
 // holds the vertex and attribute data to be sent to the GPU to render a single object
-class VertexArrayObject {
+struct VertexArrayObject {
 	GLuint ID = -1;
 	GLuint bufferID = -1;
 	GLuint elementID = -1;
@@ -28,7 +28,6 @@ class VertexArrayObject {
 
 	std::vector<GLfloat> calculateNormal(std::vector<GLfloat> && vertexes);
 
-public:
 	// creates a vertex array object with the specified attributes (to be or-ed together)
 	// * default: vertices only
 	VertexArrayObject(long flags = 0);

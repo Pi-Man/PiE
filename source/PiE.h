@@ -30,8 +30,6 @@
 
 namespace PiE {
 
-	typedef SDL_Point Vec2i;
-
 	struct EngineContext;
 
 	// intialize the engine
@@ -142,7 +140,7 @@ namespace PiE {
 		// whether or not render interpolation should be active or not
 		bool lerp = false;
 		
-		EngineContext(unsigned int fps = 60, unsigned int tps = 30, const int OPENGL_MAJOR_VERSION = 3, const int OPENGL_MINOR_VERSION = 0, const int MSAA = -1, Vec2i windowSize = { 600, 600 }) :
+		EngineContext(unsigned int fps = 60, unsigned int tps = 30, const int OPENGL_MAJOR_VERSION = 3, const int OPENGL_MINOR_VERSION = 0, const int MSAA = -1, Vec2i windowSize = { { 600, 600 } }) :
 			tickLimiter(tps, false),
 			renderLimiter(fps, false),
 			OPENGL_MAJOR_VERSION(OPENGL_MAJOR_VERSION),

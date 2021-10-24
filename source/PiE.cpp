@@ -1,4 +1,4 @@
-
+#include <algorithm>
 
 #include "PiE.h"
 
@@ -140,14 +140,14 @@ namespace PiE {
 		double currentTime = (double)SDL_GetTicks();
 
 		double pt = (currentTime - times.first) / ctx.tickLimiter.getLastFrameTime();
-		pt = min(max(pt, 0.0), 1.0);
+		pt = std::min(std::max(pt, 0.0), 1.0);
 
 		return pt;
 	}
 
 	void setRenderContext(EngineContext & ctx, const RenderContext & renderContext) {
 
-		if (renderContext.depthBuffer) {
+		if (renderContext.depthEnable) {
 			glEnable(GL_DEPTH_TEST);
 		}
 		else {
@@ -263,10 +263,10 @@ namespace PiE {
 				GLint lightDirectionID = glGetUniformLocation(_shader.ID, "lightDirection");
 				GLint dirLightColorID = glGetUniformLocation(_shader.ID, "dirLightColor");
 				GLint directionLightCountID = glGetUniformLocation(_shader.ID, "directionLightCount");
-				glUniform3fv(lightDirectionID, min(ctx.dirLights.size(), 4), dirData);
-				glUniform4fv(dirLightColorID, min(ctx.dirLights.size(), 4), colData);
+				glUniform3fv(lightDirectionID, std::min<size_t>(ctx.dirLights.size(), 4), dirData);
+				glUniform4fv(dirLightColorID, std::min<size_t>(ctx.dirLights.size(), 4), colData);
 
-				glUniform1i(directionLightCountID, min(ctx.dirLights.size(), 4));
+				glUniform1i(directionLightCountID, std::min<size_t>(ctx.dirLights.size(), 4));
 				free(dirData);
 				free(colData);
 			}
@@ -298,10 +298,10 @@ namespace PiE {
 				GLint lightPositionID = glGetUniformLocation(_shader.ID, "lightPosition");
 				GLint posLightColorID = glGetUniformLocation(_shader.ID, "posLightColor");
 				GLint positionLightCountID = glGetUniformLocation(_shader.ID, "positionLightCount");
-				glUniform3fv(lightPositionID, min(ctx.pointLights.size(), 4), posData);
-				glUniform4fv(posLightColorID, max(ctx.pointLights.size(), 4), colData);
+				glUniform3fv(lightPositionID, std::min<size_t>(ctx.pointLights.size(), 4), posData);
+				glUniform4fv(posLightColorID, std::min<size_t>(ctx.pointLights.size(), 4), colData);
 
-				glUniform1i(positionLightCountID, min(ctx.pointLights.size(), 4));
+				glUniform1i(positionLightCountID, std::min<size_t>(ctx.pointLights.size(), 4));
 				free(posData);
 				free(colData);
 			}
@@ -360,16 +360,20 @@ namespace PiE {
 		while (ctx.running) {
 
 			if (render) {
-				double time = min(ctx.tickLimiter.getLastNextTimes().second, ctx.renderLimiter.getLastNextTimes().second);
+				double time = std::min(ctx.tickLimiter.getLastNextTimes().second, ctx.renderLimiter.getLastNextTimes().second);
 				double sleep = time / 1000.0 - (double)SDL_GetTicks();
-				if (sleep > 10.0) {
-					Sleep(sleep);
+				if (sleep > 0.0) {
+					SDL_Delay(sleep);
 				}
 			}
 
-			if (render && ctx.renderLimiter.poll().second) ctx.renderer(ctx, ctx.mainCamera, ctx.mainShader);
+			if (render && ctx.renderLimiter.poll().second) {
+				ctx.renderer(ctx, ctx.mainCamera, ctx.mainShader);
+			}
 
-			if (!render) ctx.tickLimiter.push();
+			if (!render) {
+				ctx.tickLimiter.push();
+			}
 
 			if (!render || ctx.tickLimiter.poll().second) {
 
@@ -441,7 +445,7 @@ namespace PiE {
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, ctx.MSAA);
 		}
 
-		ctx.mainWindow = SDL_CreateWindow("PiE", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ctx.windowSize.x, ctx.windowSize.y, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+		ctx.mainWindow = SDL_CreateWindow("PiE", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ctx.windowSize[0], ctx.windowSize[1], SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 		if (ctx.mainWindow == nullptr) {
 			std::cout << "ERROR: " << SDL_GetError() << std::endl;

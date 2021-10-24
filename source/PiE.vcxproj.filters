@@ -66,9 +66,6 @@
     <ClCompile Include="Speaker.cpp">
       <Filter>Source Files\sound</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix4f.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
     <ClCompile Include="PerlinNoise2D.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
     <ClCompile Include="VertexArrayObject.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Vec3f.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
     <ClCompile Include="Obj.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
@@ -116,6 +110,18 @@
     </ClCompile>
     <ClCompile Include="PiE.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>Source Files\testing</Filter>
+    </ClCompile>
+    <ClCompile Include="Uniform.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera4D.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Model4D.cpp">
+      <Filter>Source Files\rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +149,9 @@
     <Text Include="test3.obj">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="newtonFragmentShader.txt">
+      <Filter>Resource Files\shaders</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectionalLight.h">
@@ -153,9 +162,6 @@
     </ClInclude>
     <ClInclude Include="Microphone.h">
       <Filter>Header Files\sound</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix4f.h">
-      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="PerlinNoise2D.h">
       <Filter>Header Files\math</Filter>
@@ -199,9 +205,6 @@
     <ClInclude Include="Camera5DoF.h">
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Vec3f.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
     <ClInclude Include="obj.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -222,6 +225,21 @@
     </ClInclude>
     <ClInclude Include="PiE.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Uniform.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera4D.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Model4D.h">
+      <Filter>Header Files\rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

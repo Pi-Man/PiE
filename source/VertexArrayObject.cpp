@@ -996,10 +996,10 @@ void VertexArrayObject::bindBuffers() {
 		glBindVertexArray(ID);
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * buffer.size(), buffer.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * buffer.size(), buffer.data(), GL_DYNAMIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indicies.size(), indicies.data(), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indicies.size(), indicies.data(), GL_DYNAMIC_DRAW);
 
 		int offset = 0;
 
@@ -1016,6 +1016,13 @@ void VertexArrayObject::bindBuffers() {
 			glEnableVertexAttribArray(2);
 			offset += 2;
 		}
+	}
+	else {
+		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * buffer.size(), buffer.data(), GL_DYNAMIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementID);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indicies.size(), indicies.data(), GL_DYNAMIC_DRAW);
 	}
 
 	//glBindVertexArray(0);

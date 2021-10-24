@@ -1,0 +1,78 @@
+#version 330 core
+
+in vec3 ObjectPos;
+in vec3 Normal;
+in vec2 uv;
+in vec3 Color;
+
+in Data {
+	vec4 ObjectPos;
+	vec3 Normal;
+	vec2 uv;
+	vec3 Color;
+} data_in;
+
+out vec4 col;
+
+uniform ivec2 viewport;
+
+uniform vec3 lightDirection[4];
+uniform vec4 dirLightColor[4];
+uniform int directionLightCount;
+
+uniform vec3 lightPosition[4];
+uniform vec4 posLightColor[4];
+uniform int positionLightCount;
+
+uniform sampler2D main_tex;
+
+uniform int iterations;
+
+vec2 cplxMul(vec2 a, vec2 b) {
+	vec2 c;
+	c.x = a.x*b.x - a.y*b.y;
+	c.y = a.x*b.y + a.y*b.x;
+	return c;
+}
+
+vec2 cplxDiv(vec2 a, vec2 b) {
+	vec2 b_bar = vec2(b.x, -b.y);
+	vec2 num = cplxMul(a, b_bar);
+	float denom = b.x*b.x + b.y*b.y;
+	return num / denom;
+}
+
+vec2 f(vec2 x) {
+	return cplxMul(cplxMul(x, x), x) + vec2(1, 0);
+}
+
+vec2 df(vec2 x) {
+	return 3*cplxMul(x, x);
+}
+
+int grid(vec2 x, float scale, float width) {
+	return int(floor((x + width/2)/scale) == floor((x - width/2)/scale));
+}
+
+int xAxis(vec2 x, float width) {
+	return 1-int(floor((x.x + width/2)/100) == floor((x.x - width/2)/100));
+}
+
+int yAxis(vec2 x, float width) {
+	return 1-int(floor((x.y + width/2)/100) == floor((x.y - width/2)/100));
+}
+
+void main() {
+	vec2 x0 = data_in.ObjectPos.xz * 4.0;
+	vec2 x = x0;
+	int i;
+	for(i = 0; i < iterations; i++) {
+		x = x - cplxDiv(f(x), df(x));
+	}
+	float arg = atan(x.y, x.x);
+	float v = (arg + 3.141592) / (2*3.141592);
+	v = floor(v*3)/3;
+	col = vec4(vec3(v), 1);
+	//col = vec4(vec3(grid(x, 0.1, 0.01)) + vec3(xAxis(x, 0.01), yAxis(x, 0.01), 0), 1);
+	//col = vec4(-x.x, x.x, 0, 1);
+}

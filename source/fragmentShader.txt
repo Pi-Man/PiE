@@ -1,0 +1,38 @@
+#version 330 core
+
+in vec3 ObjectPos;
+in vec3 Normal;
+in vec2 uv;
+in vec3 Color;
+
+out vec4 col;
+
+uniform ivec2 viewport;
+
+uniform vec3 lightDirection[4];
+uniform vec4 dirLightColor[4];
+uniform int directionLightCount;
+
+uniform vec3 lightPosition[4];
+uniform vec4 posLightColor[4];
+uniform int positionLightCount;
+
+uniform sampler2D main_tex;
+
+void main() {
+	vec3 normal = normalize(Normal);
+	vec3 dirShading = vec3(0);
+	for (int i = 0; i < directionLightCount; i++) {
+		dirShading += clamp(dot(lightDirection[i], normal), 0.0, 1.0) * dirLightColor[i].rgb * dirLightColor[i].a;
+	}
+	vec3 pointShading = vec3(0);
+	for (int i = 0; i < positionLightCount; i++) {
+		vec3 d = lightPosition[i] - ObjectPos;
+		float s = length(d);
+		pointShading += clamp(dot(normal, d/s), 0.0, 1.0) / s / s * posLightColor[i].rgb * posLightColor[i].a;
+	}
+	//vec3 shading = round(dirShading * 2) / 2 + round(pointShading * 2) / 2;
+	vec3 shading = dirShading + pointShading;
+	col = texture(main_tex, uv);
+	col.xyz = (1 - exp(-shading * col.xyz));
+}

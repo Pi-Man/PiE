@@ -7,15 +7,20 @@
 #include <SDL.h>
 
 enum Uniform_Type {
-	I,
+	VEC1I,
 	VEC2I,
 	VEC3I,
 	VEC4I,
-	F,
+	VEC1,
 	VEC2,
 	VEC3,
 	VEC4,
-	MAT4
+	VEC1D,
+	VEC2D,
+	VEC3D,
+	VEC4D,
+	MAT4,
+	MAT4D
 };
 
 struct Uniform {
@@ -24,6 +29,7 @@ struct Uniform {
 		void* v;
 		GLfloat* f;
 		GLint* i;
+		GLdouble* d;
 	} data;
 	Uniform_Type type;
 

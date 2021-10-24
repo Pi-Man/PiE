@@ -16,7 +16,7 @@ double UpdateLimiter::push() {
 	else {
 		long int time = _nextFrameTime - SDL_GetTicks();
 		if (time > 0) {
-			Sleep(time);
+			SDL_Delay(time);
 		}
 	}
 

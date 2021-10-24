@@ -64,8 +64,8 @@ double PerlinNoise2D::get(double x, double y) const {
 	double u = fade(dx);
 	double v = fade(dy);
 
-	double x1 = Utils::lerp(u, gradientDot(hash00, dx, dy), gradientDot(hash10, dx - 1, dy));
-	double x2 = Utils::lerp(u, gradientDot(hash01, dx, dy - 1), gradientDot(hash11, dx - 1, dy - 1));
+	double x1 = Utils::lerp(gradientDot(hash00, dx, dy), gradientDot(hash10, dx - 1, dy), u);
+	double x2 = Utils::lerp(gradientDot(hash01, dx, dy - 1), gradientDot(hash11, dx - 1, dy - 1), u);
 
-	return Utils::lerp(v, x1, x2) / 2.0 + 0.5;
+	return Utils::lerp(x1, x2, v) / 2.0 + 0.5;
 }

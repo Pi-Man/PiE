@@ -2,7 +2,7 @@
 
 bool RenderContext::operator==(RenderContext &other) const {
 	return 
-		depthBuffer == other.depthBuffer && \
+		depthEnable == other.depthEnable && \
 		cullFace == other.cullFace && \
 		cullEnable == other.cullEnable && \
 		blendSRC == other.blendSRC && \

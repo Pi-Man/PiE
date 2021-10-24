@@ -6,7 +6,7 @@
 
 #include <SDL.h>
 
-#include "Matrix4f.h"
+#include "Matrix.h"
 
 // abstract camera class
 // * currently the only one camera type is added (Camera5DoF) however you can extend this class your self if needed
@@ -14,11 +14,9 @@ class Camera {
 
 protected:
 	std::mutex mutex;
-	Matrix4f viewMatrix, prevViewMatrix;
+	Matrix4f viewMatrix = Matrix4f::Identity(), prevViewMatrix;
 	Matrix4f projMatrix, prevProjMatrix;
 	SDL_Window* window;
-	bool _posDirty = true;
-	Vec3f _pos;
 public:
 
 	// if the camera should use an orthogonal projection matrix
@@ -43,16 +41,16 @@ public:
 	virtual void rotate(float yaw, float pitch = 0, float roll = 0) = 0;
 
 	// get the view matrix of the camera
-	virtual Matrix4f getViewMatrix() = 0;
+	virtual const Matrix4f getViewMatrix() const = 0;
 	// get the projection matrix of the camera
-	Matrix4f getProjectionMatrix();
+	const Matrix4f getProjectionMatrix() const;
 	// get the view matrix of the camera from the previous tick (only populated if render interpolation is active)
-	Matrix4f getPrevViewMatrix();
+	const Matrix4f getPrevViewMatrix() const;
 	// get the projection matrix of the camera from the previous tick (only populated if render interpolation is active)
-	Matrix4f getPrevProjectionMatrix();
+	const Matrix4f getPrevProjectionMatrix() const;
 
 	// get the current position of the camera
-	virtual Vec3f getPos() = 0;
+	virtual const Vec3f getPos() const = 0;
 
 	// set the clip planes of the camera
 	void setClipPlanes(float nearPlane = 0.125f, float farPlane = 256.0f);
