@@ -123,6 +123,9 @@
     <ClCompile Include="Model4D.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
+    <ClCompile Include="json.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="testModel.obj">
@@ -240,6 +243,9 @@
     </ClInclude>
     <ClInclude Include="Model4D.h">
       <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

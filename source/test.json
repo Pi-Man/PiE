@@ -1,0 +1,11 @@
+{
+  "someKey" : "someString",
+  "someOtherKey" : 10.0123,
+  "someArray" : [
+    {
+      "someObject" : {"bar":1234}
+    },
+    321,
+    "hello"
+    ]
+}

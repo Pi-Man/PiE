@@ -1,6 +1,7 @@
 #include "PiE.h"
 #include "Model4D.h"
 #include "Camera4D.h"
+#include "json.h"
 
 //Camera *camera;
 
@@ -110,6 +111,59 @@ void update4Dmodel(PiE::EngineContext &ctx) {
 }
 
 int main(int argc, char** args) {
+
+	JSON::Element rootObject = JSON::parse("test.json");
+
+	JSON::print(rootObject);
+
+	JSON::Element rootObject2{ ""_key, JSON::OBJECT };
+	rootObject2.children.insert({ "key", JSON::Element{"key"_key, JSON::ARRAY} });
+	rootObject2.children["key"].elements.push_back(JSON::Element{ "0"_key, JSON::NUMBER });
+	rootObject2.children["key"].elements[0] = 10;
+
+	rootObject["someArray"]["0"]["someObject"]["bar"] = 10;
+	double foo = rootObject["someArray"][0]["someObject"]["bar"];
+
+	auto& barObj = rootObject["someArray"]["0"]["someObject"]["bar"];
+	barObj = 10;
+	foo = barObj;
+
+	JSON::Element test{ "hello", "world", 10, {1, 2, 3}, "foo" };
+	JSON::Element test2{
+		{ "foo"_key, "bar" },
+		{ "number"_key, 10 },
+		{ "array"_key, {
+			1,
+			2,
+			3
+		} },
+		{ "object"_key, {
+			{ "key"_key, 20 }
+		} }
+	};
+
+	test = { "world", "hello", 100, "bar", JSON::asArray({3, 2, 1}) };
+	test2 = { "test2"_key, JSON::OBJECT };
+	test2 = JSON::asObject({
+		{ "foo", "bar" },
+		{ "bar", 10 },
+		{ "array", JSON::asArray({
+			1,
+			2,
+			3
+		}) },
+		{ "object", JSON::asObject({
+			{"key", 20 }
+		}) }
+	});
+	test2["object"]["newKey"] = 50;
+	test2["foo"] = JSON::Element{ "foo"_key, JSON::NUMBER } = "17";
+
+	JSON::print(test2);
+
+	//test = "hello"; // correctly throws debug assertion error as test is not a JSON::STRING
+
+	//barObj = "hello"; // correctly errors on converting "hello" to a number
 
 	PiE::EngineContext ctx;
 
