@@ -53,20 +53,26 @@ void Camera4D::set4DViewMatrix(const Matrix<float, 5>& matrix) {
 	viewMatrix4D = matrix;
 }
 
-VertexArrayObject Camera4D::process4DModel(const Model4D & model) const {
-	VertexArrayObject VAO(0);
+void Camera4D::process4DModel(VertexArrayObject & VAO, const Model4D & model) const {
 	Matrix<float, 5> view = get4DViewMatrix();
 	//view.invert();
+	size_t buffer_index = 0;
+	if (VAO.buffer.size() == 0) {
+		VAO.buffer.assign(model.points.size() * VAO.stride, 0);
+	}
 	for (const Vec4f &v : model.points) {
 		Vec4f v2 = view * model.matrix * v;
 		//if (v2[3] < 0.01) continue;
 		Vec3f v3 = Vec3f({ v2[0], v2[1], v2[2] }) / v2[3];
-		VAO.buffer.push_back(v3[0]);
-		VAO.buffer.push_back(v3[1]);
-		VAO.buffer.push_back(v3[2]);
+		VAO.buffer[buffer_index + 0] = v3[0];
+		VAO.buffer[buffer_index + 1] = v3[1];
+		VAO.buffer[buffer_index + 2] = v3[2];
+		buffer_index += VAO.stride;
 	}
-	for (size_t i : model.indices) {
-		VAO.indicies.push_back((GLuint)i);
+	if (VAO.indicies.size() == 0) {
+		for (size_t i : model.indices) {
+			VAO.indicies.push_back((GLuint)i);
+		}
 	}
-	return VAO;
+	VAO.bindBuffers();
 }

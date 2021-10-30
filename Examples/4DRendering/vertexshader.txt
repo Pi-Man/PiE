@@ -1,0 +1,92 @@
+#version 330 core
+layout (location = 0) in vec3 PosIn;
+layout (location = 1) in vec3 NormIn;
+layout (location = 2) in vec2 UVIn;
+layout (location = 3) in vec3 ColorIn;
+
+out Data {
+	vec4 ObjectPos;
+	vec3 Normal;
+	vec2 uv;
+	vec3 Color;
+} data_out;
+
+out vec3 ObjectPos;
+out vec3 Normal;
+out vec2 uv;
+out vec3 Color;
+
+uniform mat4 transformation;
+uniform mat4 worldMatrix;
+uniform float time;
+
+uniform sampler1D hashTable;
+
+float fade(float k) {
+
+	return k * k * k * (k * (k * 6 - 15) + 10);
+}
+
+float gradientDot(int hash, float x, float y) {
+
+	int side = hash >> 6;
+
+	float distance = (hash & 63) / 32.0 - 1.0;
+
+	if (side == 0) {
+		return x + y * distance;
+	}
+	else if (side == 1) {
+		return x * distance + y;
+	}
+	else if (side == 2) {
+		return -x + y * distance;
+	}
+	else if (side == 3) {
+		return x * distance - y;
+	}
+
+	return 10.0;
+}
+
+float lerp(float k, float a, float b) {
+	return a + k * (b - a);
+}
+
+float noise(float x, float y) {
+
+	int xi = int(floor(x)) & 255;
+	int yi = int(floor(y)) & 255;
+
+	float dx = x - int(floor(x));
+	float dy = y - int(floor(y));
+	
+	int hash00 = int(texelFetch(hashTable, (int(texelFetch(hashTable, xi, 0).r * 255) + yi) & 255, 0).r * 255);
+	int hash01 = int(texelFetch(hashTable, (int(texelFetch(hashTable, xi, 0).r * 255) + yi + 1) & 255, 0).r * 255);
+	int hash10 = int(texelFetch(hashTable, (int(texelFetch(hashTable, xi + 1, 0).r * 255) + yi) & 255, 0).r * 255);
+	int hash11 = int(texelFetch(hashTable, (int(texelFetch(hashTable, xi + 1, 0).r * 255) + yi + 1) & 255, 0).r * 255);
+
+	float u = fade(dx);
+	float v = fade(dy);
+
+	float x1 = lerp(u, gradientDot(hash00, dx, dy), gradientDot(hash10, dx - 1, dy));
+	float x2 = lerp(u, gradientDot(hash01, dx, dy - 1), gradientDot(hash11, dx - 1, dy - 1));
+
+	return lerp(v, x1, x2) / 2.0 + 0.5;
+}
+
+void main() {
+	vec3 pos = PosIn;
+	//pos.y += sin(pos.x*pos.x/5 + pos.z*pos.z/5 - time*3)/(pos.x*pos.x/50 + pos.z*pos.z/50+0.5);
+	//pos *= sin(time)/2 + 0.5;
+	gl_Position = transformation * vec4(pos, 1.0);
+	//gl_Position = vec4(gl_Position.xy/gl_Position.z, 0.5, 0.5);
+	data_out.ObjectPos = vec4(pos, 1.0);
+	data_out.Normal = NormIn;
+	data_out.uv = UVIn;
+	data_out.Color = ColorIn;
+	ObjectPos = (worldMatrix * vec4(pos, 1)).xyz;
+	Normal = (worldMatrix * vec4(NormIn, 0)).xyz;
+	uv = UVIn;
+	Color = ColorIn;
+}

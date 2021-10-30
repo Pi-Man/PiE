@@ -1,5 +1,17 @@
 #include "Model4D.h"
 
+void Model4D::convertVAO(const VertexArrayObject & VAO) {
+	size_t buffer_index = 0;
+	while (buffer_index < VAO.buffer.size()) {
+		Vec4f point{ {VAO.buffer[buffer_index], VAO.buffer[buffer_index + 1], VAO.buffer[buffer_index + 2], 0 } };
+		points.push_back(point);
+		buffer_index += VAO.stride;
+	}
+	for (GLuint indice : VAO.indicies) {
+		indices.push_back((size_t)indice);
+	}
+}
+
 void Model4D::addTriangleIndices(int a, int b, int c) {
 	indices.push_back(a);
 	indices.push_back(b);

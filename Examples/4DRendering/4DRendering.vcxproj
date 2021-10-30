@@ -20,10 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{DDC02F3D-B8CB-48CA-9C1C-ACF28BCCF203}</ProjectGuid>
-    <RootNamespace>My3DRenderTest</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <ProjectName>PiE</ProjectName>
+    <ProjectGuid>{01ABA55C-3D42-4425-8418-235DAF14FFC1}</ProjectGuid>
+    <RootNamespace>My4DRendering</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -40,13 +39,13 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,13 +70,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\source\GLEW\include\GL;$(SolutionDir)\source\SDL\include;$(SolutionDir)\source\PortAudio\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\source\GLEW;$(SolutionDir)\source\SDL;$(SolutionDir)\source\PortAudio;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)source\GLEW\include\GL;$(SolutionDir)source\SDL\include;$(SolutionDir)source;$(SolutionDir)source\PortAudio\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)source\GLEW;$(SolutionDir)source\SDL;$(SolutionDir)x64\Debug;$(SolutionDir)source\PortAudio;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\source\GLEW\include\GL;$(SolutionDir)\source\PortAudio\include;$(SolutionDir)\source\SDL\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\source\GLEW;$(SolutionDir)\source\SDL;$(SolutionDir)\source\PortAudio;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)source\GLEW\include\GL;$(SolutionDir)source\PortAudio\include;$(SolutionDir)source;$(SolutionDir)source\SDL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)source\GLEW;$(SolutionDir)source\SDL;$(SolutionDir)x64\Release;$(SolutionDir)source\PortAudio;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -86,6 +85,38 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>PiEd.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>PiEd.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>PiE.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -95,63 +126,16 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>PiE.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera4D.cpp" />
-    <ClCompile Include="Camera5DoF.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="json.cpp" />
-    <ClCompile Include="Model4D.cpp" />
-    <ClCompile Include="PiE.cpp" />
-    <ClCompile Include="FourierNoiseGenerator.cpp" />
-    <ClCompile Include="FPSCounter.cpp" />
-    <ClCompile Include="GL_Texture.cpp" />
-    <ClCompile Include="Microphone.cpp" />
-    <ClCompile Include="Obj.cpp" />
-    <ClCompile Include="ObjComponent.cpp" />
-    <ClCompile Include="PerlinNoise2D.cpp" />
-    <ClCompile Include="RenderContext.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Speaker.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Uniform.cpp" />
-    <ClCompile Include="UpdateLimiter.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="VertexArrayObject.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AudioFormat.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Camera4D.h" />
-    <ClInclude Include="Camera5DoF.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="DirectionalLight.h" />
-    <ClInclude Include="json.h" />
-    <ClInclude Include="Model4D.h" />
-    <ClInclude Include="PiE.h" />
-    <ClInclude Include="FourierNoiseGenerator.h" />
-    <ClInclude Include="FPSCounter.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GL_Texture.h" />
-    <ClInclude Include="ObjComponent.h" />
-    <ClInclude Include="PointLight.h" />
-    <ClInclude Include="Uniform.h" />
-    <ClInclude Include="Utils.h" />
-    <ClInclude Include="Macros.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="Microphone.h" />
-    <ClInclude Include="obj.h" />
-    <ClInclude Include="PerlinNoise2D.h" />
-    <ClInclude Include="RenderContext.h" />
-    <ClInclude Include="RenderObject.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Speaker.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="UpdateLimiter.h" />
-    <ClInclude Include="Vec.h" />
-    <ClInclude Include="VertexArrayObject.h" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

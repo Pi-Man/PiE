@@ -23,7 +23,7 @@ public:
 	const Matrix4f getViewMatrix() const override;
 	const Matrix<float, 5> get4DViewMatrix() const;
 	void set4DViewMatrix(const Matrix<float, 5> &matrix);
-	VertexArrayObject process4DModel(const Model4D &model) const;
+	void process4DModel(VertexArrayObject & VAO, const Model4D &model) const;
 };
 
 template<>

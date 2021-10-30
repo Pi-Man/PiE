@@ -13,20 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\testing">
-      <UniqueIdentifier>{02e6c2be-623e-42d8-b10a-beb976ae3eb7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\testing">
-      <UniqueIdentifier>{b09a0709-fef6-4be0-87e3-a4354759b433}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\lighting">
       <UniqueIdentifier>{2c8513e9-b607-42ab-877a-f57bbd79e7bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\lighting">
       <UniqueIdentifier>{425982df-4c1d-431e-a735-cf699900d2b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\shaders">
-      <UniqueIdentifier>{ca6c07b8-22e2-4863-a183-ff3e32e9b212}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\sound">
       <UniqueIdentifier>{42c8e2b6-d2ef-4bcf-bda1-96f5de5e6cf6}</UniqueIdentifier>
@@ -111,9 +102,6 @@
     <ClCompile Include="PiE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>Source Files\testing</Filter>
-    </ClCompile>
     <ClCompile Include="Uniform.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
@@ -126,35 +114,6 @@
     <ClCompile Include="json.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="testModel.obj">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="vertexshader.txt">
-      <Filter>Resource Files\shaders</Filter>
-    </Text>
-    <Text Include="fragmentShader.txt">
-      <Filter>Resource Files\shaders</Filter>
-    </Text>
-    <Text Include="colorFragmentShader.txt">
-      <Filter>Resource Files\shaders</Filter>
-    </Text>
-    <Text Include="groundFragmentshader.txt">
-      <Filter>Resource Files\shaders</Filter>
-    </Text>
-    <Text Include="normalsgeometryshader.txt">
-      <Filter>Resource Files\shaders</Filter>
-    </Text>
-    <Text Include="wireframegeometryshader.txt">
-      <Filter>Resource Files\shaders</Filter>
-    </Text>
-    <Text Include="test3.obj">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="newtonFragmentShader.txt">
-      <Filter>Resource Files\shaders</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectionalLight.h">
@@ -247,15 +206,5 @@
     <ClInclude Include="json.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="katana.mtl">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="test.png">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>

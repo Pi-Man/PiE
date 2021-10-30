@@ -1,13 +1,17 @@
 #pragma once
 #include <vector>
+
 #include "Vec.h"
 #include "Matrix.h"
+#include "VertexArrayObject.h"
 struct Model4D
 {
 	std::vector<Vec4f> points;
 	std::vector<size_t> indices;
 
 	Matrix<float, 5> matrix = Matrix<float, 5>::Identity();
+
+	void convertVAO(const VertexArrayObject & VAO);
 
 	//  c
 	// / \
