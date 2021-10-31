@@ -47,9 +47,9 @@ int main(int argc, char** args) {
 
 	SDL_SetWindowTitle(ctx.mainWindow, "Hello Square");
 	//----------set up main camera and shader-------------
-	camera = new Camera5DoF(ctx.mainWindow);
+	Camera5DoF camera{ ctx.mainWindow };
 
-	ctx.mainCamera = camera;
+	ctx.mainCamera = &camera;
 
 	Shader shader;
 
@@ -60,15 +60,15 @@ int main(int argc, char** args) {
 	RenderObject RO;
 	RO.VAO = VertexArrayObject();
 	RO.VAO.addQuad({ // simple rect from 1,1 to -1,-1
-		-1.0f, -1.0f, 1.0f,
-		+1.0f, -1.0f, 1.0f,
-		+1.0f, +1.0f, 1.0f,
-		-1.0f, +1.0f, 1.0f,
-  });
-	
+		-1.0f, -1.0f, 0.0f,
+		+1.0f, -1.0f, 0.0f,
+		+1.0f, +1.0f, 0.0f,
+		-1.0f, +1.0f, 0.0f,
+	});
+
 	PiE::addMesh(ctx, RO);
 	//-------------------run main loop--------------------
-	camera->move(0, 0, -1);
+	camera.move(0, 0, -1);
 	PiE::startMainGameLoop(ctx, true);
 
 	return 0;
