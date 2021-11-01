@@ -18,7 +18,7 @@ public:
 	PerlinNoise2D(long seed = SDL_GetTicks());
 
 	// get value at specified location
-	// * returns 0-1
+	// * returns -1 to 1
 	double get(double x, double y) const;
 
 };

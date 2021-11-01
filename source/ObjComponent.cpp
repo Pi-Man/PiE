@@ -5,7 +5,7 @@ ObjComponent::ObjComponent(std::string file, Shader shader) : file(file), shader
 ObjComponent::~ObjComponent() {
 	for (RenderObject *obj : parts) {
 		std::vector<RenderObject*>::iterator it = std::find(gameObject->renderObjects.begin(), gameObject->renderObjects.end(), obj);
-		gameObject->renderObjects.erase(it); // TODO: remove component method
+		gameObject->renderObjects.erase(it);
 		delete(obj);
 	}
 }

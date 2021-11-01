@@ -1,0 +1,24 @@
+#version 330 core
+
+in vec3 ObjectPos;
+in vec3 Normal;
+in vec2 uv;
+in vec3 Color;
+
+out vec4 col;
+
+uniform ivec2 viewport;
+
+uniform vec3 lightDirection[4];
+uniform vec4 dirLightColor[4];
+uniform int directionLightCount;
+
+uniform vec3 lightPosition[4];
+uniform vec4 posLightColor[4];
+uniform int positionLightCount;
+
+uniform sampler2D main_tex;
+
+void main() {
+	col = texture(main_tex, uv);
+}

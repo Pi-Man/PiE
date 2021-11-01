@@ -355,13 +355,16 @@ namespace PiE {
 
 		ctx.tickLimiter.start();
 
-		if (render) ctx.renderLimiter.start();
+		if (render) {
+			ctx.renderLimiter.start();
+			setRenderContext(ctx, ctx.lastRenderContext);
+		}
 
 		while (ctx.running) {
 
 			if (render) {
 				double time = std::min(ctx.tickLimiter.getLastNextTimes().second, ctx.renderLimiter.getLastNextTimes().second);
-				double sleep = time / 1000.0 - (double)SDL_GetTicks();
+				double sleep = time - (double)SDL_GetTicks();
 				if (sleep > 0.0) {
 					SDL_Delay(sleep);
 				}

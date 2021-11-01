@@ -60,7 +60,7 @@ double UpdateLimiter::getLastFrameTime() {
 }
 
 std::pair<double, double> UpdateLimiter::getLastNextTimes() {
-	return std::pair<double, double>{_nextFrameTime - lastFrameTime, _nextFrameTime};
+	return { _nextFrameTime - lastFrameTime, _nextFrameTime };
 }
 
 bool UpdateLimiter::getExact() {

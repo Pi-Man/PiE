@@ -83,7 +83,7 @@ namespace PiE {
 		SDL_GLContext glContext;
 
 		// the currently set render context 
-		RenderContext lastRenderContext;
+		RenderContext lastRenderContext{};
 
 		// the update limiters for the fixed update loop and the render loop
 		UpdateLimiter tickLimiter, renderLimiter;

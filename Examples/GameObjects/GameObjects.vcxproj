@@ -18,10 +18,31 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="RandomPositionRotation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="uv_cube.mtl" />
+    <None Include="uv_cube.obj">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="colorFragmentShader.txt" />
+    <Text Include="unlitFragmentShader.txt" />
+    <Text Include="vertexshader.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RandomPositionRotation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{01ABA55C-3D42-4425-8418-235DAF14FFC1}</ProjectGuid>
-    <RootNamespace>My4DRendering</RootNamespace>
+    <ProjectGuid>{B6EC8382-0B83-4EAE-AAB4-227C2AC92BAD}</ProjectGuid>
+    <RootNamespace>GameObjects</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,7 +99,23 @@
     <IncludePath>$(SolutionDir)source\GLEW\include\GL;$(SolutionDir)source\PortAudio\include;$(SolutionDir)source;$(SolutionDir)source\SDL\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)source\GLEW;$(SolutionDir)source\SDL;$(SolutionDir)x64\Release;$(SolutionDir)source\PortAudio;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>PiE.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -90,7 +127,7 @@
       <AdditionalDependencies>PiEd.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -113,36 +150,11 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>PiE.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>PiE.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>PiE.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="colorFragmentShader.txt" />
-    <Text Include="fragmentShader.txt" />
-    <Text Include="vertexshader.txt" />
-    <Text Include="wireframegeometryshader.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

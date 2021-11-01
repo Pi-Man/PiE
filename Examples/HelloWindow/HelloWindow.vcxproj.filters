@@ -19,4 +19,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="colorFragmentShader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="vertexshader.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

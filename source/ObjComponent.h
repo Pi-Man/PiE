@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "obj.h"
 
-// a premade component that loads an Wavefront OBJ model
+// a premade component that loads a Wavefront OBJ model
 // * the model is loaded on onAdded
 // * the first render object in parts is parented to the game object, all other render objects are parented to the first render object
 class ObjComponent : public Component {

@@ -18,19 +18,37 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RandomPositionRotation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="uv_cube.obj">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="uv_cube.mtl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="colorFragmentShader.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="fragmentShader.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="vertexshader.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="wireframegeometryshader.txt">
+    <Text Include="unlitFragmentShader.txt">
       <Filter>Resource Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RandomPositionRotation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
