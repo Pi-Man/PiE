@@ -1,3 +1,4 @@
+#include <cctype>
 
 #include "obj.h"
 
@@ -240,65 +241,109 @@ namespace OBJ {
 			while (line[0] == ' ') {
 				line++;
 			}
-			if (strncmp(line, "map_Kd", 5) == 0 && line[6] == ' ') {
+			if (strncmp(line, "map_Kd", 6) == 0 && line[6] == ' ') {
 				line += 7;
+				bool
+					blendu = true,
+					blendv = true,
+					colorCorrection = false,
+					clamp = false
+					;
+				float
+					base = 0,
+					gain = 1,
+					offsetU = 0,
+					offsetV = 0,
+					offsetW = 0,
+					scaleU = 1,
+					scaleV = 1,
+					scaleW = 1,
+					turbulenceU = 0,
+					turbulenveV = 0,
+					turbulenceW = 0
+					;
 				while (line[0] == '-') {
 					line++;
-					if (strncmp(line, "blendu", 6)) {
+					if (strncmp(line, "blendu", 6) == 0) {
 						line += 7;
-						while (line[0] != ' ') line++;
-						line++;
+						if (strncmp(line, "on", 2) == 0) {
+							line += 3;
+						}
+						else if (strncmp(line, "off", 3) == 0) {
+							line += 4;
+							blendu = false;
+						}
 					}
-					else if (strncmp(line, "blendv", 6)) {
+					else if (strncmp(line, "blendv", 6) == 0) {
 						line += 7;
-						while (line[0] != ' ') line++;
-						line++;
+						if (strncmp(line, "on", 2) == 0) {
+							line += 3;
+						}
+						else if (strncmp(line, "off", 3) == 0) {
+							line += 4;
+							blendv = false;
+						}
 					}
-					else if (strncmp(line, "cc", 2)) {
+					else if (strncmp(line, "cc", 2) == 0) {
 						line += 3;
-						while (line[0] != ' ') line++;
-						line++;
+						if (strncmp(line, "on", 2) == 0) {
+							line += 3;
+							colorCorrection = true;
+						}
+						else if (strncmp(line, "off", 3) == 0) {
+							line += 4;
+						}
 					}
-					else if (strncmp(line, "clamp", 4)) {
+					else if (strncmp(line, "clamp", 4) == 0) {
 						line += 5;
-						while (line[0] != ' ') line++;
-						line++;
+						if (strncmp(line, "on", 2) == 0) {
+							line += 3;
+							colorCorrection = true;
+						}
+						else if (strncmp(line, "off", 3) == 0) {
+							line += 4;
+						}
 					}
-					else if (strncmp(line, "mm", 2)) {
-						line += 3;
-						while (line[0] != ' ') line++;
+					else if (strncmp(line, "mm", 2) == 0) {
+						line += 2;
+						const char *values = line;
 						line++;
 						while (line[0] != ' ') line++;
 						line++;
+						while (line[0] != ' ') line++;
+						line++;
+						std::array<double, 2> base_gain = readVec<2>(values);
+						base = base_gain[0];
+						gain = base_gain[1];
 					}
 					else if (line[0] == 'o') {
-						line += 2;
-						while (line[0] != ' ') line++;
-						line++;
-						while (line[0] != ' ') line++;
-						line++;
-						while (line[0] != ' ') line++;
-						line++;
+						line += 1;
+						std::array<double, 2> offset = readVec<2>(line);
+						offsetU = offset[0];
+						offsetV = offset[1];
+						if (std::isdigit(line[0])) {
+							offsetW = readVec<1>(line)[0];
+						}
 					}
 					else if (line[0] == 's') {
-						line += 2;
-						while (line[0] != ' ') line++;
-						line++;
-						while (line[0] != ' ') line++;
-						line++;
-						while (line[0] != ' ') line++;
-						line++;
+						line += 1;
+						std::array<double, 2> scale = readVec<2>(line);
+						scaleU = scale[0];
+						scaleV = scale[1];
+						if (std::isdigit(line[0])) {
+							scaleW = readVec<1>(line)[0];
+						}
 					}
 					else if (line[0] == 't') {
-						line += 2;
-						while (line[0] != ' ') line++;
-						line++;
-						while (line[0] != ' ') line++;
-						line++;
-						while (line[0] != ' ') line++;
-						line++;
+						line += 1;
+						std::array<double, 2> turb = readVec<2>(line);
+						turbulenceU = turb[0];
+						turbulenveV = turb[1];
+						if (std::isdigit(line[0])) {
+							turbulenceW = readVec<1>(line)[0];
+						}
 					}
-					else if (strncmp(line, "texres", 6)) {
+					else if (strncmp(line, "texres", 6) == 0) {
 						line += 7;
 						while (line[0] != ' ') line++;
 						line++;
@@ -310,7 +355,17 @@ namespace OBJ {
 				int n = 0;
 				while (line[n] != '\n') n++;
 				line[n] = 0;
-				map[lastName].texture = new GL_Texture2D(line);
+				map[lastName].texture = new GL_Texture2D(line, (blendu && blendv) ? GL_LINEAR : GL_NEAREST);
+				if (base != 0 || gain != 1) {
+					unsigned char *data = (unsigned char*)map[lastName].texture->getData();
+					for (int i = 0; i < map[lastName].texture->width * map[lastName].texture->height * 4; i++) {
+						int value = (int)data[i] * gain + base * 255;
+						if (value > 255) value = 255;
+						if (value < 0) value = 0;
+						data[i] = value;
+					}
+					map[lastName].texture->bindData();
+				}
 				map[lastName].texture->generateMipMaps();
 			}
 			else if (strncmp(line, "newmtl ", 7) == 0) {
@@ -357,14 +412,17 @@ namespace OBJ {
 				line++;
 			}
 			if (line[0] == 'v') {
-				if (line[1] == ' ') {
-					vertices.push_back(readVec<3>(line + 1));
+				line++;
+				if (line[0] == ' ') {
+					vertices.push_back(readVec<3>(line));
 				}
-				else if (line[1] == 'n' && line[2] == ' ') {
-					normals.push_back(readVec<3>(line + 2));
+				else if (line[0] == 'n' && line[1] == ' ') {
+					line++;
+					normals.push_back(readVec<3>(line));
 				}
-				else if (line[1] == 't' && line[2] == ' ') {
-					texcoords.push_back(readVec<3>(line + 2));
+				else if (line[0] == 't' && line[1] == ' ') {
+					line++;
+					texcoords.push_back(readVec<3>(line));
 				}
 			}
 			else if (line[0] == 'o' && line[1] == ' ' && vertices.size() > 0) {
