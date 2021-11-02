@@ -6,8 +6,8 @@ Written in C++
 # Supports
 
 | Feature   | Added | Basic Implementation | Planned | Not Planned |
-|---------  |-------|----------------------|---------|-------------|
-|GameObjects| :check:   | :check:                  |         |             |
+|---------  |:-----:|:--------------------:|:-------:|:-----------:|
+|GameObjects| X     | X                    |   O     |     O       |
 
 Components
 
