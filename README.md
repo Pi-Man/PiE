@@ -5,39 +5,25 @@ Written in C++
 
 # Supports
 
-| Feature   | Added | Basic Implementation | Planned | Not Planned |
-|---------  |:-----:|:--------------------:|:-------:|:-----------:|
-|GameObjects| X     | X                    |   O     |     O       |
-
-Components
-
-RenderObjects
-
-RenderContexts per RenderObject
-
-Transforms supporting parent Transforms
-
-Custom render functions
-
-Wavefront OBJ loader
-
-JSON parser/printer
-
-Fixed Update loop and separate Render loop with the option of having the render loop on a separate thread
-
-Low Level Audio (will be upgraded to OpenAL)
-
-Custom Shaders
-
-Shader Uniforms (int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d)
-
-Point Lights and Directional Lights
-
-up to 4 point lights and 4 directional lights per render object (no limit for scene)
-
-2D Perlin Noise generator
-
-Height Map mesh generation
+| Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done |
+|------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|
+|GameObjects                   | O          | X       | X                    | X     | X    |
+|Components                    | O          | X       | X                    | X     | X    |
+|RenderObjects                 | O          | X       | X                    | X     | X    |
+|RenderContexts                | O          | X       | X                    | X     | O    | per RenderObject
+|Transforms                    | O          | X       | X                    | X     | X    | supporting parent Transforms
+|Custom render functions       | O          | X       | X                    | X     | O    |
+|Wavefront OBJ loader          | O          | X       | X                    | X     | O    | with .mtl support
+|JSON parser/printer           | O          | X       | X                    | X     | X    |
+|Fixed Update loop             | O          | X       | X                    | X     | X    | and separate Render loop with the option of having the render loop on a separate thread
+|Render Loop (separate thread) | O          | X       | X                    | X     | O    |
+|Low Level Audio               | O          | X       | X                    | O     | O    |
+|Custom Shaders                | O          | X       | X                    | X     | X    |
+|Shader Uniforms               | O          | X       | X                    | X     | O    | (int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d)
+|Point Lights                  | O          | X       | X                    | X     | X    |
+|Directional Lights            | O          | X       | X                    | X     | X    | up to 4 point lights and 4 directional lights per render object (no limit for scene)
+|2D Perlin Noise generator     | O          | X       | X                    | X     | X    |
+|Height Map mesh generation    | O          | X       | X                    | X     | X    |
 
 # Hello Window
 
