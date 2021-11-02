@@ -15,13 +15,14 @@ Written in C++
 |Custom render functions       | O          | X       | X                    | X     | O    |
 |Wavefront OBJ loader          | O          | X       | X                    | X     | O    | with .mtl support
 |JSON parser/printer           | O          | X       | X                    | X     | X    |
-|Fixed Update loop             | O          | X       | X                    | X     | X    | and separate Render loop with the option of having the render loop on a separate thread
+|Fixed Update loop             | O          | X       | X                    | X     | X    |
 |Render Loop (separate thread) | O          | X       | X                    | X     | O    |
+|Render Loop (same thread)     | O          | X       | X                    | X     | X    |
 |Low Level Audio               | O          | X       | X                    | O     | O    |
 |Custom Shaders                | O          | X       | X                    | X     | X    |
-|Shader Uniforms               | O          | X       | X                    | X     | O    | (int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d)
+|Shader Uniforms               | O          | X       | X                    | X     | O    | int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d
 |Point Lights                  | O          | X       | X                    | X     | X    |
-|Directional Lights            | O          | X       | X                    | X     | X    | up to 4 point lights and 4 directional lights per render object (no limit for scene)
+|Directional Lights            | O          | X       | X                    | X     | X    | Up to 4 point lights and 4 directional lights per render object (no limit for scene)
 |2D Perlin Noise generator     | O          | X       | X                    | X     | X    |
 |Height Map mesh generation    | O          | X       | X                    | X     | X    |
 
