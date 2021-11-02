@@ -7,7 +7,7 @@ Written in C++
 
 | Feature   | Added | Basic Implementation | Planned | Not Planned |
 |---------  |-------|----------------------|---------|-------------|
-|GameObjects| - [x] | - [x]                | - [ ]   |     - [ ]   |
+|GameObjects| - [x] foo | - [x]                | - [ ]   |     - [ ]   |
 
 Components
 
