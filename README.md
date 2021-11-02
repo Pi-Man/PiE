@@ -5,8 +5,8 @@ Written in C++
 
 # Supports
 
-| Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done |
-|------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|
+| Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done | Notes
+|------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|:-----
 |GameObjects                   | O          | X       | X                    | X     | X    |
 |Components                    | O          | X       | X                    | X     | X    |
 |RenderObjects                 | O          | X       | X                    | X     | X    |
