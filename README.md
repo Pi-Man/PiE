@@ -40,6 +40,8 @@ Written in C++
 ## Hello Window
 
 ```cpp
+#include <PiE.h>
+
 int main(int argc, char** args) {
 	//-------create context and initialize engine---------
 	PiE::EngineContext ctx;
