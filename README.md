@@ -1,4 +1,3 @@
-<span style="color:blue">X</span>
 # PiE
 A simple lightweight Game Engine built on SDL2 GLEW and (soon) OpenAL (currently using Port Audio instead)
 
