@@ -5,37 +5,37 @@ Written in C++
 
 ## Features
 
-| Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done | Notes
-|------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|:-----
-|GameObjects                   | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Components                    | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|RenderObjects                 | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|RenderContexts                | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   | per RenderObject
-|Transforms                    | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   | supporting parent Transforms
-|Abstract Vector/Matrix types  | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   | N dimensional using any numeric type
-|Custom render pipeline        | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   |
-|Wavefront OBJ loader          | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   | with .mtl support
-|JSON parser/printer           | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Fixed Update loop             | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Render Loop (separate thread) | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   |
-|Render Loop (same thread)     | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Low Level Audio               | 🟥         | 🟩      | 🟩                   | 🟥    | 🟥   | Using Port Audio
-|High Level Audio              | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   | Using OpenAL
-|Custom Shaders                | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Shader Uniforms               | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   | int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d
-|Point Lights                  | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Directional Lights            | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   | Up to 4 point lights and 4 directional lights per render object (no limit for scene)
-|2D Perlin Noise generator     | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Height Map mesh generation    | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
-|Render Hooks                  | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
-|Render Interpolation          | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   |
-|Custom VertexAttributes       | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
-|GUI components                | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
-|Custom Coordinate System      | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
-|Data Save/Load System         | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   | Can currently be done with JSON
-|Keybinding System             | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
-|STL Model Loader              | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
-|4D Render Support             | 🟥         | 🟩      | 🟩                   | 🟥    | 🟥   |
+| Feature                      | Planned | Basic Implementation | Added | Done | Notes
+|------------------------------|:-------:|:--------------------:|:-----:|:----:|:-----
+|GameObjects                   | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Components                    | 🟩      | 🟩                   | 🟩    | 🟩   |
+|RenderObjects                 | 🟩      | 🟩                   | 🟩    | 🟩   |
+|RenderContexts                | 🟩      | 🟩                   | 🟩    | 🟥   | per RenderObject
+|Transforms                    | 🟩      | 🟩                   | 🟩    | 🟩   | supporting parent Transforms
+|Abstract Vector/Matrix types  | 🟩      | 🟩                   | 🟩    | 🟩   | N dimensional using any numeric type
+|Custom render pipeline        | 🟩      | 🟩                   | 🟩    | 🟥   |
+|Wavefront OBJ loader          | 🟩      | 🟩                   | 🟩    | 🟥   | with .mtl support
+|JSON parser/printer           | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Fixed Update loop             | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Render Loop (separate thread) | 🟩      | 🟩                   | 🟩    | 🟥   |
+|Render Loop (same thread)     | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Low Level Audio               | 🟩      | 🟩                   | 🟥    | 🟥   | Using Port Audio
+|High Level Audio              | 🟩      | 🟥                   | 🟥    | 🟥   | Using OpenAL
+|Custom Shaders                | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Shader Uniforms               | 🟩      | 🟩                   | 🟩    | 🟥   | int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d
+|Point Lights                  | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Directional Lights            | 🟩      | 🟩                   | 🟩    | 🟩   | Up to 4 point lights and 4 directional lights per render object (no limit for scene)
+|2D Perlin Noise generator     | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Height Map mesh generation    | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Render Hooks                  | 🟩      | 🟥                   | 🟥    | 🟥   |
+|Render Interpolation          | 🟩      | 🟩                   | 🟩    | 🟥   |
+|Custom VertexAttributes       | 🟩      | 🟥                   | 🟥    | 🟥   |
+|GUI components                | 🟩      | 🟥                   | 🟥    | 🟥   |
+|Custom Coordinate System      | 🟩      | 🟥                   | 🟥    | 🟥   |
+|Data Save/Load System         | 🟩      | 🟥                   | 🟥    | 🟥   | Can currently be done with JSON
+|Keybinding System             | 🟩      | 🟥                   | 🟥    | 🟥   |
+|STL Model Loader              | 🟩      | 🟥                   | 🟥    | 🟥   |
+|4D Render Support             | 🟩      | 🟩                   | 🟥    | 🟥   |
 
 ## Hello Window
 
