@@ -1,3 +1,4 @@
+<span style="color:blue">X</span>
 # PiE
 A simple lightweight Game Engine built on SDL2 GLEW and (soon) OpenAL (currently using Port Audio instead)
 
@@ -7,7 +8,7 @@ Written in C++
 
 | Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done | Notes
 |------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|:-----
-|GameObjects                   | O          | <p style="color:blue">X</p>       | X                    | X     | X    |
+|GameObjects                   | O          | <span style="color:blue">X</span>       | X                    | X     | X    |
 |Components                    | O          | X       | X                    | X     | X    |
 |RenderObjects                 | O          | X       | X                    | X     | X    |
 |RenderContexts                | O          | X       | X                    | X     | O    | per RenderObject
