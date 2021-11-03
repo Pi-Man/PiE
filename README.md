@@ -7,35 +7,35 @@ Written in C++
 
 | Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done | Notes
 |------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|:-----
-|GameObjects                   | 🟥         | X       | X                    | X     | X    |
-|Components                    | O          | X       | X                    | X     | X    |
-|RenderObjects                 | O          | X       | X                    | X     | X    |
-|RenderContexts                | O          | X       | X                    | X     | O    | per RenderObject
-|Transforms                    | O          | X       | X                    | X     | X    | supporting parent Transforms
-|Abstract Vector/Matrix types  | O          | X       | X                    | X     | X    | N dimensional using any numeric type
-|Custom render pipeline        | O          | X       | X                    | X     | O    |
-|Wavefront OBJ loader          | O          | X       | X                    | X     | O    | with .mtl support
-|JSON parser/printer           | O          | X       | X                    | X     | X    |
-|Fixed Update loop             | O          | X       | X                    | X     | X    |
-|Render Loop (separate thread) | O          | X       | X                    | X     | O    |
-|Render Loop (same thread)     | O          | X       | X                    | X     | X    |
-|Low Level Audio               | O          | X       | X                    | O     | O    | Using Port Audio
-|High Level Audio              | O          | X       | O                    | O     | O    | Using OpenAL
-|Custom Shaders                | O          | X       | X                    | X     | X    |
-|Shader Uniforms               | O          | X       | X                    | X     | O    | int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d
-|Point Lights                  | O          | X       | X                    | X     | X    |
-|Directional Lights            | O          | X       | X                    | X     | X    | Up to 4 point lights and 4 directional lights per render object (no limit for scene)
-|2D Perlin Noise generator     | O          | X       | X                    | X     | X    |
-|Height Map mesh generation    | O          | X       | X                    | X     | X    |
-|Render Hooks                  | O          | X       | O                    | O     | O    |
-|Render Interpolation          | O          | X       | X                    | X     | O    |
-|Custom VertexAttributes       | O          | X       | O                    | O     | O    |
-|GUI components                | O          | X       | O                    | O     | O    |
-|Custom Coordinate System      | O          | X       | O                    | O     | O    |
-|Data Save/Load System         | O          | X       | O                    | O     | O    | Can currently be done with JSON
-|Keybinding System             | O          | X       | O                    | O     | O    |
-|STL Model Loader              | O          | X       | O                    | O     | O    |
-|4D Render Support             | O          | X       | X                    | O     | O    |
+|GameObjects                   | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Components                    | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|RenderObjects                 | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|RenderContexts                | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   | per RenderObject
+|Transforms                    | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   | supporting parent Transforms
+|Abstract Vector/Matrix types  | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   | N dimensional using any numeric type
+|Custom render pipeline        | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   |
+|Wavefront OBJ loader          | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   | with .mtl support
+|JSON parser/printer           | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Fixed Update loop             | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Render Loop (separate thread) | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   |
+|Render Loop (same thread)     | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Low Level Audio               | 🟥         | 🟩      | 🟩                   | 🟥    | 🟥   | Using Port Audio
+|High Level Audio              | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   | Using OpenAL
+|Custom Shaders                | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Shader Uniforms               | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   | int, float, double, vec2-4, vec2-4i, vec2-4d, mat4, mat4d
+|Point Lights                  | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Directional Lights            | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   | Up to 4 point lights and 4 directional lights per render object (no limit for scene)
+|2D Perlin Noise generator     | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Height Map mesh generation    | 🟥         | 🟩      | 🟩                   | 🟩    | 🟩   |
+|Render Hooks                  | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
+|Render Interpolation          | 🟥         | 🟩      | 🟩                   | 🟩    | 🟥   |
+|Custom VertexAttributes       | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
+|GUI components                | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
+|Custom Coordinate System      | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
+|Data Save/Load System         | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   | Can currently be done with JSON
+|Keybinding System             | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
+|STL Model Loader              | 🟥         | 🟩      | 🟥                   | 🟥    | 🟥   |
+|4D Render Support             | 🟥         | 🟩      | 🟩                   | 🟥    | 🟥   |
 
 ## Hello Window
 
