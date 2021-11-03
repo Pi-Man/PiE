@@ -7,7 +7,7 @@ Written in C++
 
 | Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done | Notes
 |------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|:-----
-|GameObjects                   | O          | ![](https://img.shields.io/static/v1?label=&message=Ааи&color=green)       | X                    | X     | X    |
+|GameObjects                   | O          | <img src=https://img.shields.io/static/v1?label=&message=X&color=green>       | X                    | X     | X    |
 |Components                    | O          | X       | X                    | X     | X    |
 |RenderObjects                 | O          | X       | X                    | X     | X    |
 |RenderContexts                | O          | X       | X                    | X     | O    | per RenderObject
