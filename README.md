@@ -3,7 +3,7 @@ A simple lightweight Game Engine built on SDL2 GLEW and (soon) OpenAL (currently
 
 Written in C++
 
-# Features
+## Features
 
 | Feature                      | NotPlanned | Planned | Basic Implementation | Added | Done | Notes
 |------------------------------|:----------:|:-------:|:--------------------:|:-----:|:----:|:-----
@@ -37,7 +37,7 @@ Written in C++
 |STL Model Loader              | O          | X       | O                    | O     | O    |
 |4D Render Support             | O          | X       | X                    | O     | O    |
 
-# Hello Window
+## Hello Window
 
 ```cpp
 int main(int argc, char** args) {
@@ -78,7 +78,7 @@ int main(int argc, char** args) {
 
 this will render a single quad the width of the window
 
-# Using in VS
+## Using in VS
 1)copy all folders but the "DLLs" folder to the VS project folder
 
 2)copy all the dlls from the "DLLs" folder into the VS project folder
@@ -103,13 +103,13 @@ this will render a single quad the width of the window
 
 note: if you still are unable to build a project, make sure your build settings are correct and that you set the settings for the correct build configuration
 
-# Using VS Template Project
+## Using VS Template Project
 
 1)swap branch to Template Project and clone
 
 2)find the .sln file and open
 
-# Building in VS
+## Building in VS
 
 1)open PiE.sln with VS
 
