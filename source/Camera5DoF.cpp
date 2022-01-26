@@ -17,11 +17,11 @@ void Camera5DoF::rotate(float yaw, float pitch, float _) {
 	std::lock_guard<std::mutex> lock(mutex);
 	viewMatrix.rotateD<2, 0>(-yaw);
 	this->pitch += pitch;
-	if (this->pitch > 89.9) {
-		this->pitch = 89.9;
+	if (this->pitch > 89.9f) {
+		this->pitch = 89.9f;
 	}
-	if (this->pitch < -89.9) {
-		this->pitch = -89.9;
+	if (this->pitch < -89.9f) {
+		this->pitch = -89.9f;
 	}
 }
 

@@ -14,7 +14,7 @@ double UpdateLimiter::push() {
 		while (SDL_GetTicks() < (Uint32)_nextFrameTime);
 	}
 	else {
-		long int time = _nextFrameTime - SDL_GetTicks();
+		Uint32 time = (Uint32)_nextFrameTime - SDL_GetTicks();
 		if (time > 0) {
 			SDL_Delay(time);
 		}

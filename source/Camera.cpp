@@ -52,7 +52,7 @@ void Camera::setClipPlanes(float nearPlane, float farPlane) {
 
 void Camera::setFOVdeg(float FOV) {
 	std::lock_guard<std::mutex> lock(mutex);
-	this->FOV = tan(FOV * M_PI / 180.0f);
+	this->FOV = tan(FOV * (float)M_PI / 180.0f);
 }
 
 void Camera::setFOVrad(float FOV) {
@@ -62,7 +62,7 @@ void Camera::setFOVrad(float FOV) {
 
 float Camera::getFOVdeg() {
 	std::lock_guard<std::mutex> lock(mutex);
-	return 180.0 * M_PI * atan(FOV);
+	return 180.0f / (float)M_PI * atan(FOV);
 }
 
 float Camera::getFOVrad() {

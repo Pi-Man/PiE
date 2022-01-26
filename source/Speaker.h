@@ -20,10 +20,10 @@ namespace Speaker {
 
 	// the size of the speaker buffer
 	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern long _bufferSize;
+	extern size_t _bufferSize;
 	// the current position in the buffer
 	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern long _bufferPos;
+	extern size_t _bufferPos;
 	// the PA stream
 	// * WARNING: will be switching from portaudio to OpenAL soon
 	extern PaStream *stream;

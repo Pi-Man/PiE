@@ -1,8 +1,8 @@
 #include "Speaker.h"
 
 
-extern long Speaker::_bufferSize = 0;
-extern long Speaker::_bufferPos = 0;
+extern size_t Speaker::_bufferSize = 0;
+extern size_t Speaker::_bufferPos = 0;
 extern PaStream *Speaker::stream = nullptr;
 extern AudioFormat Speaker::_format{};
 extern unsigned char *Speaker::_buffer = nullptr;
@@ -29,7 +29,7 @@ int Speaker::callback(
 		memcpy(output, _buffer + _bufferPos, byteCount);
 	}
 	else {
-		for (int i = 0; i < frameCount; i++) {
+		for (unsigned long i = 0; i < frameCount; i++) {
 			for (int c = 0; c < _format.channels; c++) {
 				double j = _bufferPos / _format.bitsPerSample + i * _format.channels * timeWarp + c;
 				double p = j - (size_t)j;
@@ -52,7 +52,7 @@ int Speaker::callback(
 			}
 		}
 	}
-	_bufferPos += byteCount * timeWarp;
+	_bufferPos += (size_t) (byteCount * timeWarp);
 	return 0;
 }
 

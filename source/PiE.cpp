@@ -2,6 +2,20 @@
 
 #include "PiE.h"
 
+void GLAPIENTRY
+MessageCallback(GLenum source,
+	GLenum type,
+	GLuint id,
+	GLenum severity,
+	GLsizei length,
+	const GLchar* message,
+	const void* userParam)
+{
+	fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message);
+}
+
 namespace PiE {
 
 	int initSDL(EngineContext &engineContext);
@@ -32,6 +46,10 @@ namespace PiE {
 			}
 		}
 		OBJ::blankMtl.texture->bindData();
+
+		// During init, enable debug output
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(MessageCallback, NULL);
 
 		return 0;
 	}
@@ -147,8 +165,11 @@ namespace PiE {
 
 	void setRenderContext(EngineContext & ctx, const RenderContext & renderContext) {
 
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		if (renderContext.depthEnable) {
 			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(renderContext.depthFunc);
 		}
 		else {
 			glDisable(GL_DEPTH_TEST);
@@ -164,7 +185,14 @@ namespace PiE {
 
 		if (renderContext.blendEnable) {
 			glEnable(GL_BLEND);
-			glBlendFunc(renderContext.blendSRC, renderContext.blendDST);
+			if (renderContext.blendSRC_alpha == -1 || renderContext.blendDST_alpha == -1) {
+				glBlendFunc(renderContext.blendSRC, renderContext.blendDST);
+			}
+			else {
+				glBlendFuncSeparate(renderContext.blendSRC, renderContext.blendDST, renderContext.blendSRC_alpha, renderContext.blendDST_alpha);
+			}
+			glBlendEquation(renderContext.blendEq);
+			glBlendColor(SPLIT_COLOR_F_A(renderContext.blendColor));
 		}
 		else {
 			glDisable(GL_BLEND);
@@ -192,11 +220,7 @@ namespace PiE {
 
 		Uint32 start = SDL_GetTicks();
 
-		int w, h;
-
-		SDL_GetWindowSize(ctx.mainWindow, &w, &h);
-
-		glViewport(0, 0, w, h);
+		glViewport(0, 0, ctx.windowSize[0], ctx.windowSize[1]);
 
 		Uint32 ms = SDL_GetTicks();
 
@@ -205,7 +229,7 @@ namespace PiE {
 		transformation = camera->getProjectionMatrix() * camera->getViewMatrix();
 		prevTransformation = camera->getPrevProjectionMatrix() * camera->getPrevViewMatrix();
 
-		double pt = getRenderPartialTick(ctx);
+		float pt = (float)getRenderPartialTick(ctx);
 
 		if (ctx.lerp) transformation = Matrix4f::lerp(prevTransformation, transformation, pt);
 
@@ -219,14 +243,14 @@ namespace PiE {
 
 			Shader _shader = *shader;
 
-			if (renderObject->shader.ID != -1) {
-				_shader = renderObject->shader;
+			if (renderObject->renderContext.shader && renderObject->renderContext.shader->ID != -1) {
+				_shader = *renderObject->renderContext.shader;
 			}
 
 			GL_ERROR(glUseProgram(_shader.ID));
 
 			GLint viewportID = glGetUniformLocation(_shader.ID, "viewport");
-			GL_ERROR(glUniform2i(viewportID, w, h));
+			GL_ERROR(glUniform2i(viewportID, ctx.windowSize[0], ctx.windowSize[1]));
 
 			GLint timeID = glGetUniformLocation(_shader.ID, "time");
 			glUniform1f(timeID, ms / 1000.0f);
@@ -263,10 +287,10 @@ namespace PiE {
 				GLint lightDirectionID = glGetUniformLocation(_shader.ID, "lightDirection");
 				GLint dirLightColorID = glGetUniformLocation(_shader.ID, "dirLightColor");
 				GLint directionLightCountID = glGetUniformLocation(_shader.ID, "directionLightCount");
-				glUniform3fv(lightDirectionID, std::min<size_t>(ctx.dirLights.size(), 4), dirData);
-				glUniform4fv(dirLightColorID, std::min<size_t>(ctx.dirLights.size(), 4), colData);
+				glUniform3fv(lightDirectionID, std::min<GLsizei>((GLsizei)ctx.dirLights.size(), 4), dirData);
+				glUniform4fv(dirLightColorID, std::min<GLsizei>((GLsizei)ctx.dirLights.size(), 4), colData);
 
-				glUniform1i(directionLightCountID, std::min<size_t>(ctx.dirLights.size(), 4));
+				glUniform1i(directionLightCountID, std::min<GLint>((GLint)ctx.dirLights.size(), 4));
 				free(dirData);
 				free(colData);
 			}
@@ -298,10 +322,10 @@ namespace PiE {
 				GLint lightPositionID = glGetUniformLocation(_shader.ID, "lightPosition");
 				GLint posLightColorID = glGetUniformLocation(_shader.ID, "posLightColor");
 				GLint positionLightCountID = glGetUniformLocation(_shader.ID, "positionLightCount");
-				glUniform3fv(lightPositionID, std::min<size_t>(ctx.pointLights.size(), 4), posData);
-				glUniform4fv(posLightColorID, std::min<size_t>(ctx.pointLights.size(), 4), colData);
+				glUniform3fv(lightPositionID, std::min<GLsizei>((GLsizei)ctx.pointLights.size(), 4), posData);
+				glUniform4fv(posLightColorID, std::min<GLsizei>((GLsizei)ctx.pointLights.size(), 4), colData);
 
-				glUniform1i(positionLightCountID, std::min<size_t>(ctx.pointLights.size(), 4));
+				glUniform1i(positionLightCountID, std::min<GLint>((GLint)ctx.pointLights.size(), 4));
 				free(posData);
 				free(colData);
 			}
@@ -366,7 +390,7 @@ namespace PiE {
 				double time = std::min(ctx.tickLimiter.getLastNextTimes().second, ctx.renderLimiter.getLastNextTimes().second);
 				double sleep = time - (double)SDL_GetTicks();
 				if (sleep > 0.0) {
-					SDL_Delay(sleep);
+					SDL_Delay((Uint32)sleep);
 				}
 			}
 
@@ -418,9 +442,8 @@ namespace PiE {
 						it->second.f(ctx, event);
 					}
 				}
-
-				for (FixedUpdateCallback &f : ctx.fixedUpdate) {
-					f.f(ctx);
+				for (size_t i = 0; i < ctx.fixedUpdate.size(); i++) {
+					ctx.fixedUpdate[i].f(ctx);
 				}
 			}
 		}
@@ -467,8 +490,8 @@ namespace PiE {
 		return 0;
 	}
 
-	size_t FixedUpdateCallback::lastIndex = 0;
-	size_t EventCallback::lastIndex = 0;
+	size_t FixedUpdateCallback::lastIndex = 1;
+	size_t EventCallback::lastIndex = 1;
 
 	FixedUpdateCallback::FixedUpdateCallback(std::function<void(EngineContext&)> f) : f(f) {
 		index = lastIndex;
@@ -495,5 +518,19 @@ namespace PiE {
 	bool EventCallback::operator==(const EventCallback & other) {
 		return this->index == other.index;
 	}
+}
 
+namespace std {
+	template<>
+	struct hash<PiE::FixedUpdateCallback> {
+		size_t operator()(PiE::FixedUpdateCallback & cb) {
+			return cb.index;
+		}
+	};
+	template<>
+	struct hash<PiE::EventCallback> {
+		size_t operator()(PiE::EventCallback & cb) {
+			return cb.index;
+		}
+	};
 }

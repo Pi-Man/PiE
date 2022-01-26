@@ -143,7 +143,7 @@ constexpr Matrix<T, H, W2> Matrix<T, H, W>::operator* (const Matrix<T, W, W2> &o
 	Matrix<T, H, W2> mTemp;
 	for (int i = 0; i < W2; i++) {
 		for (int j = 0; j < H; j++) {
-			size_t index = i + W2 * j;
+			int index = i + W2 * j;
 			mTemp[index] = 0;
 			for (int k = 0; k < W; k++) {
 				mTemp[index] += m[k + j * W] * other[i + k * W2];
@@ -283,7 +283,7 @@ constexpr Matrix<T, H, W> Matrix<T, H, W>::translate(const Vec<T, H - 1> distanc
 template<typename T, int H, int W>
 template<int AXIS_1, int AXIS_2>
 constexpr Matrix<T, H, W>& Matrix<T, H, W>::rotateD(const T degrees) {
-	return rotateR<AXIS_1, AXIS_2>(degrees * M_PI / 180.0);
+	return rotateR<AXIS_1, AXIS_2>(degrees * (T)M_PI / (T)180.0);
 }
 
 template<typename T, int H, int W>
@@ -319,7 +319,7 @@ constexpr Matrix<T, H, W> & Matrix<T, H, W>::scale(const T scale) {
 
 template<typename T, int H, int W>
 constexpr Matrix<T, H, W> & Matrix<T, H, W>::scale(const Vec<T, Utils::get_min<H, W>::value> scale) {
-	Matrix<T, H, W> temp;
+	Matrix<T, H, W> temp = Matrix<T, H, W>::Identity();
 	for (int i = 0; i < std::min(H, W); i++) {
 		temp[i + W * i] = scale[i];
 	}
@@ -365,7 +365,7 @@ constexpr Matrix<T, H, W> & Matrix<T, H, W>::invert() {
 
 	for (int i = 0; i < W; i++) {
 		int j;
-		double scale;
+		T scale;
 		for (j = i; j < W && (scale = m[i + j * W]) == 0; j++);
 		if (scale == 0) continue;
 		for (int i2 = 0; i2 < W; i2++) {
@@ -374,7 +374,7 @@ constexpr Matrix<T, H, W> & Matrix<T, H, W>::invert() {
 		}
 		for (int k = 0; k < W; k++) {
 			if (k == j) continue;
-			double scale2 = m[i + k * W];
+			T scale2 = m[i + k * W];
 			if (scale2 != 0) {
 				for (int i2 = 0; i2 < W; i2++) {
 					m[i2 + k * W] -= m[i2 + j * W] * scale2;
@@ -400,7 +400,7 @@ constexpr Matrix<T, H, W> Matrix<T, H, W>::invert() const {
 
 	for (int i = 0; i < W; i++) {
 		int j;
-		double scale;
+		T scale;
 		for (j = i; j < W && (scale = mtemp[i + j * W]) == 0; j++);
 		if (scale == 0) continue;
 		for (int i2 = 0; i2 < W; i2++) {
@@ -409,7 +409,7 @@ constexpr Matrix<T, H, W> Matrix<T, H, W>::invert() const {
 		}
 		for (int k = 0; k < W; k++) {
 			if (k == j) continue;
-			double scale2 = mtemp[i + k * W];
+			T scale2 = mtemp[i + k * W];
 			if (scale2 != 0) {
 				for (int i2 = 0; i2 < W; i2++) {
 					mtemp[i2 + k * W] -= mtemp[i2 + j * W] * scale2;
@@ -435,7 +435,7 @@ constexpr Matrix<T, H, W> Matrix<T, H, W>::invert(const Matrix<T, H, W> & m) {
 
 	for (int i = 0; i < W; i++) {
 		int j;
-		double scale;
+		T scale;
 		for (j = i; j < W && (scale = mtemp[i + j * W]) == 0; j++);
 		if (scale == 0) continue;
 		for (int i2 = 0; i2 < W; i2++) {
@@ -444,7 +444,7 @@ constexpr Matrix<T, H, W> Matrix<T, H, W>::invert(const Matrix<T, H, W> & m) {
 		}
 		for (int k = 0; k < W; k++) {
 			if (k == j) continue;
-			double scale2 = mtemp[i + k * W];
+			T scale2 = mtemp[i + k * W];
 			if (scale2 != 0) {
 				for (int i2 = 0; i2 < W; i2++) {
 					mtemp[i2 + k * W] -= mtemp[i2 + j * W] * scale2;
@@ -487,6 +487,7 @@ inline T subDeterminant(const Matrix<T, H, W> &m, const int x, const int y) {
 	for (int i = x; i < x + W - y; i++, s *= -1) {
 		result += s * m(x, y) * subDeterminant(m, (x + 1) % W, y + 1);
 	}
+	return result;
 }
 
 template<typename T, int H, int W>

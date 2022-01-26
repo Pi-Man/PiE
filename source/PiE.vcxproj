@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{DDC02F3D-B8CB-48CA-9C1C-ACF28BCCF203}</ProjectGuid>
     <RootNamespace>My3DRenderTest</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ProjectName>PiE</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\source\GLEW\include\GL;$(SolutionDir)\source\SDL\include;$(SolutionDir)\source\PortAudio\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\source\GLEW;$(SolutionDir)\source\SDL;$(SolutionDir)\source\PortAudio;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)source\FreeType\include;$(SolutionDir)source\GLEW\include\GL;$(SolutionDir)\source\SDL\include;$(SolutionDir)\source\PortAudio\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)source\GLEW;$(SolutionDir)source\SDL;$(SolutionDir)source\FreeType;$(SolutionDir)source\PortAudio;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\source\GLEW\include\GL;$(SolutionDir)\source\PortAudio\include;$(SolutionDir)\source\SDL\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\source\GLEW;$(SolutionDir)\source\SDL;$(SolutionDir)\source\PortAudio;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)source\FreeType\include;$(SolutionDir)source\GLEW\include\GL;$(SolutionDir)\source\PortAudio\include;$(SolutionDir)\source\SDL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)source\GLEW;$(SolutionDir)source\SDL;$(SolutionDir)source\FreeType;$(SolutionDir)source\PortAudio;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -99,9 +99,11 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Clickable.cpp" />
     <ClCompile Include="Camera4D.cpp" />
     <ClCompile Include="Camera5DoF.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="FontRenderer.cpp" />
     <ClCompile Include="json.cpp" />
     <ClCompile Include="Model4D.cpp" />
     <ClCompile Include="PiE.cpp" />
@@ -112,24 +114,33 @@
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="ObjComponent.cpp" />
     <ClCompile Include="PerlinNoise2D.cpp" />
+    <ClCompile Include="rect.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Speaker.cpp" />
+    <ClCompile Include="Tessellator.cpp" />
+    <ClCompile Include="TextElement.cpp" />
+    <ClCompile Include="TexturedRect.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Uniform.cpp" />
     <ClCompile Include="UpdateLimiter.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VertexArrayObject.cpp" />
+    <ClCompile Include="VertexAttribute.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioFormat.h" />
+    <ClInclude Include="Clickable.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Camera4D.h" />
     <ClInclude Include="Camera5DoF.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="FontRenderer.h" />
     <ClInclude Include="json.h" />
+    <ClInclude Include="Lazy.h" />
     <ClInclude Include="Model4D.h" />
+    <ClInclude Include="Optional.h" />
     <ClInclude Include="PiE.h" />
     <ClInclude Include="FourierNoiseGenerator.h" />
     <ClInclude Include="FPSCounter.h" />
@@ -137,6 +148,10 @@
     <ClInclude Include="GL_Texture.h" />
     <ClInclude Include="ObjComponent.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="Tessellator.h" />
+    <ClInclude Include="TextElement.h" />
+    <ClInclude Include="TexturedRect.h" />
     <ClInclude Include="Uniform.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Macros.h" />
@@ -152,6 +167,7 @@
     <ClInclude Include="UpdateLimiter.h" />
     <ClInclude Include="Vec.h" />
     <ClInclude Include="VertexArrayObject.h" />
+    <ClInclude Include="VertexAttribute.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

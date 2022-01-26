@@ -85,7 +85,7 @@ inline std::vector<std::array<int, 3>> readFace2(const char *string) {
 	while (string[0]) {
 		if (string[0] == '/') {
 			if (string[1] != '/') {
-				indices[j][l] = atof(string);
+				indices[j][l] = atoi(string);
 			}
 			l++;
 		}
@@ -93,7 +93,7 @@ inline std::vector<std::array<int, 3>> readFace2(const char *string) {
 			j++;
 			l = 0;
 			indices.push_back({ INT_MAX, INT_MAX, INT_MAX });
-			indices[j][l] = atof(string);
+			indices[j][l] = atoi(string);
 		}
 		string++;
 	}
@@ -108,14 +108,14 @@ inline void readFace2(const char *string, std::vector<std::array<int, 3>> &face)
 		if (string[0] == '/') {
 			l++;
 			if (string[1] != '/') {
-				face[j][l] = atof(string + 1);
+				face[j][l] = atoi(string + 1);
 			}
 		}
 		else if (string[0] == ' ' && string[1] != ' ') {
 			j++;
 			l = 0;
 			face.push_back({ INT_MAX, INT_MAX, INT_MAX });
-			face[j][l] = atof(string);
+			face[j][l] = atoi(string);
 		}
 		string++;
 	}
@@ -126,18 +126,18 @@ inline std::array<GLfloat, N * 3> getVertexArray(const std::vector<std::array<do
 	std::array<GLfloat, N * 3> array;
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < 3; j++) {
-			array[i * 3 + j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
+			array[i * 3 + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 		}
 	}
 	return array;
 }
 
-inline std::vector<std::array<GLfloat, 3>> getVertexArray(int N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<int, 3>> &indices) {
+inline std::vector<std::array<GLfloat, 3>> getVertexArray(size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<int, 3>> &indices) {
 	std::vector<std::array<GLfloat, 3>> vector;
-	for (int i = 0; i < N; i++) {
+	for (size_t i = 0; i < N; i++) {
 		vector.push_back(std::array<GLfloat, 3>());
-		for (int j = 0; j < 3; j++) {
-			vector[i][j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
+		for (size_t j = 0; j < 3; j++) {
+			vector[i][j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 		}
 	}
 	return vector;
@@ -149,26 +149,26 @@ inline std::array<GLfloat, N * 3 * 2> getVertexNormalArray(const std::vector<std
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < 3 * 2; j++) {
 			if (j < 3) {
-				array[i * 3 * 2 + j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
+				array[i * 3 * 2 + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 			}
 			else {
-				array[i * 3 * 2 + j] = normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1);
+				array[i * 3 * 2 + j] = (GLfloat) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
 			}
 		}
 	}
 	return array;
 }
 
-inline std::vector<std::array<GLfloat, 3 * 2>> getVertexNormalArray(const int N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<int, 3>> &indices) {
+inline std::vector<std::array<GLfloat, 3 * 2>> getVertexNormalArray(const size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<int, 3>> &indices) {
 	std::vector<std::array<GLfloat, 3 * 2>> vector;
-	for (int i = 0; i < N; i++) {
+	for (size_t i = 0; i < N; i++) {
 		vector.push_back(std::array<GLfloat, 6>());
-		for (int j = 0; j < 3 * 2; j++) {
+		for (size_t j = 0; j < 3 * 2; j++) {
 			if (j < 3) {
-				vector[i][j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
+				vector[i][j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 			}
 			else {
-				vector[i][j] = normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1);
+				vector[i][j] = (GLfloat) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
 			}
 		}
 	}
@@ -181,10 +181,10 @@ inline std::array<GLfloat, N * (3 + 2)> getVertexUVsArray(const std::vector<std:
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < (3 + 2); j++) {
 			if (j < 3) {
-				array[i * (3 + 2) + j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
+				array[i * (3 + 2) + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 			}
 			else {
-				array[i * (3 + 2) + j] = uvs[indices[i][1] - 1][j - 3];
+				array[i * (3 + 2) + j] = (GLfloat) (uvs[indices[i][1] - 1][j - 3]);
 				if (j == 4) {
 					array[i * (3 + 2) + j] = 1 - array[i * (3 + 2) + j];
 				}
@@ -200,13 +200,13 @@ inline std::array<GLfloat, N * (3 + 3 + 2)> getVertexNormalsUVsArray(const std::
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < (3 + 3 + 2); j++) {
 			if (j < 3) {
-				array[i * (3 + 3 + 2) + j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
+				array[i * (3 + 3 + 2) + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 			}
 			else if (j < 6) {
-				array[i * (3 + 3 + 2) + j] = normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1);
+				array[i * (3 + 3 + 2) + j] = (GLfloat) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
 			}
 			else {
-				array[i * (3 + 3 + 2) + j] = uvs[indices[i][1] - 1][j - 6];
+				array[i * (3 + 3 + 2) + j] = (GLfloat) (uvs[indices[i][1] - 1][j - 6]);
 				if (j == 7) {
 					array[i * (3 + 3 + 2) + j] = 1 - array[i * (3 + 3 + 2) + j];
 				}
@@ -249,7 +249,7 @@ namespace OBJ {
 					colorCorrection = false,
 					clamp = false
 					;
-				float
+				double
 					base = 0,
 					gain = 1,
 					offsetU = 0,
@@ -359,10 +359,10 @@ namespace OBJ {
 				if (base != 0 || gain != 1) {
 					unsigned char *data = (unsigned char*)map[lastName].texture->getData();
 					for (int i = 0; i < map[lastName].texture->width * map[lastName].texture->height * 4; i++) {
-						int value = (int)data[i] * gain + base * 255;
+						double value = data[i] * gain + base * 255;
 						if (value > 255) value = 255;
 						if (value < 0) value = 0;
-						data[i] = value;
+						data[i] = (unsigned char)value;
 					}
 					map[lastName].texture->bindData();
 				}
@@ -386,7 +386,7 @@ namespace OBJ {
 
 		std::map<std::string, RenderContext> matlib;
 
-		std::vector<RenderObject> renderObjects = { RenderObject{VertexArrayObject(flags), Transform(), Transform(), Shader(), RenderContext()} };
+		std::vector<RenderObject> renderObjects = { RenderObject{VertexArrayObject(flags), Transform(), Transform(), RenderContext()} };
 		int objectID = 0;
 
 		std::vector<std::array<double, 3>> vertices;
@@ -427,7 +427,7 @@ namespace OBJ {
 			}
 			else if (line[0] == 'o' && line[1] == ' ' && vertices.size() > 0) {
 				objectID++;
-				renderObjects.push_back(RenderObject{VertexArrayObject(flags), Transform(), Transform(), Shader(), RenderContext()});
+				renderObjects.push_back(RenderObject{VertexArrayObject(flags), Transform(), Transform(), RenderContext()});
 				memcpy(lastName, line + 2, 100);
 			}
 			else if (strncmp(line, "mtllib", 6) == 0 && line[6] == ' ' && matlib.size() == 0) {

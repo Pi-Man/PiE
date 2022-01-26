@@ -32,8 +32,9 @@ struct Uniform {
 		GLdouble* d;
 	} data;
 	Uniform_Type type;
+	GLsizei count;
 
-	void init(std::string name, GLuint shaderID, Uniform_Type type);
+	void init(std::string name, GLuint shaderID, Uniform_Type type, int count = 1);
 	void destroy();
 	void apply();
 };

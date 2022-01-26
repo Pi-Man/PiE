@@ -22,7 +22,7 @@ struct Component {
 	GameObject *gameObject;
 
 	// a list of events for the component to listen to
-	std::vector<std::pair<Uint32, PiE::EventCallback>> events;
+	std::vector<std::pair<Uint32, PiE::EventCallback>> events{};
 
 	// a copy of the update function so it can be deleted from the engine context later
 	PiE::FixedUpdateCallback fixedUpdateFunction;

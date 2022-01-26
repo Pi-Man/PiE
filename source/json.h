@@ -1,3 +1,6 @@
+#ifndef _JSON_H_
+#define _JSON_H_
+
 #include <string>
 #include <map>
 #include <vector>
@@ -74,3 +77,5 @@ namespace JSON {
 }
 
 const JSON::Key operator""_key(const char* key, size_t hmm);
+
+#endif

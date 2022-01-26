@@ -1,5 +1,40 @@
 #include "GL_Texture.h"
 
+GL_Texture2D::GL_Texture2D(const GL_Texture2D & other) : width(other.width), height(other.height), ID(other.ID) {
+	data = (unsigned int *)malloc(sizeof(unsigned int) * width * height);
+	memcpy(data, other.data, sizeof(unsigned int) * width * height);
+}
+
+GL_Texture2D::GL_Texture2D(GL_Texture2D && other) : width(std::move(other.width)), height(std::move(other.height)), data(std::move(other.data)), ID(std::move(other.ID)) {
+	other.data = nullptr;
+	other.width = 0;
+	other.height = 0;
+	other.ID = -1;
+}
+
+GL_Texture2D & GL_Texture2D::operator=(const GL_Texture2D & other) {
+	free(data);
+	width = other.width;
+	height = other.height;
+	data = (unsigned int *)malloc(sizeof(unsigned int) * width * height);
+	memcpy(data, other.data, sizeof(unsigned int) * width * height);
+	ID = other.ID;
+	return *this;
+}
+
+GL_Texture2D & GL_Texture2D::operator=(GL_Texture2D && other) {
+	if (this == &other) return *this;
+	width = std::move(other.width);
+	height = std::move(other.height);
+	data = std::move(other.data);
+	ID = std::move(other.ID);
+	other.data = nullptr;
+	other.width = 0;
+	other.height = 0;
+	other.ID = -1;
+	return *this;
+}
+
 GL_Texture2D::GL_Texture2D(const char * file, GLint filter) {
 	SDL_Surface *s = IMG_Load(file);
 	if (s == nullptr) {
@@ -24,7 +59,7 @@ GL_Texture2D::GL_Texture2D(const char * file, GLint filter) {
 
 	glBindTexture(GL_TEXTURE_2D, ID);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)width, (GLsizei)height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
@@ -49,7 +84,9 @@ GL_Texture2D::GL_Texture2D(size_t width, size_t height, GLint filter) : width(wi
 
 GL_Texture2D::~GL_Texture2D() {
 	free(data);
-	glDeleteTextures(1, &ID);
+	if (ID != (GLuint)-1) {
+		glDeleteTextures(1, &ID);
+	}
 }
 
 unsigned int * GL_Texture2D::getData() const {
@@ -58,7 +95,7 @@ unsigned int * GL_Texture2D::getData() const {
 
 void GL_Texture2D::bindData() {
 	glBindTexture(GL_TEXTURE_2D, ID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)width, (GLsizei)height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -78,4 +115,12 @@ std::vector<std::reference_wrapper<unsigned int>> GL_Texture2D::operator[](int i
 		out.push_back(data[y * width + index]);
 	}
 	return out;
+}
+
+bool operator==(const GL_Texture2D & left, const GL_Texture2D & right) {
+	return left.ID == right.ID;
+}
+
+bool operator!=(const GL_Texture2D & left, const GL_Texture2D & right) {
+	return left.ID != right.ID;
 }

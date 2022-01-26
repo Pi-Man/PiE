@@ -28,7 +28,7 @@ FourierNoiseGenerator::~FourierNoiseGenerator() {
 
 double FourierNoiseGenerator::get(std::vector<float> vector) {
 
-	if (vector.size() != dimensions) throw new std::runtime_error("incorrect vector size");
+	if (vector.size() != dimensions) throw std::runtime_error("incorrect vector size");
 
 	double result = 0;
 	double divisor = 0;

@@ -13,7 +13,7 @@ ObjComponent::~ObjComponent() {
 void ObjComponent::onAdded(PiE::EngineContext & ctx, GameObject & gameObject) {
 	std::vector<RenderObject> ROs = OBJ::parseObj(file.c_str());
 	for (RenderObject obj : ROs) {
-		obj.shader = shader;
+		obj.renderContext.shader = &shader;
 		RenderObject *objptr = new RenderObject(obj);
 		parts.push_back(objptr);
 		gameObject.renderObjects.push_back(objptr);

@@ -126,7 +126,13 @@ namespace PiE {
 		// a list of functions to be executed at the specified event type
 		std::multimap<Uint32, EventCallback> events = { 
 			{SDL_EventType::SDL_QUIT,
-				EventCallback([](EngineContext &ctx, SDL_Event event) {shutdownEngine(ctx); })}
+				EventCallback([](EngineContext &ctx, SDL_Event event) {shutdownEngine(ctx); })},
+			{SDL_EventType::SDL_WINDOWEVENT,
+				EventCallback([](EngineContext & ctx, SDL_Event event) {
+					if (event.window.windowID == SDL_GetWindowID(ctx.mainWindow) && event.window.event == SDL_WindowEventID::SDL_WINDOWEVENT_RESIZED) {
+						ctx.windowSize = { {event.window.data1, event.window.data2} };
+					}
+				})}
 		};
 
 		// the function to be called to render on every render loop

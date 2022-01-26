@@ -2,8 +2,8 @@
 
 
 
-extern long Microphone::_bufferSize = 0;
-extern long Microphone::_bufferPos = 0;
+extern size_t Microphone::_bufferSize = 0;
+extern size_t Microphone::_bufferPos = 0;
 extern PaStream *Microphone::stream = nullptr;
 extern AudioFormat Microphone::_format{};
 extern unsigned char *Microphone::_buffer = nullptr;

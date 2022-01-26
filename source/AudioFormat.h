@@ -6,7 +6,7 @@
 // struct to hold audio format data
 // * WARNING: will be switching from portaudio to OpenAL soon
 typedef struct AudioFormat {
-	int sampleRate;              /**< DSP frequency -- samples per second */
+	double sampleRate;              /**< DSP frequency -- samples per second */
 	PaSampleFormat format;       /**< Audio data format */
 	unsigned char channels;      /**< Number of channels: 1 mono, 2 stereo... */
 	unsigned char bitsPerSample;

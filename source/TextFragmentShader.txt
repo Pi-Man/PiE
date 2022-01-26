@@ -1,0 +1,52 @@
+#version 330 core
+
+in vec3 ObjectPos;
+in vec3 Normal;
+in vec2 uv;
+in vec3 Color;
+
+out vec4 col;
+
+uniform ivec2 viewport;
+
+uniform vec3 lightDirection[4];
+uniform vec4 dirLightColor[4];
+uniform int directionLightCount;
+
+uniform vec3 lightPosition[4];
+uniform vec4 posLightColor[4];
+uniform int positionLightCount;
+
+uniform sampler2D main_tex;
+
+void main() {
+
+//	float rinv = 1/0.1;
+//
+//	vec2 control_points[3] = {vec2(0.8f, 0.2f), vec2(0.1f, -0.2f), vec2(0.4f, 0.8f)};
+//	int indices[2] = {0, 6};
+//
+//
+//	int char_code = int(Normal.z);
+//	vec2 uv = Normal.xy;
+//
+//	int start_index = indices[char_code];
+//	int end_index = indices[char_code + 1];
+//	int index = start_index;
+//	vec2 p1 = control_points[index + 0] - uv;
+//	vec2 p2 = control_points[index + 1] - uv;
+//	vec2 p3 = control_points[index + 2] - uv;
+//	vec2 p2_1 = p2 - p1;
+//	vec2 p3_2 = p3 - p2;
+//	float det = p3_2.y * p3_2.y - p3.y * (p1.y - p2.y + p3_2.y);
+//	if (det < 0) discard;
+//	float sqrtdet = sqrt(det);
+//	vec2 t = vec2(p3_2.y - sqrtdet, p3_2.y + sqrt(det));
+//	t = vec2(clamp(min(t.x, t.y), 0, 1), clamp(max(t.x, t.y), 0, 1));
+//	vec2 omt = 1-t;
+//	vec2 x = t*t*p1.x + 2*t*omt*p2.x + omt*omt*p3.x;
+//	vec2 t2 = 2*(1-x*rinv);
+//	float crossVal = sign(p2_1.x * p3_2.y - p2_1.y * p3_2.x);
+//	float accum = crossVal - t.y * crossVal + t.x * crossVal;
+	col = vec4(1, 0, 0, 1);
+}

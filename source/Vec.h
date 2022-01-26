@@ -134,14 +134,14 @@ Vec<T, N> & Vec<T, N>::operator*=(const T scale) {
 template<typename T, int N>
 Vec<T, N> Vec<T, N>::operator/(const T scale) const {
 	std::array<T, N> arr;
-	T inv = 1.0 / scale;
+	T inv = (T)1.0 / scale;
 	FOR_EACH(arr[i] = data[i] * inv;);
 	return arr;
 }
 
 template<typename T, int N>
 Vec<T, N> & Vec<T, N>::operator/=(const T scale) {
-	T inv = 1.0 / scale;
+	T inv = (T)1.0 / scale;
 	FOR_EACH(data[i] *= inv;);
 	return *this;
 }
@@ -153,7 +153,7 @@ Vec<T, 3> operator^(const Vec<T, 3> a, const Vec<T, 3> b) {
 
 template<typename T>
 T operator^(const Vec<T, 2> a, const Vec<T, 2> b) {
-	return a[1] * b[2] - a[2] * b[1];
+	return a[0] * b[1] - a[1] * b[0];
 }
 
 template<typename T>
@@ -193,6 +193,18 @@ Vec<T, N>::operator std::array<T, N>() const {
 	return data;
 }
 
+template<typename T, int N>
+bool operator == (Vec<T, N> left, Vec<T, N> right) {
+	for (int i = 0; i < N; i++) {
+		if (left[i] != right[i]) return false;
+	}
+	return true;
+}
+
+template<typename T, int N>
+bool operator != (Vec<T, N> left, Vec<T, N> right) {
+	return !(left == right);
+}
 
 
 

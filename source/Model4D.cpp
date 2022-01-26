@@ -44,7 +44,7 @@ void Model4D::addHyperCuboidIndices(int a, int b, int c, int d, int e, int f, in
 }
 
 void Model4D::addTriangle(std::array<Vec4f, 3> pointsIn) {
-	size_t i = points.size();
+	int i = (int)points.size();
 
 	points.push_back(pointsIn[0]);
 	points.push_back(pointsIn[1]);
@@ -58,7 +58,7 @@ void Model4D::addTriangle(std::array<Vec4f, 3> pointsIn) {
 }
 
 void Model4D::addQuad(std::array<Vec4f, 4> pointsIn) {
-	size_t i = points.size();
+	int i = (int)points.size();
 
 	points.push_back(pointsIn[0]);
 	points.push_back(pointsIn[1]);
@@ -75,7 +75,7 @@ void Model4D::addQuad(std::array<Vec4f, 4> pointsIn) {
 
 void Model4D::addCuboid(std::array<Vec4f, 8> pos) {
 
-	int i = points.size();
+	int i = (int)points.size();
 
 	for (int i = 0; i < 8; i++) {
 		points.push_back(pos[i]);
@@ -95,7 +95,7 @@ void Model4D::addCuboid(std::array<Vec4f, 8> pos) {
 
 void Model4D::addHyperCuboid(std::array<Vec4f, 16> pos) {
 
-	int i = points.size();
+	int i = (int)points.size();
 
 	for (int i = 0; i < 16; i++) {
 		points.push_back(pos[i]);

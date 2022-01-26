@@ -1,8 +1,20 @@
+#include <set>
+
 #include <SDL.h>
 
 #include "VertexArrayObject.h"
 
 // TODO: major refactoring needed
+
+const VertexAttributeType POSITION_F(Usage::LOCATION, Attribute().make<Attribute_Type::VEC3>({ 0, 0, 0 }));
+const VertexAttributeType NORMAL_F(Usage::DIRECTION, Attribute().make<Attribute_Type::VEC3>({ 0, 1, 0 }));
+const VertexAttributeType COLOR_F(Usage::OTHER, Attribute().make<Attribute_Type::VEC3>({ 1, 1, 1 }));
+const VertexAttributeType UV2_F(Usage::TEXTURE_LOCATION, Attribute().make<Attribute_Type::VEC2>({ 0, 0 }));
+
+const VertexAttributeType POSITION_D(Usage::LOCATION, Attribute().make<Attribute_Type::VEC3D>({ 0, 0, 0 }));
+const VertexAttributeType NORMAL_D(Usage::DIRECTION, Attribute().make<Attribute_Type::VEC3D>({ 0, 1, 0 }));
+const VertexAttributeType COLOR_D(Usage::OTHER, Attribute().make<Attribute_Type::VEC3D>({ 1, 1, 1 }));
+const VertexAttributeType UV2_D(Usage::TEXTURE_LOCATION, Attribute().make<Attribute_Type::VEC2D>({ 0, 0 }));
 
 std::vector<GLfloat> VertexArrayObject::calculateNormal(std::vector<GLfloat> && vertices) {
 	float x1, x2, y1, y2, z1, z2,
@@ -73,9 +85,22 @@ inline std::array<GLfloat, 3> normalize(std::array<GLfloat, 3> &v) {
 
 VertexArrayObject::VertexArrayObject(long flags) : flags(flags), stride(3 + !!(flags & VAO_NORMALS) * 3 + !!(flags & VAO_UVS) * 2 + !!(flags & VAO_COLOR) * 3) {}
 
+void VertexArrayObject::addTriangle(std::array<VertexData, 3> points) {
+	for (const VertexData & vertexData : points) {
+		if (vertexData.format != format) {
+			puts("WARNING: mismatched vertex format");
+			break;
+		}
+		size_t i = 0;
+		for (const VertexAttributeType & type : format.attributes) {
+
+		}
+	}
+}
+
 void VertexArrayObject::addTriangle(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2, GLfloat x3, GLfloat y3, GLfloat z3) {
 	
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	bool normals = flags & VAO_NORMALS;
 	bool uvs = flags & VAO_UVS;
@@ -135,7 +160,7 @@ void VertexArrayObject::addTriangle(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat 
 
 void VertexArrayObject::addTriangle(std::array<GLfloat, 9> pos) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	std::vector<GLfloat> normal;
 	if (flags & VAO_NORMALS) normal = calculateNormal(std::vector<GLfloat>(pos.begin(), pos.end()));
@@ -152,8 +177,8 @@ void VertexArrayObject::addTriangle(std::array<GLfloat, 9> pos) {
 		}
 
 		if (flags & VAO_UVS) {
-			buffer.push_back(i * 3 + 0);
-			buffer.push_back(i * 3 + 2);
+			buffer.push_back(pos[i * 3 + 0]);
+			buffer.push_back(pos[i * 3 + 2]);
 		}
 	}
 
@@ -164,7 +189,7 @@ void VertexArrayObject::addTriangle(std::array<GLfloat, 9> pos) {
 
 void VertexArrayObject::addTriangleUVs(std::array<GLfloat, 15> data) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	std::vector<GLfloat> normal;
 	if (flags & VAO_NORMALS) normal = calculateNormal(std::vector<GLfloat>({ data[0], data[1], data[2], data[5], data[6], data[7], data[10], data[11], data[12] }));
@@ -191,9 +216,38 @@ void VertexArrayObject::addTriangleUVs(std::array<GLfloat, 15> data) {
 	indicies.push_back(i++);
 }
 
+void VertexArrayObject::addTriangleUVs(std::array<std::array<GLfloat, 5>, 3> data) {
+
+	int i = (int)buffer.size() / stride;
+
+	std::vector<GLfloat> normal;
+	if (flags & VAO_NORMALS) normal = calculateNormal(std::vector<GLfloat>({ data[0][0], data[0][1], data[0][2], data[1][0], data[1][1], data[1][2], data[2][0], data[2][1], data[2][2] }));
+
+	for (int i = 0; i < 3; i++) {
+		buffer.push_back(data[i][0]);
+		buffer.push_back(data[i][1]);
+		buffer.push_back(data[i][2]);
+
+		if (flags & VAO_NORMALS) {
+			buffer.push_back(normal[0]);
+			buffer.push_back(normal[1]);
+			buffer.push_back(normal[2]);
+		}
+
+		if (flags & VAO_UVS) {
+			buffer.push_back(data[i][3]);
+			buffer.push_back(data[i][4]);
+		}
+	}
+
+	indicies.push_back(i++);
+	indicies.push_back(i++);
+	indicies.push_back(i++);
+}
+
 void VertexArrayObject::addTriangleWithNormals(std::array<std::array<GLfloat, 6>, 3> data) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	for (int i = 0; i < 3; i++) {
 		buffer.push_back(data[i][0]);
@@ -219,7 +273,7 @@ void VertexArrayObject::addTriangleWithNormals(std::array<std::array<GLfloat, 6>
 
 void VertexArrayObject::addTriangleWithNormals(std::array<GLfloat, 6 * 3> data) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	for (int i = 0; i < 3; i++) {
 		buffer.push_back(data[i * 6 + 0]);
@@ -245,7 +299,7 @@ void VertexArrayObject::addTriangleWithNormals(std::array<GLfloat, 6 * 3> data) 
 
 void VertexArrayObject::addTriangelUVsNormals(std::array<GLfloat, 3 * (3 + 3 + 2)> data) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	std::vector<GLfloat> normal;
 
@@ -273,7 +327,7 @@ void VertexArrayObject::addTriangelUVsNormals(std::array<GLfloat, 3 * (3 + 3 + 2
 
 void VertexArrayObject::addQuad(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2, GLfloat x3, GLfloat y3, GLfloat z3, GLfloat x4, GLfloat y4, GLfloat z4) {
 	
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	std::vector<GLfloat> normal;
 	if (flags & VAO_NORMALS) normal = calculateNormal({ x1, y1, z1, x2, y2, z2, x3, y3, z3 });
@@ -349,7 +403,7 @@ void VertexArrayObject::addQuad(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, 
 
 void VertexArrayObject::addQuad(std::array<GLfloat, 12> pos) {
 	
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	std::vector<GLfloat> normal;
 	if (flags & VAO_NORMALS) normal = calculateNormal(std::vector<GLfloat>(pos.begin(), pos.end()));
@@ -382,7 +436,7 @@ void VertexArrayObject::addQuad(std::array<GLfloat, 12> pos) {
 
 void VertexArrayObject::addQuadWithNormals(std::array<GLfloat, 24> data) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	for (int i = 0; i < 4; i++) {
 		buffer.push_back(data[i * 6 + 0]);
@@ -412,7 +466,7 @@ void VertexArrayObject::addQuadWithNormals(std::array<GLfloat, 24> data) {
 
 void VertexArrayObject::addQuadWithUVs(std::array<GLfloat, 20> data) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	std::vector<GLfloat> normal;
 	if (flags & VAO_NORMALS) normal = calculateNormal(std::vector<GLfloat>({ data[0], data[1], data[2], data[5], data[6], data[7], data[15], data[16], data[17] }));
@@ -445,7 +499,7 @@ void VertexArrayObject::addQuadWithUVs(std::array<GLfloat, 20> data) {
 
 void VertexArrayObject::addQuadUVsNormals(std::array<GLfloat, 4 * (3 + 3 + 2)> data) {
 
-	int i = buffer.size() / stride;
+	int i = (int)buffer.size() / stride;
 
 	std::vector<GLfloat> normal;
 
@@ -477,7 +531,7 @@ void VertexArrayObject::addQuadUVsNormals(std::array<GLfloat, 4 * (3 + 3 + 2)> d
 
 void VertexArrayObject::addCuboid(std::array<GLfloat, 24> pos) {
 	
-	int i = buffer.size() / 6;
+	int i = (int)buffer.size() / 6;
 
 	for (int i = 0; i < 24; i++) {
 		buffer.push_back(pos[i]);
@@ -555,7 +609,7 @@ void VertexArrayObject::addPolygon(std::vector<std::array<GLfloat, 3>> points) {
 		Vec3f c = points[(i + 2) % points.size()];
 		Vec3f d = ((b - a) ^ (c - b)) / ((c - b)() * (b - a)());
 		float ang = asin(d());
-		ang = ((b - a) * (c - b)) >= 0 ? ang : ang < 0 ? -3.141592 - ang : 3.141592 - ang;
+		ang = ((b - a) * (c - b)) >= 0.0f ? ang : ang < 0.0f ? -(float)M_PI - ang : (float)M_PI - ang;
 		dir += d / d() * ang;
 	}
 	for (int i = 0; i < points.size(); i++) {
@@ -564,7 +618,7 @@ void VertexArrayObject::addPolygon(std::vector<std::array<GLfloat, 3>> points) {
 		Vec3f c = points[(i + 2) % points.size()];
 		if (((b - a) ^ (c - b)) * dir > 0) {
 			for (int j = i + 3; j < points.size() + i; j++) {
-				int k = j >= points.size() ? j - points.size() : j;
+				size_t k = j >= points.size() ? j - points.size() : j;
 				Vec3f d = points[k];
 				float e = ((b - a) ^ (d - a)) * dir;
 				float f = ((c - b) ^ (d - b)) * dir;
@@ -574,6 +628,94 @@ void VertexArrayObject::addPolygon(std::vector<std::array<GLfloat, 3>> points) {
 			addTriangle(a[0], a[1], a[2], b[0], b[1], b[2], c[0], c[1], c[2]);
 			points.erase(points.begin() + (i + 1) % points.size());
 			addPolygon(points);
+			return;
+		}
+		Label:
+		continue;
+	}
+}
+
+struct Comparator {
+	const std::vector<std::vector<std::array<float, 3>>> &contours;
+	constexpr bool operator() (const std::pair<size_t, size_t> &left, const std::pair<size_t, size_t> &right) {
+		return contours[left.first][left.second][1] > contours[right.first][right.second][1];
+	}
+};
+
+void VertexArrayObject::addComplexPolygon(const std::vector<std::vector<std::array<float, 3>>> &contours) {
+
+	std::set<std::pair<size_t, size_t>, Comparator> localTops(Comparator{ contours });
+
+	for (size_t contourI = 0; contourI < contours.size(); contourI++) {
+		const std::vector<std::array<float, 3>> &contour = contours[contourI];
+		bool lastUp = contour[contour.size() - 1][1] < contour[0][1];
+		for (size_t point = 0; point < contour.size(); point++) {
+			size_t nextPoint = point == contour.size() - 1 ? 0 : point + 1;
+			bool nowDown = contour[point][1] > contour[nextPoint][1];
+			bool top = lastUp && nowDown;
+			if (top) {
+				localTops.emplace(contourI, point);
+			}
+		}
+	}
+
+	//std::vector<size_t> contourTops;
+
+	//size_t topContour = 0;
+
+	//for (size_t contour = 0; contour < contours.size(); contour++) {
+	//	size_t maxIndex = 0;
+	//	for (size_t i = 0; i < contours[contour].size(); i++) {
+	//		if (contours[contour][i][1] > contours[contour][maxIndex][1]) {
+	//			maxIndex = i;
+	//		}
+	//	}
+	//	contourTops.push_back(maxIndex);
+	//	if (contours[contour][contourTops[contour]][1] > contours[topContour][contourTops[topContour]][1]) {
+	//		topContour = contour;
+	//	}
+	//}
+
+	//std::vector<std::pair<size_t, size_t>> monotonePolygon;
+
+	//for (size_t contour = 0; contour < contours.size(); contour++) {
+	//}
+}
+
+void VertexArrayObject::addPolygonWithUVs(std::vector<std::array<GLfloat, 5>> points) {
+	if (points.size() < 3) return;
+	if (points.size() == 3) {
+		addTriangleUVs({ points[0], points[1], points[2] });
+		return;
+	}
+	Vec3f dir;
+	for (int i = 0; i < points.size(); i++) {
+		Vec3f a({ points[i][0], points[i][1], points[i][2] });
+		Vec3f b({ points[(i + 1) % points.size()][0], points[(i + 1) % points.size()][1], points[(i + 1) % points.size()][2] });
+		Vec3f c({ points[(i + 2) % points.size()][0], points[(i + 2) % points.size()][1], points[(i + 2) % points.size()][2] });
+		Vec3f d = ((b - a) ^ (c - b)) / ((c - b)() * (b - a)());
+		if (d(2) != 0) {
+			float ang = asin(d());
+			ang = ((b - a) * (c - b)) >= 0.0f ? ang : ang <.0f ? -(float)M_PI - ang : (float)M_PI - ang;
+			dir += d / d() * ang;
+		}
+	}
+	for (int i = 0; i < points.size(); i++) {
+		Vec3f a({ points[i][0], points[i][1], points[i][2] });
+		Vec3f b({ points[(i + 1) % points.size()][0], points[(i + 1) % points.size()][1], points[(i + 1) % points.size()][2] });
+		Vec3f c({ points[(i + 2) % points.size()][0], points[(i + 2) % points.size()][1], points[(i + 2) % points.size()][2] });
+		if (((b - a) ^ (c - b)) * dir > 0) {
+			for (int j = i + 3; j < points.size() + i; j++) {
+				size_t k = j >= points.size() ? j - points.size() : j;
+				Vec3f d({ points[k][0], points[k][1], points[k][2] });
+				float e = ((b - a) ^ (d - a)) * dir;
+				float f = ((c - b) ^ (d - b)) * dir;
+				float g = ((a - c) ^ (d - c)) * dir;
+				if (e > 0 && f > 0 && g > 0) goto Label;
+			}
+			addTriangleUVs({ points[i], points[(i + 1) % points.size()], points[(i + 2) % points.size()] });
+			points.erase(points.begin() + (i + 1) % points.size());
+			addPolygonWithUVs(points);
 			return;
 		}
 	Label:
@@ -595,7 +737,7 @@ void VertexArrayObject::addPolygonWithNormals(std::vector<std::array<float, 6>> 
 		Vec3f d = ((b - a) ^ (c - b)) / ((c - b)() * (b - a)());
 		if (d(2) != 0) {
 			float ang = asin(d());
-			ang = ((b - a) * (c - b)) >= 0 ? ang : ang < 0 ? -3.141592 - ang : 3.141592 - ang;
+			ang = ((b - a) * (c - b)) >= 0.0f ? ang : ang < 0.0f ? -(float)M_PI - ang : (float)M_PI - ang;
 			dir += d / d() * ang;
 		}
 	}
@@ -605,7 +747,7 @@ void VertexArrayObject::addPolygonWithNormals(std::vector<std::array<float, 6>> 
 		Vec3f c({ points[(i + 2) % points.size()][0], points[(i + 2) % points.size()][1], points[(i + 2) % points.size()][2] });
 		if (((b - a) ^ (c - b)) * dir > 0) {
 			for (int j = i + 3; j < points.size() + i; j++) {
-				int k = j >= points.size() ? j - points.size() : j;
+				size_t k = j >= points.size() ? j - points.size() : j;
 				Vec3f d({ points[k][0], points[k][1], points[k][2] });
 				float e = ((b - a) ^ (d - a)) * dir;
 				float f = ((c - b) ^ (d - b)) * dir;
@@ -622,284 +764,9 @@ void VertexArrayObject::addPolygonWithNormals(std::vector<std::array<float, 6>> 
 	}
 }
 
-inline std::array<double, 3> readVec3(const char *string) {
-	char vertex_s[3][100];
-	std::array<double, 3> vertex;
-	int j = 0;
-	int k = 0;
-	for (int i = 0; i < 1000 && string[i] != 0; i++) {
-		if ((string[i] >= '0' && string[i] <= '9') || string[i] == '.' || string[i] == '-') {
-			vertex_s[j][k++] = string[i];
-		}
-		else if (string[i] == ' ' || string[i] == '\n') {
-			vertex_s[j][k] = '\0';
-			k = 0;
-			if (vertex_s[j][0]) j++;
-		}
-	}
-	for (int i = 0; i < 3; i++) {
-		vertex[i] = atof(vertex_s[i]);
-	}
-	return vertex;
-}
-
-template<int N>
-inline std::array<double, N> readVec(const char *string) {
-	std::array<double, N> vertex;
-	int j = 0;
-	while (string[0]) {
-		if (string[0] == ' ' && string[1] != ' ') {
-			vertex[j] = atof(string);
-			j++;
-			if (j >= N) break;
-		}
-		string++;
-	}
-	return vertex;
-}
-
-inline std::vector<std::array<int, 3>> readFace(const char *string) {
-	std::vector<std::array<char[100], 3>> indices_s;
-	std::vector<std::array<int, 3>> indices;
-	int j = 0;
-	int k = 0;
-	int l = 0;
-	for (int i = 0; i < 1000 && string[i] != 0; i++) {
-		if (indices_s.size() <= j) {
-			indices_s.push_back(std::array<char[100], 3>());
-		}
-		if (string[i] >= '0' && string[i] <= '9') {
-			indices_s[j][l][k++] = string[i];
-		}
-		else if (string[i] == '/') {
-			indices_s[j][l][k] = '\0';
-			k = 0;
-			l++;
-		}
-		else if (string[i] == ' ' || string[i] == '\n') {
-			indices_s[j][l][k] = '\0';
-			k = 0;
-			l = 0;
-			if (indices_s[j][l][k]) j++;
-		}
-	}
-	for (int i = 0; i < indices_s.size(); i++) {
-		indices.push_back(std::array<int, 3>());
-		for (int j = 0; j < 3; j++) {
-			if (indices_s[i][j][0]) {
-				indices[i][j] = atoi(indices_s[i][j]);
-			}
-			else {
-				indices[i][j] = INT_MAX;
-			}
-		}
-	}
-	return indices;
-}
-
-inline std::vector<std::array<int, 3>> readFace2(const char *string) {
-	std::vector<std::array<int, 3>> indices;
-	indices.reserve(4);
-	int j = -1;
-	int l = 0;
-	while (string[0]) {
-		if (string[0] == '/') {
-			if (string[1] != '/') {
-				indices[j][l] = atof(string);
-			}
-			l++;
-		}
-		else if (string[0] == ' ' && string[1] != ' ') {
-			j++;
-			l = 0;
-			indices.push_back({ INT_MAX, INT_MAX, INT_MAX });
-			indices[j][l] = atof(string);
-		}
-		string++;
-	}
-	return indices;
-}
-
-inline void readFace2(const char *string, std::vector<std::array<int, 3>> &face) {
-	face.clear();
-	int j = -1;
-	int l = 0;
-	while (string[0]) {
-		if (string[0] == '/') {
-			l++;
-			if (string[1] != '/') {
-				face[j][l] = atof(string + 1);
-			}
-		}
-		else if (string[0] == ' ' && string[1] != ' ') {
-			j++;
-			l = 0;
-			face.push_back({ INT_MAX, INT_MAX, INT_MAX });
-			face[j][l] = atof(string);
-		}
-		string++;
-	}
-}
-
-template<int N>
-inline std::array<GLfloat, N * 3> getVertexArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<int, 3>> &indices) {
-	std::array<GLfloat, N * 3> array;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < 3; j++) {
-			array[i * 3 + j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
-		}
-	}
-	return array;
-}
-
-inline std::vector<std::array<GLfloat, 3>> getVertexArray(int N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<int, 3>> &indices) {
-	std::vector<std::array<GLfloat, 3>> vector;
-	for (int i = 0; i < N; i++) {
-		vector.push_back(std::array<GLfloat, 3>());
-		for (int j = 0; j < 3; j++) {
-			vector[i][j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
-		}
-	}
-	return vector;
-}
-
-template<int N>
-inline std::array<GLfloat, N * 3 * 2> getVertexNormalArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<int, 3>> &indices) {
-	std::array<GLfloat, N * 3 * 2> array;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < 3 * 2; j++) {
-			if (j < 3) {
-				array[i * 3 * 2 + j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
-			}
-			else {
-				array[i * 3 * 2 + j] = normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1);
-			}
-		}
-	}
-	return array;
-}
-
-inline std::vector<std::array<GLfloat, 3 * 2>> getVertexNormalArray(const int N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<int, 3>> &indices) {
-	std::vector<std::array<GLfloat, 3 * 2>> vector;
-	for (int i = 0; i < N; i++) {
-		vector.push_back(std::array<GLfloat, 6>());
-		for (int j = 0; j < 3 * 2; j++) {
-			if (j < 3) {
-				vector[i][j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
-			}
-			else {
-				vector[i][j] = normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1);
-			}
-		}
-	}
-	return vector;
-}
-
-template<int N>
-inline std::array<GLfloat, N * (3 + 2)> getVertexUVsArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &uvs, const std::vector<std::array<int, 3>> &indices) {
-	std::array<GLfloat, N * (3 + 2)> array;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < (3 + 2); j++) {
-			if (j < 3) {
-				array[i * (3 + 2) + j] = vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1);
-			}
-			else {
-				array[i * (3 + 2) + j] = uvs[indices[i][1] - 1][j - 3];
-				if (j == 4) {
-					array[i * (3 + 2) + j] = 1 - array[i * (3 + 2) + j];
-				}
-			}
-		}
-	}
-	return array;
-}
-
-void VertexArrayObject::addOBJModel(const std::string && fileName) {
-
-	std::vector<std::array<double, 3>> vertices;
-	std::vector<std::array<double, 3>> normals;
-	std::vector<std::array<double, 3>> texcoords;
-	std::vector<std::array<int, 3>> face;
-
-	FILE *file;
-
-	if (fopen_s(&file, fileName.c_str(), "r")) {
-		printf("Failed to open file: %s", fileName.c_str());
-		return;
-	}
-
-	char lastName[100];
-	char _line[1001];
-	char *line;
-	Uint32 start = SDL_GetTicks();
-	int i = 0;
-	while (fgets(_line, 1001, file)) {
-		line = _line;
-		while (line[0] == ' ') {
-			line++;
-		}
-		if (line[0] == 'v') {
-			if (line[1] == ' ') {
-				vertices.push_back(readVec<3>(line + 1));
-			}
-			else if (line[1] == 'n' && line[2] == ' ') {
-				normals.push_back(readVec<3>(line + 2));
-			}
-			else if (line[1] == 't' && line[2] == ' ') {
-				texcoords.push_back(readVec<3>(line + 2));
-			}
-		}
-		else if (line[0] == 'o' && line[1] == ' ') {
-			memcpy(lastName, line + 2, 100);
-		}
-		else if (line[0] == 'f' && line[1] == ' ') {
-
-			readFace2(line + 1, face);
-
-			if (face.size() < 3) {
-				puts("WARNING: face can not have fewer than 3 indices!");
-			}
-			else if (face.size() == 3) {
-				if (face[0][1] != INT_MAX && face[0][2] == INT_MAX) {
-					addTriangleUVs(getVertexUVsArray<3>(vertices, texcoords, face));
-				}
-				else if (face[0][2] != INT_MAX) {
-					addTriangleWithNormals(getVertexNormalArray<3>(vertices, normals, face));
-				}
-				else {
-					addTriangle(getVertexArray<3>(vertices, face));
-				}
-			}
-			else if (face.size() == 4) {
-				if (face[0][1] != INT_MAX && face[0][2] == INT_MAX) {
-					addQuadWithUVs(getVertexUVsArray<4>(vertices, texcoords, face));
-				}
-				else if (face[0][2] != INT_MAX) {
-					addQuadWithNormals(getVertexNormalArray<4>(vertices, normals, face));
-				}
-			}
-			else {
-				if (face[0][2] != INT_MAX) {
-					addPolygonWithNormals(getVertexNormalArray(face.size(), vertices, normals, face));
-				}
-				else {
-					addPolygon(getVertexArray(face.size(), vertices, face));
-				}
-			}
-		}
-		i++;
-		if (SDL_GetTicks() > start + 1000) {
-			printf("Parsed %6d lines\n", i);
-			start += 1000;
-		}
-	}
-
-	fclose(file);
-}
-
 void VertexArrayObject::addHeightMesh(float x, float z, float width, float height, std::vector<std::vector<GLfloat>> heightMap) {
 
-	int index = buffer.size() / stride;
+	int index = (int)buffer.size() / stride;
 
 	for (int j = 1; j < heightMap[0].size() - 1; j++) {
 		for (int i = 1; i < heightMap.size() - 1; i++) {
@@ -931,13 +798,13 @@ void VertexArrayObject::addHeightMesh(float x, float z, float width, float heigh
 
 	for (int y = 0; y < heightMap[0].size() - 3; y++) {
 		for (int x = 0; x < heightMap.size() - 3; x++) {
-			indicies.push_back(index + y * (heightMap.size() - 2) + x);
-			indicies.push_back(index + y * (heightMap.size() - 2) + x + 1);
-			indicies.push_back(index + (y + 1) * (heightMap.size() - 2) + x + 1);
+			indicies.push_back(index + y * ((GLuint)heightMap.size() - 2) + x);
+			indicies.push_back(index + y * ((GLuint)heightMap.size() - 2) + x + 1);
+			indicies.push_back(index + (y + 1) * ((GLuint)heightMap.size() - 2) + x + 1);
 
-			indicies.push_back(index + (y + 1) * (heightMap.size() - 2) + x + 1);
-			indicies.push_back(index + (y + 1) * (heightMap.size() - 2) + x);
-			indicies.push_back(index + y * (heightMap.size() - 2) + x);
+			indicies.push_back(index + (y + 1) * ((GLuint)heightMap.size() - 2) + x + 1);
+			indicies.push_back(index + (y + 1) * ((GLuint)heightMap.size() - 2) + x);
+			indicies.push_back(index + y * ((GLuint)heightMap.size() - 2) + x);
 		}
 	}
 
@@ -1018,11 +885,15 @@ void VertexArrayObject::bindBuffers() {
 		}
 	}
 	else {
+		glBindVertexArray(ID);
+
 		glBindBuffer(GL_ARRAY_BUFFER, bufferID);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * buffer.size(), buffer.data(), GL_DYNAMIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indicies.size(), indicies.data(), GL_DYNAMIC_DRAW);
+
+		glBindVertexArray(0);
 	}
 
 	//glBindVertexArray(0);
@@ -1036,6 +907,6 @@ void VertexArrayObject::copy(VertexArrayObject & other) {
 
 void VertexArrayObject::render() {
 	glBindVertexArray(ID);
-	glDrawElements(GL_TRIANGLES, indicies.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, (GLsizei) indicies.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
