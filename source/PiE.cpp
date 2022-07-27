@@ -170,6 +170,7 @@ namespace PiE {
 		if (renderContext.depthEnable) {
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(renderContext.depthFunc);
+			glDepthMask(renderContext.depthMask ? GL_TRUE : GL_FALSE);
 		}
 		else {
 			glDisable(GL_DEPTH_TEST);

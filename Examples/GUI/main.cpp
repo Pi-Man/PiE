@@ -1,3 +1,5 @@
+#include <Windows.h>
+
 #include <PiE.h>
 #include <Clickable.h>
 #include <TexturedRect.h>

@@ -1,6 +1,15 @@
 #ifndef _MATRIX
 #define _MATRIX
 
+#ifdef min
+#undef min
+#endif // min
+
+#ifdef max
+#undef max
+#endif // max
+
+
 #include<array>
 
 #include "Vec.h"
@@ -304,14 +313,14 @@ template<typename T, int H, int W>
 template<int AXIS>
 constexpr Matrix<T, H, W> & Matrix<T, H, W>::scale(const T scale) {
 	if (AXIS == -1) {
-		Matrix<T, H, W> temp = Matrix<T, H, W>::identity;
+		Matrix<T, H, W> temp = Matrix<T, H, W>::Identity();
 		for (int i = 0; i < std::min(H, W); i++) {
 			temp[i + i * W] = scale;
 		}
 		*this = temp * *this;
 		return *this;
 	}
-	Matrix<T, H, W> temp = Matrix<T, H, W>::identity;
+	Matrix<T, H, W> temp = Matrix<T, H, W>::Identity();
 	temp[AXIS + W * AXIS] = scale;
 	*this = temp * *this;
 	return *this;

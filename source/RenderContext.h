@@ -35,12 +35,14 @@ struct RenderContext {
 	int depthFunc = GL_LESS;
 	// the color to clear the screen with
 	// * will likely get moved to a separate struct later
-	unsigned int clearColor = 0xff404040;
+	unsigned int clearColor = 0xffb04000;
 	// the depth to clear the depth buffer with
 	// * will likely get moved to a separate struct later
 	float clearDepth = 1.0f;
 	// whether or not to use the depth buffer
 	bool depthEnable = true;
+	// wether or not to write to the depth buffer (if depth buffer is enabled)
+	bool depthMask = true;
 	// whether or not to use face culling
 	bool cullEnable = true;
 	// whether or not to use blending

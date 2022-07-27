@@ -770,9 +770,11 @@ void VertexArrayObject::addHeightMesh(float x, float z, float width, float heigh
 
 	for (int j = 1; j < heightMap[0].size() - 1; j++) {
 		for (int i = 1; i < heightMap.size() - 1; i++) {
-			buffer.push_back((float)(i - 1) / ((float)heightMap.size() - 3.0f) * width + x);
+			float X = (float)(i - 1) / ((float)heightMap.size() - 3.0f) * width + x;
+			float Y = (float)(j - 1) / ((float)heightMap[0].size() - 3.0f) * height + z;
+			buffer.push_back(X);
 			buffer.push_back(heightMap[i][j]);
-			buffer.push_back((float)(j - 1) / ((float)heightMap[0].size() - 3.0f) * height + z);
+			buffer.push_back(Y);
 
 			if (flags & VAO_NORMALS) {
 				float x0 = (float)(i - 1) / ((float)heightMap.size() - 3.0f) * width;
@@ -783,7 +785,7 @@ void VertexArrayObject::addHeightMesh(float x, float z, float width, float heigh
 				float y_0 = heightMap[i - 1][j];
 				float y01 = heightMap[i][j + 1];
 				float y0_ = heightMap[i][j - 1];
-				std::array<GLfloat, 3> normal = normalize(cross({ x1 - x0, 0.0f, y10 - y_0 }, { 0.0f, z1 - z0, y01 - y0_ }));
+				std::array<GLfloat, 3> normal = normalize(cross({ 0.0f, y01 - y0_, z1 - z0 }, { x1 - x0, y10 - y_0, 0.0f }));
 				buffer.push_back(normal[0]);
 				buffer.push_back(normal[1]);
 				buffer.push_back(normal[2]);
