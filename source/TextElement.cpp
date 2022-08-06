@@ -35,11 +35,16 @@ void TextElement::update() {
 		float width = bounds->getWidth() * bounds->ctx->windowSize[0];
 		float height = bounds->getHeight() * bounds->ctx->windowSize[1];
 
-		float scalex = std::max(info.widthMax, (info.top - info.bottom) * width / height);
-		float scaley = scalex * height / width;
+		float scaley = height / width;
 
-		out[0] = ((GLfloat)info.vertex[0] / scalex + (centerX ? (1.0f - info.width / scalex) / 2.0f : 0.0f));
-		out[1] = (((GLfloat)info.vertex[1] - info.bottom) / scaley + (centerY ? (1.0f - (info.top - info.bottom) / scaley) / 2.0f : 0.0f));
+		float scale = (info.widthMax / width) > ((info.top - info.bottom) / height) ? info.widthMax : (info.top - info.bottom) / scaley;
+
+		//out[0] = (((GLfloat)info.vertex[0] + (centerX ? (info.widthMax - info.width) / 2.0f : 0.0f)) / scale);
+		//out[1] = (((GLfloat)info.vertex[1] - info.bottom) / scale);
+		//out[2] = ((GLfloat)info.vertex[2] - 1.0f);
+
+		out[0] = (((GLfloat)info.vertex[0] + (centerX ? (info.widthMax - info.width) / 2.0f : 0.0f)) / scale) + (centerX ? (1.0f - info.widthMax / scale) / 2.0f : 0.0f);
+		out[1] = (((GLfloat)info.vertex[1] - info.bottom) / (scale * scaley)) + (centerY ? (1.0f - (info.top - info.bottom) / (scale * scaley)) / 2.0f : 0.0f);
 		out[2] = ((GLfloat)info.vertex[2] - 1.0f);
 
 	});
@@ -53,7 +58,7 @@ void TextElement::setAndUpdate(Font & font, std::string text) {
 }
 
 void TextElement::fixedUpdate(PiE::EngineContext & ctx) {
-	textObject.transform.m = (ctx.mainCamera->getProjectionMatrix() * ctx.mainCamera->getViewMatrix()).invert() * m();
+	textObject.transform.m = Matrix4f::Identity().scale<AXIS::Y>((float)ctx.windowSize[1] / (float)ctx.windowSize[0]) * m();
 }
 
 void TextElement::onAdded(PiE::EngineContext & ctx, GameObject & gameObject) {

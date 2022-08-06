@@ -21,6 +21,10 @@ int main(int args, char **argv) {
 	PiE::initEngine(ctx);
 
 	Camera5DoF _camera(ctx.mainWindow);
+	Camera5DoF canvas_camera(ctx.mainWindow);
+	canvas_camera.orthogonal = true;
+	canvas_camera.setClipPlanes(-10, 10);
+	canvas_camera.FOV = 1;
 
 	camera = &_camera;
 
@@ -42,8 +46,8 @@ int main(int args, char **argv) {
 	AxisAlignedRect bounds{};
 	bounds.ctx = &ctx;
 	bounds.center = { {0.5_ndc, 0.5_ndc} };
-	bounds.width = 0.2_vw;
-	bounds.height = 0.1_vw;
+	bounds.width = 0.1_vw;
+	bounds.height = 1.0_vh;
 
 	GL_Texture2D testImage("test.png");
 	GL_Texture2D buttonImage("addButton.png");
@@ -72,7 +76,9 @@ int main(int args, char **argv) {
 	});
 	canvas.components.push_back(&buttonClick);
 	canvas.components.push_back(&buttonTexture);
+	buttonTexture.renderObject.renderContext.camera = &canvas_camera;
 	canvas.components.push_back(&buttonText);
+	buttonText.textObject.renderContext.camera = &canvas_camera;
 	PiE::addGameObject(ctx, canvas);
 
 	PiE::startMainGameLoop(ctx, true);

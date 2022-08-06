@@ -248,6 +248,13 @@ namespace PiE {
 				_shader = *renderObject->renderContext.shader;
 			}
 
+			if (renderObject->renderContext.camera) {
+				transformation = renderObject->renderContext.camera->getProjectionMatrix() * renderObject->renderContext.camera->getViewMatrix();
+				prevTransformation = renderObject->renderContext.camera->getPrevProjectionMatrix() * renderObject->renderContext.camera->getPrevViewMatrix();
+
+				if (ctx.lerp) transformation = Matrix4f::lerp(prevTransformation, transformation, pt);
+			}
+
 			GL_ERROR(glUseProgram(_shader.ID));
 
 			GLint viewportID = glGetUniformLocation(_shader.ID, "viewport");

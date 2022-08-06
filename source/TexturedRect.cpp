@@ -31,7 +31,7 @@ TexturedRect::TexturedRect(AxisAlignedRect *bounds, GL_Texture2D *texture, Camer
 }
 
 void TexturedRect::fixedUpdate(PiE::EngineContext & ctx) {
-	renderObject.transform.m = (camera->getProjectionMatrix() * camera->getViewMatrix()).invert() * m();
+	renderObject.transform.m = Matrix4f::Identity().scale<AXIS::Y>((float)ctx.windowSize[1] / (float)ctx.windowSize[0]) * m();
 }
 
 void TexturedRect::onAdded(PiE::EngineContext & ctx, GameObject & gameObject) {
