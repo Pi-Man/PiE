@@ -6,8 +6,8 @@
 Model4D hyperCubeModel;
 Model4D groundModel;
 
-RenderObject hyperCube;
-RenderObject ground;
+RenderObject * hyperCube;
+RenderObject * ground;
 
 Camera4D *camera4D;
 
@@ -120,8 +120,8 @@ void keyEvents(PiE::EngineContext & ctx, SDL_Event event) {
 
 void update4Dmodel(PiE::EngineContext &ctx) {
 	// here the 4D model is projected into 3D space by the camera to be rendered later
-	camera4D->process4DModel(hyperCube.VAO, hyperCubeModel);
-	camera4D->process4DModel(ground.VAO, groundModel);
+	camera4D->process4DModel(hyperCube->VAO, hyperCubeModel);
+	camera4D->process4DModel(ground->VAO, groundModel);
 }
 
 int main(int argc, char** args) {
@@ -153,17 +153,21 @@ int main(int argc, char** args) {
 			hmap[i][j] = (noise.get((i - 21) / 5.0, (j - 21) / 5.0));
 		}
 	}
-	ground.VAO = VertexArrayObject(VAO_NORMALS | VAO_UVS);
-	ground.VAO.addHeightMesh(0, 0, 10, 10, hmap);
-	ground.renderContext.cullEnable = false;
+
+	hyperCube = new RenderObject{};
+	ground = new RenderObject{};
+
+	ground->VAO = VertexArrayObject(VAO_NORMALS | VAO_UVS);
+	ground->VAO.addHeightMesh(0, 0, 10, 10, hmap);
+	ground->renderContext.cullEnable = false;
 	// convert the VAO to a 4D model, coppies the vertices over with a W value of 0
 	// when the model is then projected back to ground.VAO, the only the positions are replaced in the VAO
-	groundModel.convertVAO(ground.VAO);
+	groundModel.convertVAO(ground->VAO);
 
 	hyperCubeModel.addCenteredHyperCuboid();
 	// 4D models also have their own model matrix
 	hyperCubeModel.matrix.translate<AXIS::W>(3);
-	hyperCube.shader = wireframeColorShader;
+	hyperCube->renderContext.shader = &wireframeColorShader;
 
 	camera4D->move4D(0, 0, -2.0f, -2.0);
 
@@ -179,8 +183,8 @@ int main(int argc, char** args) {
 
 	ctx.events.insert({ SDL_KEYDOWN, PiE::EventCallback(keyEvents) });
 
-	PiE::addMesh(ctx, ground);
-	PiE::addMesh(ctx, hyperCube);
+	//PiE::addMesh(ctx, *ground);
+	PiE::addMesh(ctx, *hyperCube);
 
 	PiE::startMainGameLoop(ctx, true);
 

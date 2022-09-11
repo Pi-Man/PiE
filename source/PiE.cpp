@@ -213,6 +213,10 @@ namespace PiE {
 
 	}
 
+	Camera * getCamera(RenderObject * RO, Camera * or_else) {
+		return RO->renderContext.camera ? RO->renderContext.camera : or_else;
+	}
+
 	void render(EngineContext &ctx, Camera *camera, Shader *shader) {
 
 		std::lock_guard<std::mutex> lock(ctx.loopMutex);
@@ -233,6 +237,21 @@ namespace PiE {
 		float pt = (float)getRenderPartialTick(ctx);
 
 		if (ctx.lerp) transformation = Matrix4f::lerp(prevTransformation, transformation, pt);
+
+		std::sort(ctx.renderObjects.begin(), ctx.renderObjects.end(), [camera](RenderObject * left, RenderObject * right) {
+			if (left->renderContext.isTransparent && right->renderContext.isTransparent) {
+				return (left->transform.globalPos() - getCamera(left, camera)->getPos())(2) >= (right->transform.globalPos() - getCamera(right, camera)->getPos())(2);
+			}
+			else if (left->renderContext.isTransparent && !right->renderContext.isTransparent) {
+				return false;
+			}
+			else if (!left->renderContext.isTransparent && right->renderContext.isTransparent) {
+				return true;
+			}
+			else {
+				return (left->transform.globalPos() - getCamera(left, camera)->getPos())(2) < (right->transform.globalPos() - getCamera(right, camera)->getPos())(2);
+			}
+		});
 
 		for (RenderObject *renderObject : ctx.renderObjects) {
 
@@ -338,6 +357,52 @@ namespace PiE {
 				free(colData);
 			}
 
+			if (ctx.spotLights.size() > 0) {
+
+				std::vector<SpotLight*> spotLights = ctx.spotLights;
+				std::sort(spotLights.begin(), spotLights.end(), [renderObject](SpotLight* light1, SpotLight* light2) {
+					return 1 / (light1->pos - renderObject->transform.globalPos())(2) * light1->intensity >= 1 / (light2->pos - renderObject->transform.globalPos())(2) * light2->intensity;
+				});
+
+				GLfloat *posData = (GLfloat*)malloc(sizeof(GLfloat) * ctx.spotLights.size() * 3);
+				GLfloat *colData = (GLfloat*)malloc(sizeof(GLfloat) * ctx.spotLights.size() * 4);
+				GLfloat *dirData = (GLfloat*)malloc(sizeof(GLfloat) * ctx.spotLights.size() * 4);
+				for (int i = 0; i < ctx.spotLights.size() && i < 4; i++) {
+
+					Vec3f pos = ctx.lerp ? Vec3f::lerp(spotLights[i]->prevPos, spotLights[i]->pos, pt) : spotLights[i]->pos;
+					Vec3f col = ctx.lerp ? Vec3f::lerp(spotLights[i]->prevCol, spotLights[i]->col, pt) : spotLights[i]->col;
+					Vec3f dir = ctx.lerp ? Vec3f::lerp(spotLights[i]->prevDir, spotLights[i]->dir, pt) : spotLights[i]->dir;
+					float intensity = ctx.lerp ? Utils::lerp(spotLights[i]->prevIntensity, spotLights[i]->intensity, (float)pt) : spotLights[i]->intensity;
+					float angle = ctx.lerp ? Utils::lerp(spotLights[i]->angle, spotLights[i]->prevAngle, (float)pt) : spotLights[i]->angle;
+
+					posData[i * 3 + 0] = pos[0];
+					posData[i * 3 + 1] = pos[1];
+					posData[i * 3 + 2] = pos[2];
+
+					colData[i * 4 + 0] = col[0];
+					colData[i * 4 + 1] = col[1];
+					colData[i * 4 + 2] = col[2];
+					colData[i * 4 + 3] = intensity;
+
+					dirData[i * 4 + 0] = dir[0];
+					dirData[i * 4 + 1] = dir[1];
+					dirData[i * 4 + 2] = dir[2];
+					dirData[i * 4 + 3] = angle;
+				}
+				GLint spotLightPositionID = glGetUniformLocation(_shader.ID, "spotLightPosition");
+				GLint spotLightColorID = glGetUniformLocation(_shader.ID, "spotLightColor");
+				GLint spotLightDirectionID = glGetUniformLocation(_shader.ID, "spotLightDirection");
+				GLint spotLightCountID = glGetUniformLocation(_shader.ID, "spotLightCount");
+				glUniform3fv(spotLightPositionID, std::min<GLsizei>((GLsizei)ctx.spotLights.size(), 4), posData);
+				glUniform4fv(spotLightColorID, std::min<GLsizei>((GLsizei)ctx.spotLights.size(), 4), colData);
+				glUniform4fv(spotLightDirectionID, std::min<GLsizei>((GLsizei)ctx.spotLights.size(), 4), dirData);
+
+				glUniform1i(spotLightCountID, std::min<GLint>((GLint)ctx.spotLights.size(), 4));
+				free(posData);
+				free(colData);
+				free(dirData);
+			}
+
 			Matrix4f worldMatrix = ctx.lerp ? Matrix4f::lerp(renderObject->prevTransform, renderObject->transform, pt) : renderObject->transform;
 
 			GLint transformationID = glGetUniformLocation(_shader.ID, "transformation");
@@ -439,6 +504,14 @@ namespace PiE {
 						light->prevPos = light->pos;
 						light->prevCol = light->col;
 						light->prevIntensity = light->intensity;
+					}
+
+					for (SpotLight *light : ctx.spotLights) {
+						light->prevCol = light->col;
+						light->prevPos = light->pos;
+						light->prevDir = light->dir;
+						light->prevIntensity = light->intensity;
+						light->prevAngle = light->angle;
 					}
 				}
 

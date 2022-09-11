@@ -27,6 +27,7 @@
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "Callbacks.h"
+#include "SpotLight.h"
 
 namespace PiE {
 
@@ -112,6 +113,8 @@ namespace PiE {
 		std::vector<DirectionalLight*> dirLights;
 		// the list of all the point lights
 		std::vector<PointLight*> pointLights;
+		// the list of all the spot lights
+		std::vector<SpotLight*> spotLights;
 
 		// a list of functions to be executed once every fixed update
 		std::vector<FixedUpdateCallback> fixedUpdate{ FixedUpdateCallback(

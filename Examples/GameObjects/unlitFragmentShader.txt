@@ -21,4 +21,5 @@ uniform sampler2D main_tex;
 
 void main() {
 	col = texture(main_tex, uv);
+	col.a = 0.5f;
 }

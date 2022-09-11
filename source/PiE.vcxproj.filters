@@ -266,5 +266,8 @@
     <ClInclude Include="Optional.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Header Files\lighting</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

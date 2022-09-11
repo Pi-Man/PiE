@@ -149,6 +149,7 @@
     <ClInclude Include="ObjComponent.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Tessellator.h" />
     <ClInclude Include="TextElement.h" />
     <ClInclude Include="TexturedRect.h" />

@@ -13,6 +13,7 @@ struct RenderContext {
 	// the texture to use to render with
 	GL_Texture2D *texture = nullptr;
 	// the camera to render with
+	// * default: use the main shader associated with the engine context
 	Camera *camera = nullptr;
 	// the sader to render with
 	// * default: use the main shader associated with the engine context
@@ -47,6 +48,8 @@ struct RenderContext {
 	bool cullEnable = true;
 	// whether or not to use blending
 	bool blendEnable = true;
+	// if true, renders after solid objects
+	bool isTransparent = false;
 
 	bool operator==(RenderContext &other) const;
 	bool operator!=(RenderContext &other) const;
