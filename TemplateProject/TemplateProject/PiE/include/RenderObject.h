@@ -16,9 +16,6 @@ struct RenderObject {
 	Transform prevTransform;
 	// the transform of the object to be rendered
 	Transform transform;
-	// the sader to render with
-	// * default: use the main shader associated with the engine context
-	Shader shader;
 	// the render context to render with
 	RenderContext renderContext;
 };

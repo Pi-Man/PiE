@@ -20,6 +20,12 @@ public:
 	// the gl handle of the texture
 	GLuint ID = -1;
 
+	GL_Texture2D(const GL_Texture2D & other);
+	GL_Texture2D(GL_Texture2D && other);
+
+	GL_Texture2D & operator=(const GL_Texture2D & other);
+	GL_Texture2D & operator=(GL_Texture2D && other);
+
 	// creates a texture from an image file
 	GL_Texture2D(const char * file, GLint filter = GL_NEAREST);
 	// creates a texture with the given size
@@ -39,5 +45,9 @@ public:
 	std::vector<std::reference_wrapper<unsigned int>> operator[](int index);
 
 };
+
+bool operator==(const GL_Texture2D & left, const GL_Texture2D & right);
+bool operator!=(const GL_Texture2D & left, const GL_Texture2D & right);
+
 
 #endif

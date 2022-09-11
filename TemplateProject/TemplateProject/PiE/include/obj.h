@@ -11,6 +11,13 @@
 
 // namespace for loading Wavefront obj models
 namespace OBJ {
+
+	struct Material {
+		RenderContext renderContext{};
+		Vec3f textureOffset;
+		Vec3f textureScale;
+	};
+
 	// default material
 	extern RenderContext blankMtl;
 	// parse a material library file

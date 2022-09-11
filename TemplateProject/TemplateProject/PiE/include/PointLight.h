@@ -1,7 +1,7 @@
 #ifndef _POINT_LIGHT
 #define _POINT_LIGHT
 
-#include "Vec3f.h"
+#include "Vec.h"
 
 
 // point light info used to populate shader uniforms

@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <memory>
 
-#include "portaudio.h"
+#include <portaudio.h>
+
 #include "AudioFormat.h"
 
 // * WARNING: will be switching from portaudio to OpenAL soon
@@ -20,10 +21,10 @@ namespace Microphone {
 
 	// the size of the microphone buffer
 	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern long _bufferSize;
+	extern size_t _bufferSize;
 	// the current position in the buffer
 	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern long _bufferPos;
+	extern size_t _bufferPos;
 	// the PA stream
 	// * WARNING: will be switching from portaudio to OpenAL soon
 	extern PaStream *stream;

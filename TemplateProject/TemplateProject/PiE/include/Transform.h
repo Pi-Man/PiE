@@ -1,7 +1,7 @@
 #ifndef _TRANSFORM
 #define _TRANSFORM
 
-#include "Matrix4f.h"
+#include "Matrix.h"
 
 // a wrapper around Matrix4f to provide parenting transformations together
 struct Transform {
@@ -10,7 +10,7 @@ struct Transform {
 	// a reference to the parent transformation
 	Transform *parent = nullptr;
 	// the matrix that this transformation wraps
-	Matrix4f m{};
+	Matrix4f m = Matrix4f::Identity();
 
 	// the location of the transformation relative to the parent transformation
 	Vec3f localPos() const;

@@ -11,7 +11,7 @@ namespace PiE {
 
 	struct FixedUpdateCallback {
 		std::function<void(EngineContext&)> f;
-		size_t index;
+		size_t index = 0;
 		static size_t lastIndex;
 
 		FixedUpdateCallback() = default;
@@ -23,7 +23,7 @@ namespace PiE {
 
 	struct EventCallback {
 		std::function<void(EngineContext&, SDL_Event)> f;
-		size_t index;
+		size_t index = 0;
 		static size_t lastIndex;
 
 		EventCallback() = default;

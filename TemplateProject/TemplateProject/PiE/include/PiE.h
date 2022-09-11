@@ -2,7 +2,6 @@
 #define _PIE
 
 #include <iostream>
-#include <Windows.h>
 #include <map>
 #include <thread>
 
@@ -28,10 +27,9 @@
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "Callbacks.h"
+#include "SpotLight.h"
 
 namespace PiE {
-
-	typedef SDL_Point Vec2i;
 
 	struct EngineContext;
 
@@ -86,7 +84,7 @@ namespace PiE {
 		SDL_GLContext glContext;
 
 		// the currently set render context 
-		RenderContext lastRenderContext;
+		RenderContext lastRenderContext{};
 
 		// the update limiters for the fixed update loop and the render loop
 		UpdateLimiter tickLimiter, renderLimiter;
@@ -115,6 +113,8 @@ namespace PiE {
 		std::vector<DirectionalLight*> dirLights;
 		// the list of all the point lights
 		std::vector<PointLight*> pointLights;
+		// the list of all the spot lights
+		std::vector<SpotLight*> spotLights;
 
 		// a list of functions to be executed once every fixed update
 		std::vector<FixedUpdateCallback> fixedUpdate{ FixedUpdateCallback(
@@ -129,7 +129,13 @@ namespace PiE {
 		// a list of functions to be executed at the specified event type
 		std::multimap<Uint32, EventCallback> events = { 
 			{SDL_EventType::SDL_QUIT,
-				EventCallback([](EngineContext &ctx, SDL_Event event) {shutdownEngine(ctx); })}
+				EventCallback([](EngineContext &ctx, SDL_Event event) {shutdownEngine(ctx); })},
+			{SDL_EventType::SDL_WINDOWEVENT,
+				EventCallback([](EngineContext & ctx, SDL_Event event) {
+					if (event.window.windowID == SDL_GetWindowID(ctx.mainWindow) && event.window.event == SDL_WindowEventID::SDL_WINDOWEVENT_RESIZED) {
+						ctx.windowSize = { {event.window.data1, event.window.data2} };
+					}
+				})}
 		};
 
 		// the function to be called to render on every render loop
@@ -143,7 +149,7 @@ namespace PiE {
 		// whether or not render interpolation should be active or not
 		bool lerp = false;
 		
-		EngineContext(unsigned int fps = 60, unsigned int tps = 30, const int OPENGL_MAJOR_VERSION = 3, const int OPENGL_MINOR_VERSION = 0, const int MSAA = -1, Vec2i windowSize = { 600, 600 }) :
+		EngineContext(unsigned int fps = 60, unsigned int tps = 30, const int OPENGL_MAJOR_VERSION = 3, const int OPENGL_MINOR_VERSION = 3, const int MSAA = -1, Vec2i windowSize = { { 1280, 720 } }) :
 			tickLimiter(tps, false),
 			renderLimiter(fps, false),
 			OPENGL_MAJOR_VERSION(OPENGL_MAJOR_VERSION),

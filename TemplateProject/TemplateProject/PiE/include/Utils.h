@@ -1,7 +1,7 @@
 #ifndef _UTILS
 #define _UTILS
 
-#include "Vec3f.h"
+#include "Vec.h"
 
 namespace Utils {
 
@@ -10,12 +10,25 @@ namespace Utils {
 	// * to: the target vector
 	// * distance: maximum distance that can be traveled
 	// * intended to be used to move a vector from one position to another over several frames at a specified speed
-	Vec3f moveTowards(Vec3f from, Vec3f to, float distance);
+	template<typename T, int N>
+	Vec<T, N> moveTowards(Vec<T, N> from, Vec<T, N> to, T distance);
 
 	// lerp between two values
 	double lerp(double a, double b, double k);
 	// lerp between two values
 	float lerp(float a, float b, float k);
+
+	template<int A, int B>
+	struct get_min {
+		enum {
+			value = std::min(A, B)
+		};
+	};
+
+	template<typename T1>
+	constexpr T1 abs(T1 a) {
+		return a < 0 ? -a : a;
+	}
 
 }
 
