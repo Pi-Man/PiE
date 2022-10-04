@@ -6,21 +6,37 @@
 #include <glew.h>
 #include <SDL.h>
 
-enum Uniform_Type {
-	VEC1I,
+enum class Uniform_Type {
+	INT,
 	VEC2I,
 	VEC3I,
 	VEC4I,
-	VEC1,
+	FLOAT,
 	VEC2,
 	VEC3,
 	VEC4,
-	VEC1D,
+	DOUBLE,
 	VEC2D,
 	VEC3D,
 	VEC4D,
+	MAT2,
+	MAT3,
 	MAT4,
-	MAT4D
+	MAT2X3,
+	MAT3X2,
+	MAT2X4,
+	MAT4X2,
+	MAT3X4,
+	MAT4X3,
+	MAT2D,
+	MAT3D,
+	MAT4D,
+	MAT2X3D,
+	MAT3X2D,
+	MAT2X4D,
+	MAT4X2D,
+	MAT3X4D,
+	MAT4X3D
 };
 
 struct Uniform {

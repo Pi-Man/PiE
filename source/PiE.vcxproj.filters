@@ -263,11 +263,11 @@
     <ClInclude Include="Tessellator.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
-    <ClInclude Include="Optional.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SpotLight.h">
       <Filter>Header Files\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Optional.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
