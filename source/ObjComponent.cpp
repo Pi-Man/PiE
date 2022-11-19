@@ -1,6 +1,6 @@
 #include "ObjComponent.h"
 
-ObjComponent::ObjComponent(std::string file, Shader shader) : file(file), shader(shader) {}
+ObjComponent::ObjComponent(std::string file, Shader shader, VertexFormat format) : file(file), shader(shader), format(format) {}
 
 ObjComponent::~ObjComponent() {
 	for (RenderObject *obj : parts) {
@@ -11,7 +11,7 @@ ObjComponent::~ObjComponent() {
 }
 
 void ObjComponent::onAdded(PiE::EngineContext & ctx, GameObject & gameObject) {
-	std::vector<RenderObject> ROs = OBJ::parseObj(file.c_str());
+	std::vector<RenderObject> ROs = OBJ::parseObj(file.c_str(), format);
 	for (RenderObject obj : ROs) {
 		obj.renderContext.shader = &shader;
 		RenderObject *objptr = new RenderObject(obj);

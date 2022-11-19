@@ -147,6 +147,9 @@
     <ClCompile Include="FontRenderer.cpp">
       <Filter>Source Files\text</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderTypes.cpp">
+      <Filter>Source Files\rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectionalLight.h">
@@ -268,6 +271,12 @@
     </ClInclude>
     <ClInclude Include="Optional.h">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderTypes.h">
+      <Filter>Header Files\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultVertexAttributeTypes.h">
+      <Filter>Header Files\rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

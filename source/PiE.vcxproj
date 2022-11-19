@@ -117,6 +117,7 @@
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderTypes.cpp" />
     <ClCompile Include="Speaker.cpp" />
     <ClCompile Include="Tessellator.cpp" />
     <ClCompile Include="TextElement.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Camera4D.h" />
     <ClInclude Include="Camera5DoF.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DefaultVertexAttributeTypes.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="FontRenderer.h" />
     <ClInclude Include="json.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="ObjComponent.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="ShaderTypes.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Tessellator.h" />
     <ClInclude Include="TextElement.h" />

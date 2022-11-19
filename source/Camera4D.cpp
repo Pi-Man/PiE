@@ -34,8 +34,8 @@ const Vec3f Camera4D::getPos() const {
 
 const Vec4f Camera4D::getPos4D() const {
 	if (_posDirty) {
-		Matrix<float, 5> inverse = get4DViewMatrix().invert();
-		_pos = { { inverse(4, 0), inverse(4, 1), inverse(4, 2), inverse(4, 3) } };
+		Matrix<double, 5> inverse = get4DViewMatrix().invert();
+		_pos = { { (float)inverse(4, 0), (float)inverse(4, 1), (float)inverse(4, 2), (float)inverse(4, 3) } };
 		_posDirty = false;
 	}
 	return _pos;
@@ -45,29 +45,31 @@ const Matrix4f Camera4D::getViewMatrix() const {
 	return Matrix4f::Identity().rotateD<AXIS::Y, AXIS::Z>(-pitch3D) * viewMatrix3D;
 }
 
-const Matrix<float, 5> Camera4D::get4DViewMatrix() const {
-	return Matrix<float, 5>::Identity().rotateD<AXIS::Y, AXIS::Z>(-pitch4D) * viewMatrix4D;
+const Matrix<double, 5> Camera4D::get4DViewMatrix() const {
+	return Matrix<double, 5>::Identity().rotateD<AXIS::Y, AXIS::Z>(-pitch4D) * viewMatrix4D;
 }
 
-void Camera4D::set4DViewMatrix(const Matrix<float, 5>& matrix) {
+void Camera4D::set4DViewMatrix(const Matrix<double, 5>& matrix) {
 	viewMatrix4D = matrix;
 }
 
 void Camera4D::process4DModel(VertexArrayObject & VAO, const Model4D & model) const {
-	Matrix<float, 5> view = get4DViewMatrix();
+	Matrix<double, 5> view = get4DViewMatrix();
 	//view.invert();
 	size_t buffer_index = 0;
 	if (VAO.buffer.size() == 0) {
-		VAO.buffer.assign(model.points.size() * VAO.stride, 0);
+		VAO.buffer.assign(model.points.size() * VAO.format.stride, 0);
 	}
-	for (const Vec4f &v : model.points) {
-		Vec4f v2 = view * model.matrix * v;
+	for (const Vertex &vertex : model.points) {
+		std::vector<GLdouble> pos = vertex.getAttributeAs<GLdouble>(vertex.format.position_index);
+		Vec4d v({ pos[0], pos[1], pos[2], pos[3] });
+		Vec4d v2 = view * model.matrix * v;
 		//if (v2[3] < 0.01) continue;
-		Vec3f v3 = Vec3f({ v2[0], v2[1], v2[2] }) / v2[3];
-		VAO.buffer[buffer_index + 0] = v3[0];
-		VAO.buffer[buffer_index + 1] = v3[1];
-		VAO.buffer[buffer_index + 2] = v3[2];
-		buffer_index += VAO.stride;
+		Vec3d v3 = Vec3d({ v2[0], v2[1], v2[2] }) / v2[3];
+		Vertex newVert(VAO.format);
+		newVert.setAttribute<double>(VAO.format.position_index, { v3[0], v3[1], v3[2] });
+		memmove(VAO.buffer.data() + buffer_index, newVert.data, VAO.format.stride);
+		buffer_index += VAO.format.stride;
 	}
 	if (VAO.indicies.size() == 0) {
 		for (size_t i : model.indices) {

@@ -3,12 +3,15 @@
 void Model4D::convertVAO(const VertexArrayObject & VAO) {
 	size_t buffer_index = 0;
 	while (buffer_index < VAO.buffer.size()) {
-		Vec4f point{ {VAO.buffer[buffer_index], VAO.buffer[buffer_index + 1], VAO.buffer[buffer_index + 2], 0 } };
-		points.push_back(point);
-		buffer_index += VAO.stride;
+		Vertex v{ VAO.format, std::initializer_list<int>{} };
+		v.format = VAO.format;
+		memcpy(v.data, VAO.buffer.data() + buffer_index, VAO.format.stride);
+		for (size_t i = 0; i < v.exists.size(); i++) v.exists[i] = true;
+		points.push_back(v);
+		buffer_index += VAO.format.stride;
 	}
-	for (GLuint indice : VAO.indicies) {
-		indices.push_back((size_t)indice);
+	for (const size_t & indice : VAO.indicies) {
+		indices.push_back(indice);
 	}
 }
 
@@ -43,7 +46,7 @@ void Model4D::addHyperCuboidIndices(int a, int b, int c, int d, int e, int f, in
 	addCuboidIndices(i, a, d, l, m, e, h, p);
 }
 
-void Model4D::addTriangle(std::array<Vec4f, 3> pointsIn) {
+void Model4D::addTriangle(std::array<Vertex, 3> pointsIn) {
 	int i = (int)points.size();
 
 	points.push_back(pointsIn[0]);
@@ -57,7 +60,7 @@ void Model4D::addTriangle(std::array<Vec4f, 3> pointsIn) {
 	);
 }
 
-void Model4D::addQuad(std::array<Vec4f, 4> pointsIn) {
+void Model4D::addQuad(std::array<Vertex, 4> pointsIn) {
 	int i = (int)points.size();
 
 	points.push_back(pointsIn[0]);
@@ -73,7 +76,7 @@ void Model4D::addQuad(std::array<Vec4f, 4> pointsIn) {
 	);
 }
 
-void Model4D::addCuboid(std::array<Vec4f, 8> pos) {
+void Model4D::addCuboid(std::array<Vertex, 8> pos) {
 
 	int i = (int)points.size();
 
@@ -93,7 +96,7 @@ void Model4D::addCuboid(std::array<Vec4f, 8> pos) {
 	);
 }
 
-void Model4D::addHyperCuboid(std::array<Vec4f, 16> pos) {
+void Model4D::addHyperCuboid(std::array<Vertex, 16> pos) {
 
 	int i = (int)points.size();
 
@@ -121,23 +124,24 @@ void Model4D::addHyperCuboid(std::array<Vec4f, 16> pos) {
 	);
 }
 
-void Model4D::addCenteredHyperCuboid(int x, int y, int z, int w) {
+void Model4D::addCenteredHyperCuboid(double x, double y, double z, double w) {
+	VertexFormat format{ POSITION_D };
 	addHyperCuboid({ {
-		{{x - 0.5f, y - 0.5f, z + 0.5f, w - 0.5f}},
-		{{x + 0.5f, y - 0.5f, z + 0.5f, w - 0.5f}},
-		{{x + 0.5f, y + 0.5f, z + 0.5f, w - 0.5f}},
-		{{x - 0.5f, y + 0.5f, z + 0.5f, w - 0.5f}},
-		{{x - 0.5f, y - 0.5f, z - 0.5f, w - 0.5f}},
-		{{x + 0.5f, y - 0.5f, z - 0.5f, w - 0.5f}},
-		{{x + 0.5f, y + 0.5f, z - 0.5f, w - 0.5f}},
-		{{x - 0.5f, y + 0.5f, z - 0.5f, w - 0.5f}},
-		{{x - 0.5f, y - 0.5f, z + 0.5f, w + 0.5f}},
-		{{x + 0.5f, y - 0.5f, z + 0.5f, w + 0.5f}},
-		{{x + 0.5f, y + 0.5f, z + 0.5f, w + 0.5f}},
-		{{x - 0.5f, y + 0.5f, z + 0.5f, w + 0.5f}},
-		{{x - 0.5f, y - 0.5f, z - 0.5f, w + 0.5f}},
-		{{x + 0.5f, y - 0.5f, z - 0.5f, w + 0.5f}},
-		{{x + 0.5f, y + 0.5f, z - 0.5f, w + 0.5f}},
-		{{x - 0.5f, y + 0.5f, z - 0.5f, w + 0.5f}},
+		{format, {x - 0.5, y - 0.5, z + 0.5, w - 0.5}},
+		{format, {x + 0.5, y - 0.5, z + 0.5, w - 0.5}},
+		{format, {x + 0.5, y + 0.5, z + 0.5, w - 0.5}},
+		{format, {x - 0.5, y + 0.5, z + 0.5, w - 0.5}},
+		{format, {x - 0.5, y - 0.5, z - 0.5, w - 0.5}},
+		{format, {x + 0.5, y - 0.5, z - 0.5, w - 0.5}},
+		{format, {x + 0.5, y + 0.5, z - 0.5, w - 0.5}},
+		{format, {x - 0.5, y + 0.5, z - 0.5, w - 0.5}},
+		{format, {x - 0.5, y - 0.5, z + 0.5, w + 0.5}},
+		{format, {x + 0.5, y - 0.5, z + 0.5, w + 0.5}},
+		{format, {x + 0.5, y + 0.5, z + 0.5, w + 0.5}},
+		{format, {x - 0.5, y + 0.5, z + 0.5, w + 0.5}},
+		{format, {x - 0.5, y - 0.5, z - 0.5, w + 0.5}},
+		{format, {x + 0.5, y - 0.5, z - 0.5, w + 0.5}},
+		{format, {x + 0.5, y + 0.5, z - 0.5, w + 0.5}},
+		{format, {x - 0.5, y + 0.5, z - 0.5, w + 0.5}},
 	} });
 }

@@ -6,10 +6,10 @@
 #include "VertexArrayObject.h"
 struct Model4D
 {
-	std::vector<Vec4f> points;
+	std::vector<Vertex> points;
 	std::vector<size_t> indices;
 
-	Matrix<float, 5> matrix = Matrix<float, 5>::Identity();
+	Matrix<double, 5> matrix = Matrix<double, 5>::Identity();
 
 	void convertVAO(const VertexArrayObject & VAO);
 
@@ -38,22 +38,22 @@ struct Model4D
 	// inner cube, outer cube
 	void addHyperCuboidIndices(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m, int n, int o, int p);
 
-	void addTriangle(std::array<Vec4f, 3> pointsIn);
+	void addTriangle(std::array<Vertex, 3> pointsIn);
 
-	void addQuad(std::array<Vec4f, 4> pointsIn);
+	void addQuad(std::array<Vertex, 4> pointsIn);
 
 	// 32
 	// 01\
 	// \76
 	//  45
-	void addCuboid(std::array<Vec4f, 8> pos);
+	void addCuboid(std::array<Vertex, 8> pos);
 
 	//11 32  10
 	//8  01\ 9
 	// 15\76 14
 	// 12 45 13
-	void addHyperCuboid(std::array<Vec4f, 16> pos);
+	void addHyperCuboid(std::array<Vertex, 16> pos);
 
-	void addCenteredHyperCuboid(int x = 0, int y = 0, int z = 0, int w = 0);
+	void addCenteredHyperCuboid(double x = 0, double y = 0, double z = 0, double w = 0);
 };
 

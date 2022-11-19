@@ -24,7 +24,7 @@ namespace OBJ {
 	std::map<std::string, RenderContext> parseMtl(const char *fileName);
 	// parse an obj file
 	// * flags: the flags to initialize the vertex array objects with
-	std::vector<RenderObject> parseObj(const char *fileName, Uint32 flags = VAO_NORMALS | VAO_UVS);
+	std::vector<RenderObject> parseObj(const char *fileName, VertexFormat format);
 }
 
 #endif

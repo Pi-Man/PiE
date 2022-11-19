@@ -9,18 +9,22 @@ TexturedRect::TexturedRect(AxisAlignedRect *bounds, GL_Texture2D *texture, Camer
 	//	.scale({ {2.0f, 2.0f, 1.0f, 1.0f} })
 	//	.translate({ {-1.0f, -1.0f, 0.0f} });
 }) {
-
-	renderObject.VAO = VertexArrayObject(VAO_UVS);
-	renderObject.VAO.addQuadWithUVs({
-		0.0, 0.0, 0.0,
-			0.0, 1.0,
-		1.0, 0.0, 0.0,
-			1.0, 1.0,
-		1.0, 1.0, 0.0,
-			1.0, 0.0,
-		0.0, 1.0, 0.0,
-			0.0, 0.0
-	});
+	VertexFormat format{ POSITION_F, UV2_F };
+	renderObject.VAO = VertexArrayObject(format);
+	renderObject.VAO.addQuad(
+		{ format,
+		{0.0f, 0.0f, 0.0f},
+		{0.0f, 1.0f} },
+		{ format,
+		{1.0f, 0.0f, 0.0f},
+		{1.0f, 1.0f} },
+		{ format,
+		{1.0f, 1.0f, 0.0f},
+		{1.0f, 0.0f} },
+		{ format,
+		{0.0f, 1.0f, 0.0f},
+		{0.0f, 0.0f} }
+	);
 	renderObject.renderContext.texture = texture;
 	renderObject.renderContext.shader = shader;
 	events.push_back({ SDL_EventType::SDL_WINDOWEVENT, PiE::EventCallback([this](PiE::EngineContext & ctx, SDL_Event event) {

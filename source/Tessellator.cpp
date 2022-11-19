@@ -1,6 +1,6 @@
 #include "Tessellator.h"
 
-GLdouble triangleStripPoints[2][3];
+Vertex * triangleStripPoints[2];
 bool triangleStripPointsValid[2];
 bool triangleStripSide = false;
 
@@ -11,39 +11,32 @@ void default_beginCB(GLenum type, Tessellator * polygon_data) {
 }
 
 void default_vertexCB(void * vertex_data, Tessellator * polygon_data) {
-	GLdouble * vertex = (GLdouble*)vertex_data;
+	Vertex &vertex = *(Vertex*)vertex_data;
 	Tessellator *tessellator = (Tessellator*)polygon_data;
 
 	if (!triangleStripPointsValid[0]) {
-		memcpy(triangleStripPoints[0], vertex, sizeof(GLdouble) * 3);
+		triangleStripPoints[0] = (Vertex*)vertex_data;
 		triangleStripPointsValid[0] = true;
 		return;
 	}
 	if (!triangleStripPointsValid[1]) {
-		memcpy(triangleStripPoints[1], vertex, sizeof(GLdouble) * 3);
+		triangleStripPoints[1] = (Vertex*)vertex_data;
 		triangleStripPointsValid[1] = true;
 		return;
 	}
 
-	tessellator->renderObject.VAO.addTriangleUVs(std::array<GLfloat, 15>{
-		(GLfloat)triangleStripPoints[triangleStripSide][0], (GLfloat)triangleStripPoints[triangleStripSide][1], (GLfloat)triangleStripPoints[triangleStripSide][2],
-			0.5f, 0.5f,
-			(GLfloat)triangleStripPoints[1 - triangleStripSide][0], (GLfloat)triangleStripPoints[1 - triangleStripSide][1], (GLfloat)triangleStripPoints[1 - triangleStripSide][2],
-			0.5f, 0.5f,
-			(GLfloat)vertex[0], (GLfloat)vertex[1], (GLfloat)vertex[2],
-			0.5f, 0.5f
-	});
+	tessellator->renderObject.VAO.addTriangle(*triangleStripPoints[triangleStripSide], *triangleStripPoints[1 - triangleStripSide], vertex);
 
 	if (tessellator->mode == GL_TRIANGLE_STRIP) {
-		memcpy(triangleStripPoints[0], triangleStripPoints[1], sizeof(GLdouble) * 3);
-		memcpy(triangleStripPoints[1], vertex, sizeof(GLdouble) * 3);
+		triangleStripPoints[0] = triangleStripPoints[1];
+		triangleStripPoints[1] = (Vertex*)vertex_data;
 		triangleStripSide ^= true;
 	}
 	else if (tessellator->mode == GL_TRIANGLES) {
 		triangleStripPointsValid[0] = triangleStripPointsValid[1] = false;
 	}
 	else if (tessellator->mode == GL_TRIANGLE_FAN) {
-		memcpy(triangleStripPoints[1], vertex, sizeof(GLdouble) * 3);
+		triangleStripPoints[1] = (Vertex*)vertex_data;
 	}
 
 }
@@ -66,10 +59,10 @@ void Tessellator::begin() {
 	gluTessBeginPolygon(tessellator, this);
 }
 
-void Tessellator::addContour(std::vector<std::array<GLdouble, 3>> &data) {
+void Tessellator::addContour(std::vector<std::array<GLdouble, 3>> &pos, std::vector<Vertex> &data) {
 	gluTessBeginContour(tessellator);
-	for (size_t i = 0; i < data.size(); i++) {
-		gluTessVertex(tessellator, data[i].data(), data[i].data());
+	for (size_t i = 0; i < pos.size(); i++) {
+		gluTessVertex(tessellator, pos[i].data(), &data[i]);
 	}
 	gluTessEndContour(tessellator);
 }

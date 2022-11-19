@@ -12,7 +12,7 @@
 
 Camera *camera;
 
-VertexAttributeType colorAttribute(Usage::OTHER, Attribute().make<Attribute_Type::VEC3>({ 1, 0.5, 0.25 }));
+VertexAttributeType colorAttribute(Usage::COLOR, ShaderTypes::VEC3, { 1.0f, 0.5f, 0.25f });
 
 int main(int args, char **argv) {
 
@@ -66,6 +66,7 @@ int main(int args, char **argv) {
 			bounds.reset(bounds.center, bounds.width, bounds.height);
 			buttonTexture.m.invalidate();
 			buttonText.m.invalidate();
+			buttonText.update();
 		}
 	});
 	buttonClick.onHoverStart = PiE::EventCallback([&buttonTexture, &testImage](PiE::EngineContext & ctx, SDL_Event event) {

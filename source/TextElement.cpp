@@ -12,7 +12,7 @@ m([this]()->Matrix4f {
 	//	.scale({ {2.0f, 2.0f, 1.0f, 1.0f} })
 	//	.translate({ {-1.0f, -1.0f, 0.0f} });
 }) {
-	textObject.VAO = VertexArrayObject(VAO_UVS);
+	textObject.VAO = VertexArrayObject({ POSITION_F, UV2_F });
 	textObject.renderContext.shader = shader;
 	textObject.renderContext.cullEnable = false;
 	events.push_back({ SDL_EventType::SDL_WINDOWEVENT, PiE::EventCallback([this](PiE::EngineContext & ctx, SDL_Event event) {
@@ -30,22 +30,25 @@ TextElement::TextElement(AxisAlignedRect * bounds, Shader * shader, Font & font,
 }
 
 void TextElement::update() {
-	RenderObject temp = font->buildRenderObjectWithAttributes(text, (VAO_Flags)0, [this](std::vector<GLfloat> & out, const Font::RenderInfo & info) {
+	RenderObject temp = font->buildRenderObjectWithAttributes(text, { POSITION_F, UV2_F }, [this](Vertex & out, const Font::RenderInfo & info) {
 
-		float width = bounds->getWidth() * bounds->ctx->windowSize[0];
-		float height = bounds->getHeight() * bounds->ctx->windowSize[1];
+		double width = bounds->getWidth() * bounds->ctx->windowSize[0];
+		double height = bounds->getHeight() * bounds->ctx->windowSize[1];
 
-		float scaley = height / width;
+		double scaley = height / width;
 
-		float scale = (info.widthMax / width) > ((info.top - info.bottom) / height) ? info.widthMax : (info.top - info.bottom) / scaley;
+		double scale = (info.widthMax / width) > ((info.top - info.bottom) / height) ? info.widthMax : (info.top - info.bottom) / scaley;
 
 		//out[0] = (((GLfloat)info.vertex[0] + (centerX ? (info.widthMax - info.width) / 2.0f : 0.0f)) / scale);
 		//out[1] = (((GLfloat)info.vertex[1] - info.bottom) / scale);
 		//out[2] = ((GLfloat)info.vertex[2] - 1.0f);
 
-		out[0] = (((GLfloat)info.vertex[0] + (centerX ? (info.widthMax - info.width) / 2.0f : 0.0f)) / scale) + (centerX ? (1.0f - info.widthMax / scale) / 2.0f : 0.0f);
-		out[1] = (((GLfloat)info.vertex[1] - info.bottom) / (scale * scaley)) + (centerY ? (1.0f - (info.top - info.bottom) / (scale * scaley)) / 2.0f : 0.0f);
-		out[2] = ((GLfloat)info.vertex[2] - 1.0f);
+		float x = (((GLfloat)info.vertex[0] + (centerX ? (info.widthMax - info.width) / 2.0f : 0.0f)) / scale) + (centerX ? (1.0f - info.widthMax / scale) / 2.0f : 0.0f);
+		float y = (((GLfloat)info.vertex[1] - info.bottom) / (scale * scaley)) + (centerY ? (1.0f - (info.top - info.bottom) / (scale * scaley)) / 2.0f : 0.0f);
+		float z = ((GLfloat)info.vertex[2] - 1.0f);
+
+		out.setAttribute<float>(0, { x, y, z });
+		out.setAttribute<float>(1, { (float)info.uv[0], (float)info.uv[1] });
 
 	});
 	textObject.VAO.copy(temp.VAO);

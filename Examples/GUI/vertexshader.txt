@@ -1,7 +1,7 @@
 #version 330 core
 layout (location = 0) in vec3 PosIn;
-layout (location = 1) in vec3 NormIn;
-layout (location = 2) in vec2 UVIn;
+layout (location = 2) in vec3 NormIn;
+layout (location = 1) in vec2 UVIn;
 layout (location = 3) in vec3 ColorIn;
 
 out Data {

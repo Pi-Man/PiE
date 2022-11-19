@@ -24,16 +24,19 @@ constexpr int MOVE_UP = SDL_SCANCODE_SPACE;
 constexpr int MOVE_DOWN = SDL_SCANCODE_LSHIFT;
 constexpr int MOUSE_LOCK = SDL_SCANCODE_ESCAPE;
 
+VertexFormat format{ POSITION_F };
+
 // handles adding and removing game objects on key press
 // NOE: game objects can NOT be added or removed in fixed update
 // the way to add or remove a game object from fixed update is to send a custom event and handle the event
 void addRemoveGameObject(PiE::EngineContext &ctx, SDL_Event event) {
+
 	switch (event.key.keysym.scancode) {
 	case ADD_CUBE:
 	{
 		if (numberOfCubes == cubes.size()) { // if there are no more cubes in the object pool, make a new object
 			GameObject *newCube = new GameObject();
-			newCube->components.push_back(new ObjComponent("uv_cube.obj", shader));
+			newCube->components.push_back(new ObjComponent("uv_cube.obj", shader, format));
 			newCube->components.push_back(new RandomPositionRotation(numberOfCubes));
 			cubes.push_back(newCube);
 		}
@@ -97,6 +100,7 @@ void mouseLockEvent(PiE::EngineContext & ctx, SDL_Event event) {
 }
 
 int main(int argc, char** args) {
+	format = { POSITION_F, NORMAL_F, UV2_F };
 	//-------create context and initialize engine---------
 	PiE::EngineContext ctx{};
 
@@ -113,7 +117,7 @@ int main(int argc, char** args) {
 	ctx.mainShader = &shader;
 	//---------------add in game objects-----------------
 	GameObject cubeObject{};
-	ObjComponent cubeComponent{ "uv_cube.obj", shader };
+	ObjComponent cubeComponent{ "uv_cube.obj", shader, format };
 	cubeObject.components.push_back(&cubeComponent);
 	PiE::addGameObject(ctx, cubeObject);
 	//----------add update and event functions-----------

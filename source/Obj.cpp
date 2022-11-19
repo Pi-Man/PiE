@@ -100,10 +100,10 @@ inline std::vector<std::array<int, 3>> readFace2(const char *string) {
 	return indices;
 }
 
-inline void readFace2(const char *string, std::vector<std::array<int, 3>> &face) {
+inline void readFace2(const char *string, std::vector<std::array<size_t, 3>> &face) {
 	face.clear();
-	int j = -1;
-	int l = 0;
+	size_t j = -1;
+	size_t l = 0;
 	while (string[0]) {
 		if (string[0] == '/') {
 			l++;
@@ -121,70 +121,68 @@ inline void readFace2(const char *string, std::vector<std::array<int, 3>> &face)
 	}
 }
 
-template<int N>
-inline std::array<GLfloat, N * 3> getVertexArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<int, 3>> &indices) {
-	std::array<GLfloat, N * 3> array;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < 3; j++) {
-			array[i * 3 + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
+template<size_t N>
+inline std::array<double, N * 3> getVertexArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<size_t, 3>> &indices) {
+	std::array<double, N * 3> array;
+	for (size_t i = 0; i < N; i++) {
+		for (size_t j = 0; j < 3; j++) {
+			array[i * 3 + j] = (double) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 		}
 	}
 	return array;
 }
 
-inline std::vector<std::array<GLfloat, 3>> getVertexArray(size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<int, 3>> &indices) {
-	std::vector<std::array<GLfloat, 3>> vector;
+inline std::vector<std::array<double, 3>> getVertexArray(size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<size_t, 3>> &indices) {
+	std::vector<std::array<double, 3>> vector(N, std::array<double, 3>{});
 	for (size_t i = 0; i < N; i++) {
-		vector.push_back(std::array<GLfloat, 3>());
 		for (size_t j = 0; j < 3; j++) {
-			vector[i][j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
+			vector[i][j] = (double) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 		}
 	}
 	return vector;
 }
 
-template<int N>
-inline std::array<GLfloat, N * 3 * 2> getVertexNormalArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<int, 3>> &indices) {
-	std::array<GLfloat, N * 3 * 2> array;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < 3 * 2; j++) {
-			if (j < 3) {
-				array[i * 3 * 2 + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
-			}
-			else {
-				array[i * 3 * 2 + j] = (GLfloat) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
-			}
-		}
-	}
-	return array;
-}
-
-inline std::vector<std::array<GLfloat, 3 * 2>> getVertexNormalArray(const size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<int, 3>> &indices) {
-	std::vector<std::array<GLfloat, 3 * 2>> vector;
+template<size_t N>
+inline std::array<double, N * 3 * 2> getVertexNormalArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<size_t, 3>> &indices) {
+	std::array<double, N * 3 * 2> array;
 	for (size_t i = 0; i < N; i++) {
-		vector.push_back(std::array<GLfloat, 6>());
 		for (size_t j = 0; j < 3 * 2; j++) {
 			if (j < 3) {
-				vector[i][j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
+				array[i * 3 * 2 + j] = (double) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 			}
 			else {
-				vector[i][j] = (GLfloat) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
+				array[i * 3 * 2 + j] = (double) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
+			}
+		}
+	}
+	return array;
+}
+
+inline std::vector<std::array<double, 3 * 2>> getVertexNormalArray(const size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &normals, const std::vector<std::array<size_t, 3>> &indices) {
+	std::vector<std::array<double, 3 * 2>> vector(N, std::array<double, 3 * 2>{});
+	for (size_t i = 0; i < N; i++) {
+		for (size_t j = 0; j < 3 * 2; j++) {
+			if (j < 3) {
+				vector[i][j] = (double) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
+			}
+			else {
+				vector[i][j] = (double) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
 			}
 		}
 	}
 	return vector;
 }
 
-template<int N>
-inline std::array<GLfloat, N * (3 + 2)> getVertexUVsArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &uvs, const std::vector<std::array<int, 3>> &indices) {
-	std::array<GLfloat, N * (3 + 2)> array;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < (3 + 2); j++) {
+template<size_t N>
+inline std::array<double, N * (3 + 2)> getVertexUVsArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &uvs, const std::vector<std::array<size_t, 3>> &indices) {
+	std::array<double, N * (3 + 2)> array;
+	for (size_t i = 0; i < N; i++) {
+		for (size_t j = 0; j < (3 + 2); j++) {
 			if (j < 3) {
-				array[i * (3 + 2) + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
+				array[i * (3 + 2) + j] = (double) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 			}
 			else {
-				array[i * (3 + 2) + j] = (GLfloat) (uvs[indices[i][1] - 1][j - 3]);
+				array[i * (3 + 2) + j] = (double) (uvs[indices[i][1] - 1][j - 3]);
 				if (j == 4) {
 					array[i * (3 + 2) + j] = 1 - array[i * (3 + 2) + j];
 				}
@@ -194,19 +192,37 @@ inline std::array<GLfloat, N * (3 + 2)> getVertexUVsArray(const std::vector<std:
 	return array;
 }
 
-template<int N>
-inline std::array<GLfloat, N * (3 + 3 + 2)> getVertexNormalsUVsArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> normals, const std::vector<std::array<double, 3>> &uvs, const std::vector<std::array<int, 3>> &indices) {
-	std::array<GLfloat, N * (3 + 3 + 2)> array;
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < (3 + 3 + 2); j++) {
+inline std::vector<std::array<double, 3 + 2>> getVertexUVsArray(const size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> &uvs, const std::vector<std::array<size_t, 3>> &indices) {
+	std::vector<std::array<double, 3 + 2>> vector(N, std::array<double, 3 + 2>{});
+	for (size_t i = 0; i < N; i++) {
+		for (size_t j = 0; j < (3 + 2); j++) {
 			if (j < 3) {
-				array[i * (3 + 3 + 2) + j] = (GLfloat) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
-			}
-			else if (j < 6) {
-				array[i * (3 + 3 + 2) + j] = (GLfloat) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
+				vector[i][j] = (double)(vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
 			}
 			else {
-				array[i * (3 + 3 + 2) + j] = (GLfloat) (uvs[indices[i][1] - 1][j - 6]);
+				vector[i][j] = (double)(uvs[indices[i][1] - 1][j - 3]);
+				if (j == 4) {
+					vector[i][j] = 1 - vector[i][j];
+				}
+			}
+		}
+	}
+	return vector;
+}
+
+template<size_t N>
+inline std::array<double, N * (3 + 3 + 2)> getVertexNormalsUVsArray(const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> normals, const std::vector<std::array<double, 3>> &uvs, const std::vector<std::array<size_t, 3>> &indices) {
+	std::array<double, N * (3 + 3 + 2)> array;
+	for (size_t i = 0; i < N; i++) {
+		for (size_t j = 0; j < (3 + 3 + 2); j++) {
+			if (j < 3) {
+				array[i * (3 + 3 + 2) + j] = (double) (vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
+			}
+			else if (j < 6) {
+				array[i * (3 + 3 + 2) + j] = (double) (normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
+			}
+			else {
+				array[i * (3 + 3 + 2) + j] = (double) (uvs[indices[i][1] - 1][j - 6]);
 				if (j == 7) {
 					array[i * (3 + 3 + 2) + j] = 1 - array[i * (3 + 3 + 2) + j];
 				}
@@ -214,6 +230,27 @@ inline std::array<GLfloat, N * (3 + 3 + 2)> getVertexNormalsUVsArray(const std::
 		}
 	}
 	return array;
+}
+
+inline std::vector<std::array<double, 3 + 3 + 2>> getVertexNormalsUVsArray(const size_t N, const std::vector<std::array<double, 3>> &vertices, const std::vector<std::array<double, 3>> normals, const std::vector<std::array<double, 3>> &uvs, const std::vector<std::array<size_t, 3>> &indices) {
+	std::vector<std::array<double, 3 + 3 + 2>> vector(N, std::array<double, 3 + 3 + 2>{});
+	for (size_t i = 0; i < N; i++) {
+		for (size_t j = 0; j < (3 + 3 + 2); j++) {
+			if (j < 3) {
+				vector[i][j] = (double)(vertices[indices[i][0] - 1][j] * (j == 0 ? -1 : 1));
+			}
+			else if (j < 6) {
+				vector[i][j] = (double)(normals[indices[i][2] - 1][j - 3] * (j == 3 ? -1 : 1));
+			}
+			else {
+				vector[i][j] = (double)(uvs[indices[i][1] - 1][j - 6]);
+				if (j == 7) {
+					vector[i][j] = 1 - vector[i][j];
+				}
+			}
+		}
+	}
+	return vector;
 }
 
 namespace OBJ {
@@ -382,17 +419,17 @@ namespace OBJ {
 		return map;
 	}
 
-	std::vector<RenderObject> parseObj(const char *fileName, Uint32 flags) {
+	std::vector<RenderObject> parseObj(const char *fileName, VertexFormat format) {
 
 		std::map<std::string, RenderContext> matlib;
 
-		std::vector<RenderObject> renderObjects = { RenderObject{VertexArrayObject(flags), Transform(), Transform(), RenderContext()} };
+		std::vector<RenderObject> renderObjects = { RenderObject{VertexArrayObject(format), Transform(), Transform(), RenderContext()} };
 		int objectID = 0;
 
 		std::vector<std::array<double, 3>> vertices;
 		std::vector<std::array<double, 3>> normals;
 		std::vector<std::array<double, 3>> texcoords;
-		std::vector<std::array<int, 3>> face;
+		std::vector<std::array<size_t, 3>> face;
 
 		FILE *file;
 
@@ -427,7 +464,7 @@ namespace OBJ {
 			}
 			else if (line[0] == 'o' && line[1] == ' ' && vertices.size() > 0) {
 				objectID++;
-				renderObjects.push_back(RenderObject{VertexArrayObject(flags), Transform(), Transform(), RenderContext()});
+				renderObjects.push_back(RenderObject{VertexArrayObject(format), Transform(), Transform(), RenderContext()});
 				memcpy(lastName, line + 2, 100);
 			}
 			else if (strncmp(line, "mtllib", 6) == 0 && line[6] == ' ' && matlib.size() == 0) {
@@ -454,46 +491,157 @@ namespace OBJ {
 					puts("WARNING: face can not have fewer than 3 indices!");
 				}
 				else if (face.size() == 3) {
+					Vertex v1(format);
+					Vertex v2(format);
+					Vertex v3(format);
 					if (face[0][1] != INT_MAX && face[0][2] == INT_MAX) {
-						renderObjects[objectID].VAO.addTriangleUVs(getVertexUVsArray<3>(vertices, texcoords, face));
+						std::array<double, 15> data = getVertexUVsArray<3>(vertices, texcoords, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0,  data.begin() + 3  });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 5,  data.begin() + 8  });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 10, data.begin() + 13 });
+						if (format.uv_index != (size_t)-1) {
+							v1.setAttribute<double>(format.uv_index, { data.begin() + 3,  data.begin() + 5  });
+							v2.setAttribute<double>(format.uv_index, { data.begin() + 8,  data.begin() + 10 });
+							v3.setAttribute<double>(format.uv_index, { data.begin() + 13, data.begin() + 15 });
+						}
 					}
 					else if (face[0][1] == INT_MAX && face[0][2] != INT_MAX) {
-						renderObjects[objectID].VAO.addTriangleWithNormals(getVertexNormalArray<3>(vertices, normals, face));
+						std::array<double, 18> data = getVertexNormalArray<3>(vertices, normals, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0,  data.begin() + 3  });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 6,  data.begin() + 9  });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 12, data.begin() + 15 });
+						if (format.normal_index != (size_t)-1) {
+							v1.setAttribute<double>(format.normal_index, { data.begin() + 3,  data.begin() + 6  });
+							v2.setAttribute<double>(format.normal_index, { data.begin() + 9,  data.begin() + 12 });
+							v3.setAttribute<double>(format.normal_index, { data.begin() + 15, data.begin() + 18 });
+						}
 					}
 					else if (face[0][1] != INT_MAX && face[0][2] != INT_MAX) {
-						renderObjects[objectID].VAO.addTriangelUVsNormals(getVertexNormalsUVsArray<3>(vertices, normals, texcoords, face));
+						std::array<double, 24> data = getVertexNormalsUVsArray<3>(vertices, normals, texcoords, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0,  data.begin() + 3  });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 8,  data.begin() + 11 });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 16, data.begin() + 19 });
+						if (format.normal_index != (size_t)-1) {
+							v1.setAttribute<double>(format.normal_index, { data.begin() + 3,  data.begin() + 6  });
+							v2.setAttribute<double>(format.normal_index, { data.begin() + 11, data.begin() + 14 });
+							v3.setAttribute<double>(format.normal_index, { data.begin() + 19, data.begin() + 21 });
+						}
+						if (format.uv_index != (size_t)-1) {
+							v1.setAttribute<double>(format.uv_index, { data.begin() + 6,  data.begin() + 8  });
+							v2.setAttribute<double>(format.uv_index, { data.begin() + 14, data.begin() + 16 });
+							v3.setAttribute<double>(format.uv_index, { data.begin() + 21, data.begin() + 24 });
+						}
 					}
 					else {
-						renderObjects[objectID].VAO.addTriangle(getVertexArray<3>(vertices, face));
+						std::array<double, 9> data = getVertexArray<3>(vertices, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0, data.begin() + 3 });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 3, data.begin() + 6 });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 6, data.begin() + 9 });
 					}
+					renderObjects[objectID].VAO.addTriangle(v1, v2, v3);
 				}
 				else if (face.size() == 4) {
+					Vertex v1(format);
+					Vertex v2(format);
+					Vertex v3(format);
+					Vertex v4(format);
 					if (face[0][1] != INT_MAX && face[0][2] == INT_MAX) {
-						renderObjects[objectID].VAO.addQuadWithUVs(getVertexUVsArray<4>(vertices, texcoords, face));
+						std::array<double, 20> data = getVertexUVsArray<4>(vertices, texcoords, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0,  data.begin() + 3  });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 5,  data.begin() + 8  });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 10, data.begin() + 13 });
+						v4.setAttribute<double>(format.position_index, { data.begin() + 15, data.begin() + 18 });
+						if (format.uv_index != (size_t)-1) {
+							v1.setAttribute<double>(format.uv_index, { data.begin() + 3,  data.begin() + 5 });
+							v2.setAttribute<double>(format.uv_index, { data.begin() + 8,  data.begin() + 10 });
+							v3.setAttribute<double>(format.uv_index, { data.begin() + 13, data.begin() + 15 });
+							v4.setAttribute<double>(format.uv_index, { data.begin() + 18, data.begin() + 20 });
+						}
 					}
 					else if (face[0][1] == INT_MAX && face[0][2] != INT_MAX) {
-						renderObjects[objectID].VAO.addQuadWithNormals(getVertexNormalArray<4>(vertices, normals, face));
+						std::array<double, 24> data = getVertexNormalArray<4>(vertices, normals, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0,  data.begin() + 3  });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 6,  data.begin() + 9  });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 12, data.begin() + 15 });
+						v4.setAttribute<double>(format.position_index, { data.begin() + 18, data.begin() + 21 });
+						if (format.normal_index != (size_t)-1) {
+							v1.setAttribute<double>(format.normal_index, { data.begin() + 3,  data.begin() + 6  });
+							v2.setAttribute<double>(format.normal_index, { data.begin() + 9,  data.begin() + 12 });
+							v3.setAttribute<double>(format.normal_index, { data.begin() + 15, data.begin() + 18 });
+							v4.setAttribute<double>(format.normal_index, { data.begin() + 15, data.begin() + 18 });
+						}
 					}
 					else if (face[0][1] != INT_MAX && face[0][2] != INT_MAX) {
-						renderObjects[objectID].VAO.addQuadUVsNormals(getVertexNormalsUVsArray<4>(vertices, normals, texcoords, face));
+						std::array<double, 32> data = getVertexNormalsUVsArray<4>(vertices, normals, texcoords, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0,  data.begin() + 3  });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 8,  data.begin() + 11 });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 16, data.begin() + 19 });
+						v4.setAttribute<double>(format.position_index, { data.begin() + 24, data.begin() + 27 });
+						if (format.normal_index != (size_t)-1) {
+							v1.setAttribute<double>(format.normal_index, { data.begin() + 3,  data.begin() + 6  });
+							v2.setAttribute<double>(format.normal_index, { data.begin() + 11, data.begin() + 14 });
+							v3.setAttribute<double>(format.normal_index, { data.begin() + 19, data.begin() + 22 });
+							v4.setAttribute<double>(format.normal_index, { data.begin() + 27, data.begin() + 30 });
+						}
+						if (format.uv_index != (size_t)-1) {
+							v1.setAttribute<double>(format.uv_index, { data.begin() + 6,  data.begin() + 8  });
+							v2.setAttribute<double>(format.uv_index, { data.begin() + 14, data.begin() + 16 });
+							v3.setAttribute<double>(format.uv_index, { data.begin() + 22, data.begin() + 24 });
+							v4.setAttribute<double>(format.uv_index, { data.begin() + 30, data.begin() + 32 });
+						}
 					}
 					else {
-						renderObjects[objectID].VAO.addQuad(getVertexArray<4>(vertices, face));
+						std::array<double, 12> data = getVertexArray<4>(vertices, face);
+						v1.setAttribute<double>(format.position_index, { data.begin() + 0, data.begin() + 3  });
+						v2.setAttribute<double>(format.position_index, { data.begin() + 3, data.begin() + 6  });
+						v3.setAttribute<double>(format.position_index, { data.begin() + 6, data.begin() + 9  });
+						v4.setAttribute<double>(format.position_index, { data.begin() + 9, data.begin() + 12 });
 					}
+					renderObjects[objectID].VAO.addQuad(v1, v2, v3, v4);
 				}
 				else {
+					std::vector<Vertex> verts;
 					if (face[0][1] != INT_MAX && face[0][2] == INT_MAX) {
-						renderObjects[objectID].VAO.addPolygon(getVertexArray(face.size(), vertices, face));
+						std::vector<std::array<double, 5>> data = getVertexUVsArray(face.size(), vertices, texcoords, face);
+						for (const std::array<double, 5> & array : data) {
+							verts.push_back(format);
+							verts.back().setAttribute<double>(format.position_index, { array.begin(), array.begin() + 3 });
+							if (format.uv_index != (size_t)-1) {
+								verts.back().setAttribute<double>(format.uv_index, { array.begin() + 3, array.begin() + 5 });
+							}
+						}
 					}
 					else if (face[0][1] == INT_MAX && face[0][2] != INT_MAX) {
-						renderObjects[objectID].VAO.addPolygonWithNormals(getVertexNormalArray(face.size(), vertices, normals, face));
+						std::vector<std::array<double, 6>> data = getVertexNormalArray(face.size(), vertices, normals, face);
+						for (const std::array<double, 6> & array : data) {
+							verts.push_back(format);
+							verts.back().setAttribute<double>(format.position_index, { array.begin(), array.begin() + 3 });
+							if (format.normal_index != (size_t)-1) {
+								verts.back().setAttribute<double>(format.normal_index, { array.begin() + 3, array.begin() + 6 });
+							}
+						}
 					}
 					else if (face[0][1] != INT_MAX && face[0][2] != INT_MAX) {
-						renderObjects[objectID].VAO.addPolygonWithNormals(getVertexNormalArray(face.size(), vertices, normals, face));
+						std::vector<std::array<double, 8>> data = getVertexNormalsUVsArray(face.size(), vertices, normals, texcoords, face);
+						for (const std::array<double, 8> & array : data) {
+							verts.push_back(format);
+							verts.back().setAttribute<double>(format.position_index, { array.begin(), array.begin() + 3 });
+							if (format.normal_index != (size_t)-1) {
+								verts.back().setAttribute<double>(format.normal_index, { array.begin() + 3, array.begin() + 6 });
+							}
+							if (format.uv_index != (size_t)-1) {
+								verts.back().setAttribute<double>(format.uv_index, { array.begin() + 6, array.begin() + 8 });
+							}
+						}
 					}
 					else {
-						renderObjects[objectID].VAO.addPolygon(getVertexArray(face.size(), vertices, face));
+						std::vector<std::array<double, 3>> data = getVertexArray(face.size(), vertices, face);
+						for (const std::array<double, 3> & array : data) {
+							verts.push_back(format);
+							verts.back().setAttribute<double>(format.position_index, { array.begin(), array.begin() + 3 });
+						}
 					}
+					renderObjects[objectID].VAO.addPolygon(verts);
 				}
 			}
 			i++;

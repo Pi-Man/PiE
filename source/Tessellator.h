@@ -31,7 +31,7 @@ struct Tessellator {
 
 	void begin();
 
-	void addContour(std::vector<std::array<GLdouble, 3>> &data);
+	void addContour(std::vector<std::array<GLdouble, 3>> &pos, std::vector<Vertex> &data);
 
 	void end();
 };
