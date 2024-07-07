@@ -155,11 +155,11 @@ int main(int argc, char** args) {
 	}
 
 	hyperCube = new RenderObject{};
-	ground = new RenderObject{};
+	//ground = new RenderObject{};
 
-	ground->VAO = VertexArrayObject(VAO_NORMALS | VAO_UVS);
-	ground->VAO.addHeightMesh(0, 0, 10, 10, hmap);
-	ground->renderContext.cullEnable = false;
+	//ground->VAO = VertexArrayObject(VertexFormat({ POSITION_F, UV2_F }));
+	//ground->VAO.add.addHeightMesh(0, 0, 10, 10, hmap);
+	//ground->renderContext.cullEnable = false;
 	// convert the VAO to a 4D model, coppies the vertices over with a W value of 0
 	// when the model is then projected back to ground.VAO, the only the positions are replaced in the VAO
 	groundModel.convertVAO(ground->VAO);

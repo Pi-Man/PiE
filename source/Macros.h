@@ -13,7 +13,7 @@
 #define SPLIT_COLOR_A(color) RED(color), GREEN(color), BLUE(color), ALPHA(color)
 #define SPLIT_COLOR_F(color) (RED(color)) / 255.0f, (GREEN(color)) / 255.0f, (BLUE(color)) / 255.0f
 #define SPLIT_COLOR_F_A(color) (RED(color)) / 255.0f, (GREEN(color)) / 255.0f, (BLUE(color)) / 255.0f, (ALPHA(color)) / 255.0f
-#define COLOR(r, g, b) (unsigned int ((r & 255) | (g & 255) << 8 | (b & 255) << 16))
-#define COLOR_A(r, g, b, a) (unsigned int((r & 255) | (g & 255) << 8 | (b & 255) << 16 | (a & 255) << 24))
+#define COLOR(r, g, b) ((unsigned int)((r & 255) | (g & 255) << 8 | (b & 255) << 16))
+#define COLOR_A(r, g, b, a) ((unsigned int)((r & 255) | (g & 255) << 8 | (b & 255) << 16 | (a & 255) << 24))
 
 #endif

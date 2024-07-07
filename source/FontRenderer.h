@@ -2,6 +2,7 @@
 
 #include <map>
 #include <vector>
+#include <functional>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
