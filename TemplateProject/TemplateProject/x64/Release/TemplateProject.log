@@ -1,1 +1,10 @@
-﻿  TemplateProject.vcxproj -> C:\Users\Peter\source\repos\3D Render Test\PiE\TemplateProject\x64\Release\TemplateProject.exe
+﻿  main.cpp
+C:\Users\pi-man\Desktop\PiE\pie\TemplateProject\TemplateProject\main.cpp(69,13): warning C4244: '*=': conversion from 'double' to 'float', possible loss of data
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+C:\Users\pi-man\Desktop\PiE\pie\source\ShaderTypes.h(140): warning C4715: 'ShaderTypes::container_of': not all control paths return a value
+C:\Users\pi-man\Desktop\PiE\pie\source\ShaderTypes.h(213): warning C4715: 'ShaderTypes::container_size_of': not all control paths return a value
+C:\Users\pi-man\Desktop\PiE\pie\source\ShaderTypes.h(174): warning C4715: 'ShaderTypes::count_of': not all control paths return a value
+  All 3839 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  TemplateProject.vcxproj -> C:\Users\pi-man\Desktop\PiE\pie\TemplateProject\x64\Release\TemplateProject.exe

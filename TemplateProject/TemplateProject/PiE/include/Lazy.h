@@ -9,6 +9,7 @@ struct Lazy {
 	bool resolved;
 	std::function<T()> resolver;
 
+	Lazy() : Lazy([]() {return T{}; }) {}
 	Lazy(std::function<T()> resolver) : resolver(resolver), resolved(false), value() {}
 	Lazy(std::function<T()> resolver, T defaultValue) : resolver(resolver), resolved(true), value(defaultValue) {}
 

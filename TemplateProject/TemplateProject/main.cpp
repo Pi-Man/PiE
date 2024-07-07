@@ -85,9 +85,9 @@ int main(int argc, char** args) {
 	Shader shader;
 
 	shader.buildShader("vertexshader.txt", "fragmentShader.txt");
-	z.init("z0", shader.ID, VEC2); // initialize uniform
+	z.init("z0", shader.ID, ShaderTypes::VEC2); // initialize uniform
 	z.data.f[0] = z.data.f[1] = 0.0f; // and set the data to be zero initially
-	colorShift.init("colorShift", shader.ID, F);
+	colorShift.init("colorShift", shader.ID, ShaderTypes::FLOAT);
 	shader.uniforms.push_back(&z); // add the uniform to the shader
 	shader.uniforms.push_back(&colorShift);
 
@@ -97,16 +97,14 @@ int main(int argc, char** args) {
 	juliaObj.components.push_back(&j);
 	//------------add in renderable objects---------------
 	RenderObject RO;
-	RO.VAO = VertexArrayObject();
-	RO.VAO.addQuadWithNormals({ // simple rect from 4,4 to -4,-4 to display mandelbrot results
-		-4, -4, 1.0,
-			1.0, 0.0, 0.0,
-		4, -4, 1.0,
-			0.0, 1.0, 0.0,
-		4, 4, 1.0,
-			0.0, 0.0, 1.0,
-		-4, 4, 1.0,
-			1.0, 1.0, 1.0 });
+	VertexFormat vf{ POSITION_F, COLOR3_F };
+	RO.VAO = VertexArrayObject(vf);
+	RO.VAO.addQuad( // simple rect from 4,4 to -4,-4 to display mandelbrot results
+		Vertex(vf, { -4.0f, -4.0f, 1.0f }, { 1.0f, 0.0f, 0.0f }),
+		Vertex(vf, { +4.0f, -4.0f, 1.0f }, { 0.0f, 1.0f, 0.0f }),
+		Vertex(vf, { +4.0f, +4.0f, 1.0f }, { 0.0f, 0.0f, 1.0f }),
+		Vertex(vf, { -4.0f, +4.0f, 1.0f }, { 1.0f, 1.0f, 1.0f })
+	);
 	
 	PiE::addMesh(ctx, RO);
 	//--------------add in event listeners----------------

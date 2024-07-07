@@ -25,7 +25,7 @@ struct SpotLight {
 
 	// cos of the angle of coverage
 	// * default 45 degrees
-	float angle = 0.70721;
+	float angle = 0.70721f;
 
 	// position of the light from the previous tick (only populated if render interpolation is active)
 	Vec3f prevPos;
@@ -40,7 +40,7 @@ struct SpotLight {
 	float prevIntensity = 0;
 
 	// angle of the light from the previous tick (only populated if render interpolation is active)
-	float prevAngle = 0.70721;
+	float prevAngle = 0.70721f;
 
 };
 

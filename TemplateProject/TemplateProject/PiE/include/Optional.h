@@ -21,11 +21,11 @@ struct Optional {
 	T value_or(T &&) const;
 
 	template<typename R, typename F, typename _V = std::enable_if_t<std::is_same_v<std::remove_reference_t<std::remove_cv_t<std::result_of_t<F&(T&)>>>, Optional<R>>>>
-	auto transform(F & f) -> decltype(f(**this)) {
+	auto transform(F & f) -> decltype(f(this->operator*())) {
 		return has_val ? f(**this) : Optional<R>::empty;
 	}
 	template<typename R, typename F, typename _V = std::enable_if_t<std::is_same_v<std::remove_reference_t<std::remove_cv_t<std::result_of_t<F&&(T&)>>>, Optional<R>>>>
-	auto transform(F && f) -> decltype(f(**this)) {
+	auto transform(F && f) -> decltype(f(this->operator*())) {
 		return has_val ? f(**this) : Optional<R>::empty;
 	}
 
