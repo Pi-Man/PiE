@@ -8,19 +8,19 @@ int main(int argc, char** args) {
 
 	SDL_SetWindowTitle(ctx.mainWindow, "Hello Square");
 	//----------set up main camera and shader-------------
-	Camera5DoF camera{ ctx.mainWindow };
+	PiE::Camera5DoF camera{ ctx.mainWindow };
 
 	ctx.mainCamera = &camera;
 
-	Shader shader;
+	PiE::Shader shader;
 
 	shader.buildShader("vertexshader.txt", "colorFragmentShader.txt");
 
 	ctx.mainShader = &shader;
 	//------------add in render objects---------------
-	RenderObject RO;
-	VertexFormat format = VertexArrayObject::default_format;
-	RO.VAO = VertexArrayObject();
+	PiE::RenderObject RO;
+	PiE::VertexFormat format = PiE::VertexArrayObject::default_format;
+	RO.VAO = PiE::VertexArrayObject();
 	RO.VAO.addQuad( // simple rect from 1,1 to -1,-1
 		{format, {-1.0f, -1.0f, 0.0f}},
 		{format, {+1.0f, -1.0f, 0.0f}},

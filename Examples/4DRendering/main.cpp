@@ -3,13 +3,13 @@
 #include <Camera4D.h>
 #include <json.h>
 
-Model4D hyperCubeModel;
-Model4D groundModel;
+PiE::Model4D hyperCubeModel;
+PiE::Model4D groundModel;
 
-RenderObject * hyperCube;
-RenderObject * ground;
+PiE::RenderObject * hyperCube;
+PiE::RenderObject * ground;
 
-Camera4D *camera4D;
+PiE::Camera4D *camera4D;
 
 bool pause = true;
 
@@ -85,10 +85,10 @@ void cameraMoveCallback(PiE::EngineContext &ctx) {
 		   the axis can either be specified as AXIS::<axis> or by their number, ie x = 0, y = 1 and so on,
 		   this allows for n-dimensional space 
 		*/
-		camera4D->rotate4D<AXIS::X, AXIS::W>(20.0f / ctx.tickLimiter.getStaticUPS());
+		camera4D->rotate4D<PiE::AXIS::X, PiE::AXIS::W>(20.0f / ctx.tickLimiter.getStaticUPS());
 	}
 	if (keys[SDL_SCANCODE_LEFT]) {
-		camera4D->rotate4D<AXIS::X, AXIS::W>(-20.0f / ctx.tickLimiter.getStaticUPS());
+		camera4D->rotate4D<PiE::AXIS::X, PiE::AXIS::W>(-20.0f / ctx.tickLimiter.getStaticUPS());
 	}
 }
 
@@ -101,9 +101,9 @@ void cameraRotateEvent(PiE::EngineContext &ctx, SDL_Event event) {
 		}
 		else {
 			// equivalent to rotation in the Y axis or yaw
-			camera4D->rotate4D<AXIS::Z, AXIS::X>(event.motion.xrel * 0.3f);
+			camera4D->rotate4D<PiE::AXIS::Z, PiE::AXIS::X>(event.motion.xrel * 0.3f);
 			// equivalent to rotation in the X axis or pitch
-			camera4D->rotate4D<AXIS::Y, AXIS::Z>(event.motion.yrel * 0.3f);
+			camera4D->rotate4D<PiE::AXIS::Y, PiE::AXIS::Z>(event.motion.yrel * 0.3f);
 		}
 	}
 }
@@ -132,12 +132,12 @@ int main(int argc, char** args) {
 	// initialize system with context
 	PiE::initEngine(ctx);
 
-	Shader mainShader, wireframeColorShader;
+	PiE::Shader mainShader, wireframeColorShader;
 	mainShader.buildShader("vertexShader.txt", "fragmentShader.txt");
 	wireframeColorShader.buildShader("vertexShader.txt", "colorFragmentShader.txt");// "wireframegeometryshader.txt"); // uncomment to make the hypercube a wireframe
 
 	// create the main camera
-	camera4D = new Camera4D(ctx.mainWindow); 
+	camera4D = new PiE::Camera4D(ctx.mainWindow);
 	// this is a small scene, so the clip planes can get close to the camera
 	camera4D->setClipPlanes(1.0f / 128.0f, 100.0f); 
 
@@ -146,15 +146,15 @@ int main(int argc, char** args) {
 	ctx.mainShader = &mainShader;
 
 	// create a simple height map from perlin noise to represent (3D) ground
-	PerlinNoise2D noise(1);
+	PiE::PerlinNoise2D noise(1);
 	std::vector<std::vector<float>> hmap(42, std::vector<float>(42, 0));
 	for (int i = 0; i < 42; i++) {
 		for (int j = 0; j < 42; j++) {
-			hmap[i][j] = (noise.get((i - 21) / 5.0, (j - 21) / 5.0));
+			hmap[i][j] = (noise((i - 21) / 5.0, (j - 21) / 5.0));
 		}
 	}
 
-	hyperCube = new RenderObject{};
+	hyperCube = new PiE::RenderObject{};
 	//ground = new RenderObject{};
 
 	//ground->VAO = VertexArrayObject(VertexFormat({ POSITION_F, UV2_F }));
@@ -166,13 +166,13 @@ int main(int argc, char** args) {
 
 	hyperCubeModel.addCenteredHyperCuboid();
 	// 4D models also have their own model matrix
-	hyperCubeModel.matrix.translate<AXIS::W>(3);
+	hyperCubeModel.matrix.translate<PiE::AXIS::W>(3);
 	hyperCube->renderContext.shader = &wireframeColorShader;
 
 	camera4D->move4D(0, 0, -2.0f, -2.0);
 
 	// add a light so the ground isn't black
-	DirectionalLight light; 
+	PiE::DirectionalLight light;
 	ctx.dirLights.push_back(&light);
 
 	ctx.fixedUpdate.push_back(PiE::FixedUpdateCallback(cameraMoveCallback));

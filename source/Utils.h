@@ -1,9 +1,9 @@
-#ifndef _UTILS
-#define _UTILS
+#ifndef _UTILS_H
+#define _UTILS_H
 
 #include "Vec.h"
 
-namespace Utils {
+namespace PiE {
 
 	// move a vector twords another vector a specified distance
 	// * from: the starting vector
@@ -13,10 +13,15 @@ namespace Utils {
 	template<typename T, int N>
 	Vec<T, N> moveTowards(Vec<T, N> from, Vec<T, N> to, T distance);
 
-	// lerp between two values
-	double lerp(double a, double b, double k);
-	// lerp between two values
-	float lerp(float a, float b, float k);
+	// linear interpolation, not clamped
+	template<typename T, typename _ = std::enable_if_t<
+		std::is_same_v<decltype((T)(std::declval<T>() * std::declval<T>())), T> &&
+		std::is_same_v<decltype((T)(std::declval<T>() + std::declval<T>())), T> &&
+		std::is_same_v<decltype((T)(std::declval<T>() - std::declval<T>())), T>
+	>>
+	T lerp(T a, T b, T k) {
+		return a + k * (b - a);
+	}
 
 	template<int A, int B>
 	struct get_min {

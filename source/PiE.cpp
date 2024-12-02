@@ -300,7 +300,7 @@ namespace PiE {
 					Vec3f dir = ctx.lerp ? Vec3f::lerp(dirLights[i]->prevDir, dirLights[i]->dir, pt) : dirLights[i]->dir;
 					dir /= dir();
 					Vec3f col = ctx.lerp ? Vec3f::lerp(dirLights[i]->prevCol, dirLights[i]->col, pt) : dirLights[i]->col;
-					float intensity = ctx.lerp ? Utils::lerp(dirLights[i]->prevIntensity, dirLights[i]->intensity, (float)pt) : dirLights[i]->intensity;
+					float intensity = ctx.lerp ? lerp(dirLights[i]->prevIntensity, dirLights[i]->intensity, (float)pt) : dirLights[i]->intensity;
 
 					dirData[i * 3 + 0] = dir[0];
 					dirData[i * 3 + 1] = dir[1];
@@ -335,7 +335,7 @@ namespace PiE {
 
 					Vec3f pos = ctx.lerp ? Vec3f::lerp(pointLights[i]->prevPos, pointLights[i]->pos, pt) : pointLights[i]->pos;
 					Vec3f col = ctx.lerp ? Vec3f::lerp(pointLights[i]->prevCol, pointLights[i]->col, pt) : pointLights[i]->col;
-					float intensity = ctx.lerp ? Utils::lerp(pointLights[i]->prevIntensity, pointLights[i]->intensity, (float)pt) : pointLights[i]->intensity;
+					float intensity = ctx.lerp ? lerp(pointLights[i]->prevIntensity, pointLights[i]->intensity, (float)pt) : pointLights[i]->intensity;
 
 					posData[i * 3 + 0] = pos[0];
 					posData[i * 3 + 1] = pos[1];
@@ -372,8 +372,8 @@ namespace PiE {
 					Vec3f pos = ctx.lerp ? Vec3f::lerp(spotLights[i]->prevPos, spotLights[i]->pos, pt) : spotLights[i]->pos;
 					Vec3f col = ctx.lerp ? Vec3f::lerp(spotLights[i]->prevCol, spotLights[i]->col, pt) : spotLights[i]->col;
 					Vec3f dir = ctx.lerp ? Vec3f::lerp(spotLights[i]->prevDir, spotLights[i]->dir, pt) : spotLights[i]->dir;
-					float intensity = ctx.lerp ? Utils::lerp(spotLights[i]->prevIntensity, spotLights[i]->intensity, (float)pt) : spotLights[i]->intensity;
-					float angle = ctx.lerp ? Utils::lerp(spotLights[i]->angle, spotLights[i]->prevAngle, (float)pt) : spotLights[i]->angle;
+					float intensity = ctx.lerp ? lerp(spotLights[i]->prevIntensity, spotLights[i]->intensity, (float)pt) : spotLights[i]->intensity;
+					float angle = ctx.lerp ? lerp(spotLights[i]->angle, spotLights[i]->prevAngle, (float)pt) : spotLights[i]->angle;
 
 					posData[i * 3 + 0] = pos[0];
 					posData[i * 3 + 1] = pos[1];
@@ -592,11 +592,7 @@ namespace PiE {
 		lastIndex++;
 	}
 
-	bool EventCallback::operator==(EventCallback & other) {
-		return this->index == other.index;
-	}
-
-	bool EventCallback::operator==(const EventCallback & other) {
+	bool EventCallback::operator==(const EventCallback & other) const {
 		return this->index == other.index;
 	}
 }

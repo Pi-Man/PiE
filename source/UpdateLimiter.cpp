@@ -1,72 +1,76 @@
 #include "UpdateLimiter.h"
 
-void UpdateLimiter::start() {
-	_nextFrameTime = SDL_GetTicks();
-}
+namespace PiE {
 
-double UpdateLimiter::push() {
-
-	Uint32 start = SDL_GetTicks();
-
-	counter.pushFrame();
-
-	if (exact) {
-		while (SDL_GetTicks() < (Uint32)_nextFrameTime);
-	}
-	else {
-		Uint32 time = (Uint32)_nextFrameTime - SDL_GetTicks();
-		if (time > 0) {
-			SDL_Delay(time);
-		}
+	void UpdateLimiter::start() {
+		_nextFrameTime = SDL_GetTicks();
 	}
 
-	_nextFrameTime += frameTime;
+	double UpdateLimiter::push() {
 
-	_ups = counter.getFPS();
+		Uint32 start = SDL_GetTicks();
 
-	lastFrameTime = SDL_GetTicks() - start;
-
-	return _ups;
-}
-
-std::pair<double, bool> UpdateLimiter::poll() {
-	std::pair<double, bool> pair{};
-	pair.second = SDL_GetTicks() >= (Uint32)_nextFrameTime;
-	pair.first = counter.getFPS();
-	if (pair.second) {
 		counter.pushFrame();
-		lastFrameTime = frameTime;
-		_ups = counter.getFPS();
+
+		if (exact) {
+			while (SDL_GetTicks() < (Uint32)_nextFrameTime);
+		}
+		else {
+			Uint32 time = (Uint32)_nextFrameTime - SDL_GetTicks();
+			if (time > 0) {
+				SDL_Delay(time);
+			}
+		}
+
 		_nextFrameTime += frameTime;
+
+		_ups = counter.getFPS();
+
+		lastFrameTime = SDL_GetTicks() - start;
+
+		return _ups;
 	}
-	return pair;
-}
 
-void UpdateLimiter::updateUPS(int ups) {
-	this->ups = ups;
-	frameTime = 1000.0 / ups;
-}
+	std::pair<double, bool> UpdateLimiter::poll() {
+		std::pair<double, bool> pair{};
+		pair.second = SDL_GetTicks() >= (Uint32)_nextFrameTime;
+		pair.first = counter.getFPS();
+		if (pair.second) {
+			counter.pushFrame();
+			lastFrameTime = frameTime;
+			_ups = counter.getFPS();
+			_nextFrameTime += frameTime;
+		}
+		return pair;
+	}
 
-double UpdateLimiter::getUPS() {
-	return _ups;
-}
+	void UpdateLimiter::updateUPS(int ups) {
+		this->ups = ups;
+		frameTime = 1000.0 / ups;
+	}
 
-long UpdateLimiter::getStaticUPS() {
-	return ups;
-}
+	double UpdateLimiter::getUPS() {
+		return _ups;
+	}
 
-double UpdateLimiter::getLastFrameTime() {
-	return lastFrameTime;
-}
+	long UpdateLimiter::getStaticUPS() {
+		return ups;
+	}
 
-std::pair<double, double> UpdateLimiter::getLastNextTimes() {
-	return { _nextFrameTime - lastFrameTime, _nextFrameTime };
-}
+	double UpdateLimiter::getLastFrameTime() {
+		return lastFrameTime;
+	}
 
-bool UpdateLimiter::getExact() {
-	return exact;
-}
+	std::pair<double, double> UpdateLimiter::getLastNextTimes() {
+		return { _nextFrameTime - lastFrameTime, _nextFrameTime };
+	}
 
-void UpdateLimiter::setExact(bool exact) {
-	this->exact = exact;
+	bool UpdateLimiter::getExact() {
+		return exact;
+	}
+
+	void UpdateLimiter::setExact(bool exact) {
+		this->exact = exact;
+	}
+
 }

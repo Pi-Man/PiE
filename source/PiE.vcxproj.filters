@@ -75,7 +75,7 @@
     <ClCompile Include="FourierNoiseGenerator.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
-    <ClCompile Include="GL_Texture.cpp">
+    <ClCompile Include="GL_Texture2D.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
@@ -150,6 +150,15 @@
     <ClCompile Include="ShaderTypes.cpp">
       <Filter>Source Files\rendering</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectionalLight.h">
@@ -167,7 +176,7 @@
     <ClInclude Include="FourierNoiseGenerator.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="GL_Texture.h">
+    <ClInclude Include="GL_Texture2D.h">
       <Filter>Header Files\rendering</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">

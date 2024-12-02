@@ -5,77 +5,81 @@
 #include <map>
 #include <vector>
 
-namespace JSON {
+namespace PiE {
 
-	struct Key {
-		std::string key;
-	};
+	namespace JSON {
 
-	enum TYPE {
-		ERROR = -1,
-		UNSET,
-		OBJECT,
-		ARRAY,
-		STRING,
-		NUMBER,
-	};
-
-	struct Element {
-		Key name; 
-		TYPE type;
-		union {
-			std::map<std::string, Element> children;
-			std::vector<Element> elements;
-			std::string string;
-			double number;
+		struct Key {
+			std::string key;
 		};
 
-		Element();
-		Element(Key name, TYPE type);
+		enum TYPE {
+			ERROR = -1,
+			UNSET,
+			OBJECT,
+			ARRAY,
+			STRING,
+			NUMBER,
+		};
 
-		Element(const Element &o);
-		Element(const Element &&o);
-		Element &operator=(const Element &o);
-		Element &operator=(const Element &&o);
-		~Element();
+		struct Element {
+			Key name;
+			TYPE type;
+			union {
+				std::map<std::string, Element> children;
+				std::vector<Element> elements;
+				std::string string;
+				double number;
+			};
 
-		Element(std::initializer_list<Element> elements);
-		Element(std::initializer_list<std::pair<Key, Element>> pairs);
-		Element(std::initializer_list<std::pair<std::string, Element>> pairs);
-		Element(const std::string &value);
-		Element(const char *value);
-		Element(const double value);
+			Element();
+			Element(Key name, TYPE type);
 
-		Element &operator=(std::initializer_list<Element> elements);
-		Element &operator=(std::initializer_list<std::pair<Key, Element>> pairs);
-		Element &operator=(std::initializer_list<std::pair<std::string, Element>> pairs);
-		Element &operator=(std::string &value);
-		Element &operator=(const char *value);
-		Element &operator=(double value);
+			Element(const Element & o);
+			Element(const Element && o);
+			Element & operator=(const Element & o);
+			Element & operator=(const Element && o);
+			~Element();
 
-		Element &operator[](const std::string &name);
-		Element &operator[](const char *name);
-		Element &operator[](const int index);
+			Element(std::initializer_list<Element> elements);
+			Element(std::initializer_list<std::pair<Key, Element>> pairs);
+			Element(std::initializer_list<std::pair<std::string, Element>> pairs);
+			Element(const std::string & value);
+			Element(const char * value);
+			Element(const double value);
 
-		operator double();
-		operator std::string();
+			Element & operator=(std::initializer_list<Element> elements);
+			Element & operator=(std::initializer_list<std::pair<Key, Element>> pairs);
+			Element & operator=(std::initializer_list<std::pair<std::string, Element>> pairs);
+			Element & operator=(std::string & value);
+			Element & operator=(const char * value);
+			Element & operator=(double value);
 
-		static const Element Invalid;
-	};
+			Element & operator[](const std::string & name);
+			Element & operator[](const char * name);
+			Element & operator[](const int index);
+
+			operator double();
+			operator std::string();
+
+			static const Element Invalid;
+		};
 
 
-	std::initializer_list<Element> asArray(std::initializer_list<Element> elements);
+		std::initializer_list<Element> asArray(std::initializer_list<Element> elements);
 
-	std::initializer_list<std::pair<Key, Element>> asObject(std::initializer_list<std::pair<Key, Element>> pairs);
-	std::initializer_list<std::pair<std::string, Element>> asObject(std::initializer_list<std::pair<std::string, Element>> pairs);
+		std::initializer_list<std::pair<Key, Element>> asObject(std::initializer_list<std::pair<Key, Element>> pairs);
+		std::initializer_list<std::pair<std::string, Element>> asObject(std::initializer_list<std::pair<std::string, Element>> pairs);
 
-	Element parse(const std::string &&fileName);
-	Element parse(const std::string &fileName);
+		Element parse(const std::string && fileName);
+		Element parse(const std::string & fileName);
 
-	void print(FILE *file, const Element &element);
-	void print(const Element &element);
+		void print(FILE * file, const Element & element);
+		void print(const Element & element);
+	}
+
+	const JSON::Key operator""_key(const char * key, size_t hmm);
+
 }
-
-const JSON::Key operator""_key(const char* key, size_t hmm);
 
 #endif

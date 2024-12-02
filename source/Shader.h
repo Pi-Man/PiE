@@ -1,5 +1,5 @@
-#ifndef _SHADER
-#define _SHADER
+#ifndef _SHADER_H
+#define _SHADER_H
 
 #include <cstdio>
 #include <iostream>
@@ -13,27 +13,27 @@
 
 #define GL_SERROR(a, shaderID, shader) GL_ERROR(a); {GLint success; glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success); if (!success) {char log[10000]; glGetShaderInfoLog(shaderID, 10000, nullptr, log); std::cout << "Error Compiling Shader:\n" << log << "\n" << shader << std::endl; return success;}}
 
-class Shader {
+namespace PiE {
 
-	GLint vertID;
-	GLint geomID;
-	GLint fragID;
+	struct Shader {
 
-public:
+		GLint vertID;
+		GLint geomID;
+		GLint fragID;
 
-	// the GL handle of the shader
-	GLint ID = -1;
-	std::vector<Uniform*> uniforms;
+		// the GL handle of the shader
+		GLint ID = -1;
+		std::vector<Uniform *> uniforms;
 
-	Shader();
+		Shader();
 
-	// build the shader with the given shader files
-	// * vertex shader and fragment shader are required
-	// * geometry shader is optional
-	int buildShader(const char *vertFile, const char *fragFile, const char* geomFile = nullptr);
+		// build the shader with the given shader files
+		// * vertex shader and fragment shader are required
+		// * geometry shader is optional
+		int buildShader(const char * vertFile, const char * fragFile, const char * geomFile = nullptr);
 
-	~Shader();
-};
-
+		~Shader();
+	};
+}
 
 #endif

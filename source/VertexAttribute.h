@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _VERTEX_ATTRIBUTE_H
+#define _VERTEX_ATTRIBUTE_H
 //
 //#include <vector>
 //#include <initializer_list>
@@ -8,7 +9,7 @@
 //#include "Uniform.h"
 //#include "Vec.h"
 
-//template<ShaderTypes::Shader_Type T>
+//template<Shader_Type T>
 //struct Attribute_Type_to_Container_Type {
 //	using type = void;
 //	enum {
@@ -17,28 +18,28 @@
 //};
 //
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::INT> {
+//struct Attribute_Type_to_Container_Type<INT> {
 //	using type = GLint;
 //	enum {
 //		length = 1
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC2I> {
+//struct Attribute_Type_to_Container_Type<VEC2I> {
 //	using type = GLint;
 //	enum {
 //		length = 2
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC3I> {
+//struct Attribute_Type_to_Container_Type<VEC3I> {
 //	using type = GLint;
 //	enum {
 //		length = 3
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC4I> {
+//struct Attribute_Type_to_Container_Type<VEC4I> {
 //	using type = GLint;
 //	enum {
 //		length = 4
@@ -46,28 +47,28 @@
 //};
 //
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::FLOAT> {
+//struct Attribute_Type_to_Container_Type<FLOAT> {
 //	using type = GLfloat;
 //	enum {
 //		length = 1
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC2> {
+//struct Attribute_Type_to_Container_Type<VEC2> {
 //	using type = GLfloat;
 //	enum {
 //		length = 2
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC3> {
+//struct Attribute_Type_to_Container_Type<VEC3> {
 //	using type = GLfloat;
 //	enum {
 //		length = 3
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC4> {
+//struct Attribute_Type_to_Container_Type<VEC4> {
 //	using type = GLfloat;
 //	enum {
 //		length = 4
@@ -75,28 +76,28 @@
 //};
 //
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::DOUBLE> {
+//struct Attribute_Type_to_Container_Type<DOUBLE> {
 //	using type = GLdouble;
 //	enum {
 //		length = 1
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC2D> {
+//struct Attribute_Type_to_Container_Type<VEC2D> {
 //	using type = GLdouble;
 //	enum {
 //		length = 2
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC3D> {
+//struct Attribute_Type_to_Container_Type<VEC3D> {
 //	using type = GLdouble;
 //	enum {
 //		length = 3
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::VEC4D> {
+//struct Attribute_Type_to_Container_Type<VEC4D> {
 //	using type = GLdouble;
 //	enum {
 //		length = 4
@@ -104,14 +105,14 @@
 //};
 //
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::MAT4> {
+//struct Attribute_Type_to_Container_Type<MAT4> {
 //	using type = GLfloat;
 //	enum {
 //		length = 16
 //	};
 //};
 //template<>
-//struct Attribute_Type_to_Container_Type<ShaderTypes::MAT4D> {
+//struct Attribute_Type_to_Container_Type<MAT4D> {
 //	using type = GLdouble;
 //	enum {
 //		length = 16
@@ -211,134 +212,137 @@
 #include "ShaderTypes.h"
 #include "DefaultVertexAttributeTypes.h"
 
-enum struct Usage {
-	POSITION,
-	NORMAL,
-	TANGENT,
-	UV,
-	COLOR,
-	UNSPECIFIED,
-	USER_DEFINED_START,
-};
+namespace PiE {
 
-struct VertexAttributeType {
-	Usage usage;
-	ShaderTypes::Shader_Type type;
-	char default_data[sizeof(GLdouble) * 16];
-	size_t size;
-	size_t count;
+	enum struct Usage {
+		POSITION,
+		NORMAL,
+		TANGENT,
+		UV,
+		COLOR,
+		UNSPECIFIED,
+		USER_DEFINED_START,
+	};
 
-	VertexAttributeType(Usage usage, ShaderTypes::Shader_Type type);
-	template<typename T>
-	VertexAttributeType(Usage usage, ShaderTypes::Shader_Type type, std::initializer_list<T> data) : VertexAttributeType(usage, type) {
-		memmove(default_data, data.begin(), std::min<size_t>((char*)data.end() - (char*)data.begin(), size));
-	}
+	struct VertexAttributeType {
+		Usage usage;
+		Shader_Type type;
+		char default_data[sizeof(GLdouble) * 16];
+		size_t size;
+		size_t count;
 
-	bool operator==(const VertexAttributeType & other) const;
-	bool operator!=(const VertexAttributeType & other) const;
-};
-
-struct VertexFormat {
-	std::vector<VertexAttributeType> types;
-	std::vector<size_t> offsets;
-	size_t stride;
-	size_t position_index = -1;
-	size_t normal_index = -1;
-	size_t uv_index = -1;
-
-	VertexFormat(std::initializer_list<VertexAttributeType> types);
-
-	bool operator==(const VertexFormat & other) const;
-	bool operator!=(const VertexFormat & other) const;
-};
-
-namespace VertexUtility {
-
-	template<typename TO, typename FROM>
-	std::vector<char> castMapFunc(std::vector<char> in) {
-		size_t num_elem = in.size() / sizeof(FROM);
-		FROM * from = (FROM*)in.data();
-		TO * to = (TO*)malloc(sizeof(TO) * num_elem);
-		if (!to) return {};
-		for (size_t i = 0; i < num_elem; i++) {
-			to[i] = (TO)from[i];
+		VertexAttributeType(Usage usage, Shader_Type type);
+		template<typename T>
+		VertexAttributeType(Usage usage, Shader_Type type, std::initializer_list<T> data) : VertexAttributeType(usage, type) {
+			memmove(default_data, data.begin(), std::min<size_t>((char *)data.end() - (char *)data.begin(), size));
 		}
-		std::vector<char> out{ (char*)to, (char*)(to + num_elem) };
-		free(to);
-		return out;
+
+		bool operator==(const VertexAttributeType & other) const;
+		bool operator!=(const VertexAttributeType & other) const;
+	};
+
+	struct VertexFormat {
+		std::vector<VertexAttributeType> types;
+		std::vector<size_t> offsets;
+		size_t stride;
+		size_t position_index = -1;
+		size_t normal_index = -1;
+		size_t uv_index = -1;
+
+		VertexFormat(std::initializer_list<VertexAttributeType> types);
+
+		bool operator==(const VertexFormat & other) const;
+		bool operator!=(const VertexFormat & other) const;
+	};
+
+	namespace VertexUtility {
+
+		template<typename TO, typename FROM>
+		std::vector<char> castMapFunc(std::vector<char> in) {
+			size_t num_elem = in.size() / sizeof(FROM);
+			FROM * from = (FROM *)in.data();
+			TO * to = (TO *)malloc(sizeof(TO) * num_elem);
+			if (!to) return {};
+			for (size_t i = 0; i < num_elem; i++) {
+				to[i] = (TO)from[i];
+			}
+			std::vector<char> out{ (char *)to, (char *)(to + num_elem) };
+			free(to);
+			return out;
+		}
+
+		extern std::unordered_map<GLenum, std::unordered_map<GLenum, std::vector<char>(*)(std::vector<char>)>> castMap;
+
 	}
 
-	extern std::unordered_map<GLenum, std::unordered_map<GLenum, std::vector<char>(*)(std::vector<char>)>> castMap;
+	struct Vertex {
 
+		VertexFormat format;
+		char * data = nullptr;
+		std::vector<char> exists;
+
+		Vertex() : Vertex({ POSITION_F }) {}
+
+		Vertex(const VertexFormat format) : Vertex(format, std::initializer_list<int>{}) {}
+
+		template<typename ...T1>
+		Vertex(const VertexFormat format, std::initializer_list<T1>... rest) : Vertex(format, 0, 0, rest...) {}
+
+		template<typename T1, typename ...T2>
+		Vertex(const VertexFormat format, size_t offset, size_t index, std::initializer_list<T1> first, std::initializer_list<T2>... rest) : Vertex(format, offset + format.types[index].size, index + 1, rest...) {
+			if (first.begin() != first.end()) {
+				memmove(data + offset, first.begin(), std::min<size_t>(sizeof(T1) * first.size(), format.types[index].size));
+				exists[index] = true;
+			}
+		}
+
+		template<typename T1>
+		Vertex(const VertexFormat format, size_t offset, size_t index, std::initializer_list<T1> first) : format(format), exists(format.types.size(), false), data((char *)malloc(format.stride)) {
+			if (first.begin() != first.end()) {
+				memmove(data + offset, first.begin(), std::min<size_t>(sizeof(T1) * first.size(), format.types[index].size));
+				exists[index] = true;
+			}
+		}
+
+		template<typename T>
+		void setAttribute(size_t id, std::initializer_list<T> attribute) {
+			GLenum from = gl_type_to_enum<T>::type;
+			GLenum to = container_of(format.types[id].type);
+			std::vector<char> d = VertexUtility::castMap[to][from]({ (char *)attribute.begin(), (char *)(attribute.begin() + attribute.size()) });
+			memmove(data + format.offsets[id], &*d.begin(), std::min<size_t>(d.size(), format.types[id].size));
+			exists[id] = true;
+		}
+
+		template<typename T>
+		void setAttribute(size_t id, std::vector<T> attribute) {
+			GLenum from = gl_type_to_enum<T>::type;
+			GLenum to = container_of(format.types[id].type);
+			std::vector<char> d = VertexUtility::castMap[to][from]({ (char *)attribute.data(), (char *)(attribute.data() + attribute.size()) });
+			memmove(data + format.offsets[id], &*d.begin(), std::min<size_t>(d.size(), format.types[id].size));
+			exists[id] = true;
+		}
+
+		template<typename T>
+		std::vector<T> getAttributeAs(size_t id) const {
+			GLenum from = container_of(format.types[id].type);
+			GLenum to = gl_type_to_enum<T>::type;
+			std::vector<char> d = VertexUtility::castMap[to][from]({ data + format.offsets[id], data + format.offsets[id + 1] });
+			return std::vector<T>((T *)&*d.begin(), (T *)&*d.end());
+		}
+
+		Vertex(const Vertex & other);
+		Vertex(const Vertex && other);
+
+		~Vertex();
+
+		Vertex & operator=(const Vertex & other);
+		Vertex & operator=(const Vertex && other);
+	};
 }
-
-struct Vertex {
-
-	VertexFormat format;
-	char * data = nullptr;
-	std::vector<char> exists;
-
-	Vertex() : Vertex({ POSITION_F }) {}
-
-	Vertex(VertexFormat format) : Vertex(format, std::initializer_list<int>{}) {}
-
-	template<typename ...T1>
-	Vertex(VertexFormat format, std::initializer_list<T1>... rest) : Vertex(format, 0, 0, rest...) {}
-
-	template<typename T1, typename ...T2>
-	Vertex(VertexFormat format, size_t offset, size_t index, std::initializer_list<T1> first, std::initializer_list<T2>... rest) : Vertex(format, offset + format.types[index].size, index + 1, rest...) {
-		if (first.begin() != first.end()) {
-			memmove(data + offset, first.begin(), std::min<size_t>(sizeof(T1) * first.size(), format.types[index].size));
-			exists[index] = true;
-		}
-	}
-
-	template<typename T1>
-	Vertex(VertexFormat format, size_t offset, size_t index, std::initializer_list<T1> first) : format(format), exists(format.types.size(), false), data((char*)malloc(format.stride)) {
-		if (first.begin() != first.end()) {
-			memmove(data + offset, first.begin(), std::min<size_t>(sizeof(T1) * first.size(), format.types[index].size));
-			exists[index] = true;
-		}
-	}
-
-	template<typename T>
-	void setAttribute(size_t id, std::initializer_list<T> attribute) {
-		GLenum from = ShaderTypes::gl_type_to_enum<T>::type;
-		GLenum to = ShaderTypes::container_of(format.types[id].type);
-		std::vector<char> d = VertexUtility::castMap[to][from]({ (char*)attribute.begin(), (char*)(attribute.begin() + attribute.size()) });
-		memmove(data + format.offsets[id], &*d.begin(), std::min<size_t>(d.size(), format.types[id].size));
-		exists[id] = true;
-	}
-
-	template<typename T>
-	void setAttribute(size_t id, std::vector<T> attribute) {
-		GLenum from = ShaderTypes::gl_type_to_enum<T>::type;
-		GLenum to = ShaderTypes::container_of(format.types[id].type);
-		std::vector<char> d = VertexUtility::castMap[to][from]({ (char*)attribute.data(), (char*)(attribute.data() + attribute.size()) });
-		memmove(data + format.offsets[id], &*d.begin(), std::min<size_t>(d.size(), format.types[id].size));
-		exists[id] = true;
-	}
-
-	template<typename T>
-	std::vector<T> getAttributeAs(size_t id) const {
-		GLenum from = ShaderTypes::container_of(format.types[id].type);
-		GLenum to = ShaderTypes::gl_type_to_enum<T>::type;
-		std::vector<char> d = VertexUtility::castMap[to][from]({ data + format.offsets[id], data + format.offsets[id + 1] });
-		return std::vector<T>((T*)&*d.begin(), (T*)&*d.end());
-	}
-
-	Vertex(const Vertex & other);
-	Vertex(const Vertex && other);
-
-	~Vertex();
-
-	Vertex & operator=(const Vertex & other);
-	Vertex & operator=(const Vertex && other);
-};
 
 //struct AttributeType {
 //	Usage usage;
-//	ShaderTypes::Shader_Type type;
+//	Shader_Type type;
 //};
 //
 //struct VertexFormat {
@@ -350,18 +354,18 @@ struct Vertex {
 //	char data[sizeof(GLdouble) * 16];
 //	size_t length;
 //
-//	Attribute(AttributeType type) : type(type), length(ShaderTypes::length_map[type.type]) {
+//	Attribute(AttributeType type) : type(type), length(length_map[type.type]) {
 //		memset(data, 0, sizeof(data));
 //	}
 //
 //	template<typename T>
 //	Attribute(AttributeType type, std::initializer_list<T> dataIn) {
-//		size_t length = std::min(dataIn.end() - dataIn.begin(), ShaderTypes::length_map[type.type]);
+//		size_t length = std::min(dataIn.end() - dataIn.begin(), length_map[type.type]);
 //
 //	}
 //};
 //
-//template<ShaderTypes::Shader_Type T>
+//template<Shader_Type T>
 //struct VertexAttributeType {
 //	using Type = Attribute_Type_to_Container_Type<T>::type;
 //	using Length = Attribute_Type_to_Container_Type<T>::length;
@@ -425,3 +429,5 @@ struct Vertex {
 template<typename Vertex_T>
 void addTriangle(Vertex_T v1, Vertex_T v2, Vertex_T v3)
 */
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _TESSELLATOR_H
+#define _TESSELLATOR_H
 
 #include <vector>
 
@@ -7,31 +8,37 @@
 
 #include "RenderObject.h"
 
-struct Tessellator;
+namespace PiE {
 
-void default_beginCB(GLenum type, Tessellator *polygon_data);
-void default_vertexCB(void *vertex_data, Tessellator *polygon_data);
-void default_endCB(Tessellator *polygon_data);
-void default_errorCB(GLenum error, Tessellator *polygon_data);
+	struct Tessellator;
 
-struct Tessellator {
+	void default_beginCB(GLenum type, Tessellator * polygon_data);
+	void default_vertexCB(void * vertex_data, Tessellator * polygon_data);
+	void default_endCB(Tessellator * polygon_data);
+	void default_errorCB(GLenum error, Tessellator * polygon_data);
 
-	void(*beginCB)(GLenum, Tessellator*) = default_beginCB;
-	void(*vertexCB)(void*, Tessellator*) = default_vertexCB;
-	void(*endCB)(Tessellator*) = default_endCB;
-	void(*errorCB)(GLenum, Tessellator*) = default_errorCB;
+	struct Tessellator {
 
-	GLUtesselator* tessellator = nullptr;
+		void(*beginCB)(GLenum, Tessellator *) = default_beginCB;
+		void(*vertexCB)(void *, Tessellator *) = default_vertexCB;
+		void(*endCB)(Tessellator *) = default_endCB;
+		void(*errorCB)(GLenum, Tessellator *) = default_errorCB;
 
-	RenderObject &renderObject;
+		GLUtesselator * tessellator = nullptr;
 
-	GLenum mode = 0;
+		RenderObject & renderObject;
 
-	Tessellator(RenderObject &renderObject) : renderObject(renderObject) {};
+		GLenum mode = 0;
 
-	void begin();
+		Tessellator(RenderObject & renderObject) : renderObject(renderObject) {};
 
-	void addContour(std::vector<std::array<GLdouble, 3>> &pos, std::vector<Vertex> &data);
+		void begin();
 
-	void end();
-};
+		void addContour(std::vector<std::array<GLdouble, 3>> & pos, std::vector<Vertex> & data);
+
+		void end();
+	};
+
+}
+
+#endif

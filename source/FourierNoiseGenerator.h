@@ -1,21 +1,58 @@
-#ifndef _FOURIER_NOISE_GENERATOR
-#define _FOURIER_NOISE_GENERATOR
+#ifndef _FOURIER_NOISE_GENERATOR_H
+#define _FOURIER_NOISE_GENERATOR_H
 
-class FourierNoiseGenerator
-{
+namespace PiE {
 
-	float* coeficients;
-	int numCoeficients, dimensions;
+    template<size_t N, size_t C = 10>
+    struct FourierNoiseGenerator {
 
-	void genCoeficients(int numCoeficients, int dimensions, long seed);
+        const std::array<std::array<std::array<double, 2>, C>, N> coeficients;
 
-public:
-	FourierNoiseGenerator(int numCoeficients, int dimensions, long seed);
-	FourierNoiseGenerator(int numCoeficients, int dimensions);
+        FourierNoiseGenerator(size_t seed = 0);
 
-	~FourierNoiseGenerator();
+        template<typename T>
+        double operator()(const std::array<T, N> & x) const;
+        bool operator==(const FourierNoiseGenerator & other) const;
+        bool operator!=(const FourierNoiseGenerator & other) const;
+    };
 
-	double get(std::vector<float> pos);
-};
+	template<size_t N, size_t C>
+	FourierNoiseGenerator<N, C>::FourierNoiseGenerator(size_t seed) {
+		std::mt19937_64 r(seed);
+		std::uniform_real_distribution<double> gen(0, 1);
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < C; j++) {
+				coeficients[i][j][0] = gen(r);
+				coeficients[i][j][1] = gen(r);
+			}
+		}
+	}
+
+	template<size_t N, size_t C>
+	template<typename T>
+	double ::PiE::FourierNoiseGenerator<N, C>::operator()(const std::array<T, N> & x) const {
+
+		double result = 0;
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < C; j++) {
+				result += coeficients[i][j][0] * sin(x[i] * j) + coeficients[i][j][1] * cos(x[i] * j);
+			}
+		}
+
+		return result/N;
+	}
+
+	template<size_t N, size_t C>
+	bool FourierNoiseGenerator<N, C>::operator==(const FourierNoiseGenerator & other) const {
+		return coeficients == other.coeficients;
+	}
+
+	template<size_t N, size_t C>
+	bool FourierNoiseGenerator<N, C>::operator!=(const FourierNoiseGenerator & other) const {
+		return coeficients != other.coeficients;
+	}
+
+}
 
 #endif

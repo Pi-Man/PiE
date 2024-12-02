@@ -1,5 +1,5 @@
-#ifndef _BUTTON_H_
-#define _BUTTON_H_
+#ifndef _CLICKABLE_H
+#define _CLICKABLE_H
 
 #include <unordered_map>
 
@@ -10,24 +10,43 @@
 #include "RenderObject.h"
 #include "Component.h"
 
-struct Clickable : Component {
+namespace PiE {
 
-	AxisAlignedRect *bounds;
+	// defines a rectangular area on the screen that can be clicked on
+	// * does not provide any rendering by itself, use with TextElement
+	// * or TexturedRect or both for visuals
+	struct Clickable : Component {
 
-	PiE::EventCallback onClick;
-	std::unordered_map<size_t, PiE::FixedUpdateCallback> onHeld;
-	PiE::EventCallback onRelease;
-	PiE::EventCallback onHoverStart;
-	PiE::FixedUpdateCallback onHovering;
-	PiE::EventCallback onHoverEnd;
+		// the area on screen that can be clicked, can be shared with TextElement or TexturedRect for visual feedback
+		AxisAlignedRect * bounds;
 
-	bool hovered = false;
-	bool held[255];
+		// called when the area is clicked
+		EventCallback onClick;
 
-	Clickable(AxisAlignedRect *bounds);
+		// called when the button indicated by the map key is held down every update
+		std::unordered_map<size_t, FixedUpdateCallback> onHeld;
 
-	void fixedUpdate(PiE::EngineContext & ctx) override;
+		// called when the button is no longer held
+		EventCallback onRelease;
 
-};
+		// called when the mouse enters the area
+		EventCallback onHoverStart;
+
+		// called every frame that the mouse is in the area
+		FixedUpdateCallback onHovering;
+
+		// called when the mouse leaves the area
+		EventCallback onHoverEnd;
+
+		bool hovered = false;
+		bool held[255];
+
+		Clickable(AxisAlignedRect * bounds);
+
+		void fixedUpdate(EngineContext & ctx) override;
+
+	};
+
+}
 
 #endif

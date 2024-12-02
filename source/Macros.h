@@ -1,5 +1,5 @@
-#ifndef _MACROS
-#define _MACROS
+#ifndef _MACROS_H
+#define _MACROS_H
 
 #define GL_FATAL(a) a; {GLenum b = glGetError(); if(b) {fprintf(stderr, "ERROR: %s in file %s on line: %d\n", (char*)glewGetErrorString(b), __FILE__, __LINE__); return b;}}
 #define GL_ERROR(a) a; {GLenum b = glGetError(); if(b) fprintf(stderr, "ERROR: %s in file %s on line: %d\n", (char*)glewGetErrorString(b), __FILE__, __LINE__);}

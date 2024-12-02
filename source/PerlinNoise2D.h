@@ -1,26 +1,29 @@
-#ifndef _PERLIN_NOISE_2D
-#define _PERLIN_NOISE_2D
+#ifndef _PERLIN_NOISE_2D_H
+#define _PERLIN_NOISE_2D_H
 
 #include <SDL.h>
 
 #include "Utils.h"
 
-class PerlinNoise2D
-{
+namespace PiE {
 
-	int hashTable[512];
+	struct PerlinNoise2D {
 
-	double gradientDot(int hash, double x, double y) const;
-	double fade(double k) const;
+		int hashTable[512];
 
-public:
-	// create a new instance of noise with the given seed, or set the seed based on the program run time by default
-	PerlinNoise2D(long seed = SDL_GetTicks());
+		double gradientDot(int hash, double x, double y) const;
+		double fade(double k) const;
 
-	// get value at specified location
-	// * returns -1 to 1
-	double get(double x, double y) const;
+		// create a new instance of noise with the given seed, or set the seed based on the program run time by default
+		PerlinNoise2D(long seed = SDL_GetTicks());
 
-};
+		// get value at specified location
+		// * returns -1 to 1
+		double operator()(double x, double y) const;
+
+		bool operator==(const PerlinNoise2D & other) const;
+	};
+
+}
 
 #endif

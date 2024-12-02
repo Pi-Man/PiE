@@ -1,5 +1,5 @@
-#ifndef _PIE
-#define _PIE
+#ifndef _PIE_H
+#define _PIE_H
 
 #include <iostream>
 #include <map>
@@ -18,7 +18,7 @@
 #include "GameObject.h"
 #include "RenderObject.h"
 #include "PerlinNoise2D.h"
-#include "GL_Texture.h"
+#include "GL_Texture2D.h"
 #include "Microphone.h"
 #include "Speaker.h"
 #include "obj.h"
@@ -78,10 +78,10 @@ namespace PiE {
 		std::mutex loopMutex;
 
 		// a referenc to the game window
-		SDL_Window* mainWindow;
+		SDL_Window* mainWindow = nullptr;
 
 		// the GL context object
-		SDL_GLContext glContext;
+		SDL_GLContext glContext = nullptr;
 
 		// the currently set render context 
 		RenderContext lastRenderContext{};
@@ -101,9 +101,9 @@ namespace PiE {
 		Vec2i windowSize;
 
 		// the camera to use to render
-		Camera *mainCamera;
+		Camera *mainCamera = nullptr;
 		// the default shader to use to render
-		Shader *mainShader;
+		Shader *mainShader = nullptr;
 
 		// the list of render objects to render
 		std::vector<RenderObject*> renderObjects;

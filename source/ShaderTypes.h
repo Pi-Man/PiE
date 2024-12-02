@@ -1,11 +1,11 @@
-#ifndef _SHADER_TYPES
-#define _SHADER_TYPES
+#ifndef _SHADER_TYPES_H
+#define _SHADER_TYPES_H
 
 #include<unordered_map>
 
 #include<glew.h>
 
-namespace ShaderTypes {
+namespace PiE {
 
 	enum Shader_Type {
 		INT,
@@ -136,6 +136,8 @@ namespace ShaderTypes {
 		case MAT3X4D:
 		case MAT4X3D:
 			return GL_DOUBLE;
+		default:
+			return 0;
 		}
 	}
 	constexpr size_t count_of(Shader_Type type) {
@@ -170,6 +172,7 @@ namespace ShaderTypes {
 		case MAT4X2D: return 8;
 		case MAT3X4D: return 12;
 		case MAT4X3D: return 12;
+		default:      return 0;
 		}
 	}
 	constexpr size_t container_size_of(Shader_Type type) {
@@ -209,6 +212,8 @@ namespace ShaderTypes {
 		case MAT3X4D:
 		case MAT4X3D:
 			return sizeof(GLdouble);
+		default:
+			return 0;
 		}
 	}
 }

@@ -1,76 +1,80 @@
 #include "Camera.h"
 
-Camera::Camera(SDL_Window * window) : window(window) {}
+namespace PiE {
 
-const Matrix4f Camera::getProjectionMatrix() const {
-	//std::lock_guard<std::mutex> lock(mutex);
+	Camera::Camera(SDL_Window * window) : window(window) {}
 
-	float f = farPlane;
-	float n = nearPlane;
+	const Matrix4f Camera::getProjectionMatrix() const {
+		//std::lock_guard<std::mutex> lock(mutex);
 
-	int w, h;
-	SDL_GetWindowSize(window, &w, &h);
+		float f = farPlane;
+		float n = nearPlane;
 
-	Matrix4f temp;
-	if (!orthogonal) {
-		float fov = FOV;
-		temp = Matrix4f({
-			fov, 0, 0, 0,
-			0, fov * (float)w / (float)h, 0, 0,
-			0, 0, (f + n) / (f - n), (2 * f*n) / (n - f),
-			0, 0, 1, 0
-			});
+		int w, h;
+		SDL_GetWindowSize(window, &w, &h);
+
+		Matrix4f temp;
+		if (!orthogonal) {
+			float fov = FOV;
+			temp = Matrix4f({
+				fov, 0, 0, 0,
+				0, fov * (float)w / (float)h, 0, 0,
+				0, 0, (f + n) / (f - n), (2 * f*n) / (n - f),
+				0, 0, 1, 0
+				});
+		}
+		else {
+			float fov = 1 / FOV;
+			temp = Matrix4f({
+				fov, 0, 0, 0,
+				0, fov * (float)w / (float)h, 0, 0,
+				0, 0, 2 / (f - n), (f + n) / (n - f),
+				0, 0, 0, 1
+				});
+		}
+
+		return temp;
 	}
-	else {
-		float fov = 1 / FOV;
-		temp = Matrix4f({
-			fov, 0, 0, 0,
-			0, fov * (float)w / (float)h, 0, 0,
-			0, 0, 2 / (f - n), (f + n) / (n - f),
-			0, 0, 0, 1
-			});
+
+	const Matrix4f Camera::getPrevViewMatrix() const {
+		//std::lock_guard<std::mutex> lock(mutex);
+		return prevViewMatrix;
 	}
 
-	return temp;
-}
+	const Matrix4f Camera::getPrevProjectionMatrix() const {
+		//std::lock_guard<std::mutex> lock(mutex);
+		return prevProjMatrix;
+	}
 
-const Matrix4f Camera::getPrevViewMatrix() const {
-	//std::lock_guard<std::mutex> lock(mutex);
-	return prevViewMatrix;
-}
+	void Camera::setClipPlanes(float nearPlane, float farPlane) {
+		std::lock_guard<std::mutex> lock(mutex);
+		this->nearPlane = nearPlane;
+		this->farPlane = farPlane;
+	}
 
-const Matrix4f Camera::getPrevProjectionMatrix() const {
-	//std::lock_guard<std::mutex> lock(mutex);
-	return prevProjMatrix;
-}
+	void Camera::setFOVdeg(float FOV) {
+		std::lock_guard<std::mutex> lock(mutex);
+		this->FOV = tan(FOV * (float)M_PI / 180.0f);
+	}
 
-void Camera::setClipPlanes(float nearPlane, float farPlane) {
-	std::lock_guard<std::mutex> lock(mutex);
-	this->nearPlane = nearPlane;
-	this->farPlane = farPlane;
-}
+	void Camera::setFOVrad(float FOV) {
+		std::lock_guard<std::mutex> lock(mutex);
+		this->FOV = tan(FOV);
+	}
 
-void Camera::setFOVdeg(float FOV) {
-	std::lock_guard<std::mutex> lock(mutex);
-	this->FOV = tan(FOV * (float)M_PI / 180.0f);
-}
+	float Camera::getFOVdeg() {
+		std::lock_guard<std::mutex> lock(mutex);
+		return 180.0f / (float)M_PI * atan(FOV);
+	}
 
-void Camera::setFOVrad(float FOV) {
-	std::lock_guard<std::mutex> lock(mutex);
-	this->FOV = tan(FOV);
-}
+	float Camera::getFOVrad() {
+		std::lock_guard<std::mutex> lock(mutex);
+		return atan(FOV);
+	}
 
-float Camera::getFOVdeg() {
-	std::lock_guard<std::mutex> lock(mutex);
-	return 180.0f / (float)M_PI * atan(FOV);
-}
+	void Camera::savePreviousState() {
+		prevViewMatrix = getViewMatrix();
+		prevProjMatrix = getProjectionMatrix();
+	}
 
-float Camera::getFOVrad() {
-	std::lock_guard<std::mutex> lock(mutex);
-	return atan(FOV);
-}
-
-void Camera::savePreviousState() {
-	prevViewMatrix = getViewMatrix();
-	prevProjMatrix = getProjectionMatrix();
 }

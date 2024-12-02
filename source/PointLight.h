@@ -1,34 +1,42 @@
-#ifndef _POINT_LIGHT
-#define _POINT_LIGHT
+#ifndef _POINT_LIGHT_H
+#define _POINT_LIGHT_H
 
 #include "Vec.h"
 
+namespace PiE {
 
 // point light info used to populate shader uniforms
 // * lights are sorted per object by intensity divided by distance to the object squared
-struct PointLight {
+	struct PointLight {
 
-	// position of the light
-	// * default: 0, 0, 0
-	Vec3f pos;
+		// position of the light
+		// * default: 0, 0, 0
+		Vec3f pos;
 
-	// color of the light
-	// * default: 1, 1, 1
-	Vec3f col = Vec3f({ 1, 1, 1 });
+		// color of the light
+		// * default: 1, 1, 1
+		Vec3f col = Vec3f({ 1, 1, 1 });
 
-	// intensity of the light
-	// * default: 0
-	float intensity =  0;
+		// intensity of the light
+		// * default: 0
+		float intensity = 0;
 
-	// position of the light from the previous tick (only populated if render interpolation is active)
-	Vec3f prevPos;
+		// position of the light from the previous tick (only populated if render interpolation is active)
+		Vec3f prevPos;
 
-	// color of the light from the previous tick (only populated if render interpolation is active)
-	Vec3f prevCol = Vec3f({ 1, 1, 1 });
+		// color of the light from the previous tick (only populated if render interpolation is active)
+		Vec3f prevCol = Vec3f({ 1, 1, 1 });
 
-	// intensity of the light from the previous tick (only populated if render interpolation is active)
-	float prevIntensity = 0;
+		// intensity of the light from the previous tick (only populated if render interpolation is active)
+		float prevIntensity = 0;
 
-};
+
+		bool operator==(const PointLight & other) const;
+
+		bool operator!=(const PointLight & other) const;
+
+	};
+
+}
 
 #endif

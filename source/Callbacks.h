@@ -29,8 +29,7 @@ namespace PiE {
 		EventCallback() = default;
 		EventCallback(std::function<void(EngineContext&, SDL_Event)> f);
 
-		bool operator== (EventCallback &other);
-		bool operator== (const EventCallback &other);
+		bool operator== (const EventCallback &other) const;
 	};
 }
 

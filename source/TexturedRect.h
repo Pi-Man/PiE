@@ -1,35 +1,39 @@
-#ifndef _TEXTURED_RECT_H_
-#define _TEXTURED_RECT_H_
+#ifndef _TEXTURED_RECT_H
+#define _TEXTURED_RECT_H
 
 #include <string>
 
 #include "Component.h"
 #include "Rect.h"
-#include "GL_Texture.h"
+#include "GL_Texture2D.h"
 #include "RenderObject.h"
 #include "Camera.h"
 #include "Shader.h"
 
-struct TexturedRect : Component {
+namespace PiE {
 
-	Camera *camera;
+	struct TexturedRect : Component {
 
-	Shader *shader;
+		Camera * camera;
 
-	AxisAlignedRect *bounds;
+		Shader * shader;
 
-	RenderObject renderObject;
+		AxisAlignedRect * bounds;
 
-	GL_Texture2D *&texture;
+		RenderObject renderObject;
 
-	Lazy<Matrix4f> m;
+		GL_Texture2D *& texture;
 
-	TexturedRect(AxisAlignedRect *bounds, GL_Texture2D *texture, Camera *camera, Shader *shader = nullptr);
+		Lazy<Matrix4f> m;
 
-	virtual void fixedUpdate(PiE::EngineContext &ctx);
+		TexturedRect(AxisAlignedRect * bounds, GL_Texture2D * texture, Camera * camera, Shader * shader = nullptr);
 
-	virtual void onAdded(PiE::EngineContext &ctx, GameObject &gameObject);
+		virtual void fixedUpdate(EngineContext & ctx);
 
-};
+		virtual void onAdded(EngineContext & ctx, GameObject & gameObject);
+
+	};
+
+}
 
 #endif

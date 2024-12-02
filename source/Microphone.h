@@ -1,5 +1,5 @@
-#ifndef _MICROPHONE
-#define _MICROPHONE
+#ifndef _MICROPHONE_H
+#define _MICROPHONE_H
 
 #include <stdio.h>
 #include <memory>
@@ -8,54 +8,56 @@
 
 #include "AudioFormat.h"
 
-// * WARNING: will be switching from portaudio to OpenAL soon
-namespace Microphone {
-	// the callback to use for collecting audio data
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	int callback(
-		const void *input, void *output,
-		unsigned long frameCount,
-		const PaStreamCallbackTimeInfo* timeInfo,
-		PaStreamCallbackFlags statusFlags,
-		void *userData);
+namespace PiE {
 
-	// the size of the microphone buffer
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern size_t _bufferSize;
-	// the current position in the buffer
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern size_t _bufferPos;
-	// the PA stream
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern PaStream *stream;
-	// the format of the audio stream
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern AudioFormat _format;
-	// the microphone data buffer
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern unsigned char *_buffer;
+	namespace Microphone {
+		// the callback to use for collecting audio data
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		int callback(
+			const void * input, void * output,
+			unsigned long frameCount,
+			const PaStreamCallbackTimeInfo * timeInfo,
+			PaStreamCallbackFlags statusFlags,
+			void * userData);
 
-	// if the PA stream is open
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	extern bool open;
+		// the size of the microphone buffer
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		extern size_t _bufferSize;
+		// the current position in the buffer
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		extern size_t _bufferPos;
+		// the PA stream
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		extern PaStream * stream;
+		// the format of the audio stream
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		extern AudioFormat _format;
+		// the microphone data buffer
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		extern unsigned char * _buffer;
 
-	// initialize the microphone
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	void init(size_t bufferSize, AudioFormat &format, char *deviceName = nullptr);
-	// close the microphone, can be re-initialized after closing
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	void stop();
+		// if the PA stream is open
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		extern bool open;
 
-	// pause the microphone, this is the default state when initialized
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	void pause();
-	// start or resume the microphone, must be started after initializing
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	void play();
+		// initialize the microphone
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		void init(size_t bufferSize, AudioFormat & format, char * deviceName = nullptr);
+		// close the microphone, can be re-initialized after closing
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		void stop();
 
-	// set the pause state of the microphone
-	// * WARNING: will be switching from portaudio to OpenAL soon
-	void setPause(bool pause);
+		// pause the microphone, this is the default state when initialized
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		void pause();
+		// start or resume the microphone, must be started after initializing
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		void play();
+
+		// set the pause state of the microphone
+		// * WARNING: will be switching from portaudio to OpenAL soon
+		void setPause(bool pause);
+	}
 }
 
 #endif

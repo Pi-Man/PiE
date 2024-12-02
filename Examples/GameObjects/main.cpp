@@ -4,12 +4,12 @@
 
 #include "RandomPositionRotation.h"
 
-Shader shader;
-Camera *pcamera;
+PiE::Shader shader;
+PiE::Camera *pcamera;
 
 bool mouseLock = false;
 
-std::vector<GameObject*> cubes; // object pool of cubes
+std::vector<PiE::GameObject*> cubes; // object pool of cubes
 size_t numberOfCubes = 0;
 
 constexpr float MOVE_SPEED = 5.0f;
@@ -24,7 +24,7 @@ constexpr int MOVE_UP = SDL_SCANCODE_SPACE;
 constexpr int MOVE_DOWN = SDL_SCANCODE_LSHIFT;
 constexpr int MOUSE_LOCK = SDL_SCANCODE_ESCAPE;
 
-VertexFormat format{ POSITION_F };
+PiE::VertexFormat format{ PiE::POSITION_F };
 
 // handles adding and removing game objects on key press
 // NOE: game objects can NOT be added or removed in fixed update
@@ -35,8 +35,8 @@ void addRemoveGameObject(PiE::EngineContext &ctx, SDL_Event event) {
 	case ADD_CUBE:
 	{
 		if (numberOfCubes == cubes.size()) { // if there are no more cubes in the object pool, make a new object
-			GameObject *newCube = new GameObject();
-			newCube->components.push_back(new ObjComponent("uv_cube.obj", shader, format));
+			PiE::GameObject *newCube = new PiE::GameObject();
+			newCube->components.push_back(new PiE::ObjComponent("uv_cube.obj", shader, format));
 			newCube->components.push_back(new RandomPositionRotation(numberOfCubes));
 			cubes.push_back(newCube);
 		}
@@ -48,7 +48,7 @@ void addRemoveGameObject(PiE::EngineContext &ctx, SDL_Event event) {
 	{
 		if (numberOfCubes > 0) {
 			numberOfCubes--;
-			GameObject *oldCube = cubes[numberOfCubes];
+			PiE::GameObject *oldCube = cubes[numberOfCubes];
 			PiE::removeGameObject(ctx, *oldCube); // this does not actually delete the game object, so it can be reused later
 		}
 		break;
@@ -100,7 +100,7 @@ void mouseLockEvent(PiE::EngineContext & ctx, SDL_Event event) {
 }
 
 int main(int argc, char** args) {
-	format = { POSITION_F, NORMAL_F, UV2_F };
+	format = { PiE::POSITION_F, PiE::NORMAL_F, PiE::UV2_F };
 	//-------create context and initialize engine---------
 	PiE::EngineContext ctx{};
 
@@ -108,7 +108,7 @@ int main(int argc, char** args) {
 
 	SDL_SetWindowTitle(ctx.mainWindow, "Game Objects");
 	//----------set up main camera and shader-------------
-	Camera5DoF camera{ ctx.mainWindow };
+	PiE::Camera5DoF camera{ ctx.mainWindow };
 
 	ctx.mainCamera = pcamera = &camera;
 
@@ -116,8 +116,8 @@ int main(int argc, char** args) {
 
 	ctx.mainShader = &shader;
 	//---------------add in game objects-----------------
-	GameObject cubeObject{};
-	ObjComponent cubeComponent{ "uv_cube.obj", shader, format };
+	PiE::GameObject cubeObject{};
+	PiE::ObjComponent cubeComponent{ "uv_cube.obj", shader, format };
 	cubeObject.components.push_back(&cubeComponent);
 	PiE::addGameObject(ctx, cubeObject);
 	//----------add update and event functions-----------
@@ -133,9 +133,9 @@ int main(int argc, char** args) {
 	PiE::startMainGameLoop(ctx, true);
 
 	//-------------------game has quit-------------------
-	for (GameObject *cube : cubes) {
+	for (PiE::GameObject *cube : cubes) {
 		PiE::removeGameObject(ctx, *cube);
-		for (Component * comp : cube->components) {
+		for (PiE::Component * comp : cube->components) {
 			delete(comp);
 		}
 		delete(cube);
